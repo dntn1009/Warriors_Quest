@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Edit Param")]
-    [SerializeField] float _movSpeed = 5f;
+    [SerializeField] float _movSpeed;
     [SerializeField] float _rotateSpeed = 500.0f; // 카메라회전
     [SerializeField] float _cameraOffsetX;
     [SerializeField] float _cameraOffsetY;
@@ -81,22 +81,12 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 FixedPos = new Vector3(transform.position.x + _cameraOffsetX, transform.position.y + _cameraOffsetY, transform.position.z + _cameraOffsetZ);
         _mainCamera.transform.position = FixedPos;
-        _mainCamera.transform.LookAt(this.transform);
-    }
-
-
-    //camera위치에 맞춰 움직이도록
-    public Vector3 Move_Camerafoward(Vector3 m_dir)
-    {
-        Vector3 lookForward = new Vector3(_mainCamera.transform.forward.x, 0f, _mainCamera.transform.forward.z).normalized;
-        Vector3 lookRight = new Vector3(_mainCamera.transform.right.x, 0f, _mainCamera.transform.right.z).normalized;
-
-
-        Vector3 movedir = lookForward * m_dir.y + lookRight * m_dir.x;
-
-        return movedir;
+        //_mainCamera.transform.LookAt(this.transform);
     }
     #endregion [Camera_Methods]
+
+
+
     public void EquipWeapon(WeaponType type)
     {
         //type에 따른 프리팹 가져와 손에 쥐어주기
