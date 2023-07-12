@@ -1,0 +1,12 @@
+Attack => Cartoon or 3dproject에서 사용한 연계형 공격 참조하기
+
+mixamo에서 가져온 animation을 이용하여 공격 및 무기 준비자세 변경하기
+
+캐릭터 스텟 관련 스크립트 구현
+
+
+AttackUnitFind script
+AttackCollider Player Empty Object => 연계 되도록 script 구현(Attack 1 - 2- 3)
+
+
+UnitBase Scirpt
