@@ -19,3 +19,8 @@
 2023-07-10
 1.플레이어 Object 움직임 및 카메라 회전 구현 완료
 2.Terrain Tree & grass 제거 후 새로 구현 진행 중.
+
+2023-07-11
+1. 카메라가 보는 forward(정면)에 맞춰 캐릭터Object 안에 있는 CharacterController의 SimpleMove가 움직일수 있도록 Vector3의 값을 변경시켜주려고 함.
+   - camera의 forward(y = 0)을 이용하여 움직임에 추가를 줄 예정 70% 구현
+2. object들의 크기를 맞추고 Terrain의 Tree 재배열 및 텍스쳐 수정
