@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _cameraOffsetX;
     [SerializeField] float _cameraOffsetY;
     [SerializeField] float _cameraOffsetZ; // 카메라 따라가기
-
+    [SerializeField] Transform WeaponPos; // 무기 장착 위치
+    [SerializeField] GameObject equipWeapon; // 장착한 무기
 
     //참조 변수
     Animator _animController;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     //정보 변수
     AnyType _currentAnyType; // animator 움직임
     bool _isEquip; // 장비 착용
+    bool _isAttack; // 공격
     bool _isCameraFollow = false;
 
     void Awake()
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
         _charController = GetComponent<CharacterController>();
         CameraSetting();
         _isEquip = false;
+        _isAttack = false;
     }
 
     void Update()
@@ -34,25 +37,30 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPosition = transform.position;
         PlayerMove();
         CameraRotate(targetPosition);
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            EquipWeapon(WeaponType.OneHandSword, !_isEquip);
+        }
     }
 
     #region [Character Move]
     public void PlayerMove()
     {
-        float mz = Input.GetAxis("Vertical");
-        float mx = Input.GetAxis("Horizontal");
-        //GetAxis로 x,z 값 부여하기
-        Vector3 dv = new Vector3(mx, 0, mz);
-        dv = (dv.magnitude > 1) ? dv.normalized : dv;
-        Vector3 mv = dv * _movSpeed;
-        _charController.SimpleMove(mv);
-        if (mv.magnitude > 0)
-        {
-            ChangeAniFromType(AnyType.RUN);
-            transform.forward = dv;
-        }
-        else
-            ChangeAniFromType(AnyType.IDLE);
+            float mz = Input.GetAxis("Vertical");
+            float mx = Input.GetAxis("Horizontal");
+            //GetAxis로 x,z 값 부여하기
+            Vector3 dv = new Vector3(mx, 0, mz);
+            dv = (dv.magnitude > 1) ? dv.normalized : dv;
+            Vector3 mv = Player_cameraMove(dv) * _movSpeed;
+            _charController.SimpleMove(mv);
+            if (mv.magnitude > 0)
+            {
+                ChangeAniFromType(AnyType.RUN);
+                transform.forward = mv;
+            }
+            else
+                ChangeAniFromType(AnyType.IDLE);
     }
     #endregion [Character Move]
 
@@ -64,7 +72,7 @@ public class PlayerController : MonoBehaviour
     }
     public void CameraRotate(Vector3 targetPosition)
     {
-        //Vector3 targetPosition = transform.position;
+        //Vector3 targetPosition 이용
         if (Input.GetMouseButton(1))
         {
             float xRotateMove = Input.GetAxis("Mouse X") * Time.deltaTime * _rotateSpeed;
@@ -83,14 +91,37 @@ public class PlayerController : MonoBehaviour
         _mainCamera.transform.position = FixedPos;
         //_mainCamera.transform.LookAt(this.transform);
     }
+
+    public Vector3 Player_cameraMove(Vector3 dv)
+    {
+        var cameraforward = _mainCamera.transform.forward.normalized;
+        cameraforward.y = 0f;
+        var cameraright = _mainCamera.transform.right.normalized;
+        cameraright.y = 0f;
+        Vector3 movedir = cameraforward * dv.z + cameraright * dv.x;
+        return movedir;
+    }
     #endregion [Camera_Methods]
 
-
-
-    public void EquipWeapon(WeaponType type)
+    #region WeaponMethods & AnimationTypeMethods
+    public void EquipWeapon(WeaponType type, bool equip = true)
     {
         //type에 따른 프리팹 가져와 손에 쥐어주기
-        _isEquip = true;
+        switch (type)
+        {
+            case WeaponType.OneHandSword:
+                if (equip)
+                {
+                    equipWeapon = Instantiate(IngameManager.Instance.SwordWeapons[0], WeaponPos);
+                }
+                else
+                    Destroy(equipWeapon);
+                break;
+            case WeaponType.OneHandMace:
+                break;
+        }
+
+        _isEquip = equip;
         _animController.SetBool("IsWeapon", _isEquip);
     }
 
@@ -99,4 +130,6 @@ public class PlayerController : MonoBehaviour
         _currentAnyType = type;
         _animController.SetInteger("AnyType", (int)type);
     }
+    #endregion WeaponMethopds & AnimationTypeMethods
+
 }

@@ -5072,6 +5072,8 @@ MonoBehaviour:
   _cameraOffsetX: 0
   _cameraOffsetY: 0.5
   _cameraOffsetZ: -0.5
+  WeaponPos: {fileID: 0}
+  equipWeapon: {fileID: 0}
 --- !u!1 &7732369872981298510
 GameObject:
   m_ObjectHideFlags: 0
