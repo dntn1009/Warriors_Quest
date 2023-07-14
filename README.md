@@ -24,3 +24,9 @@
 1. 카메라가 보는 forward(정면)에 맞춰 캐릭터Object 안에 있는 CharacterController의 SimpleMove가 움직일수 있도록 Vector3의 값을 변경시켜주려고 함.
    - camera의 forward(y = 0)을 이용하여 움직임에 추가를 줄 예정 70% 구현
 2. object들의 크기를 맞추고 Terrain의 Tree 재배열 및 텍스쳐 수정
+
+2023-07-12
+1. Player Object & Camera를 연동하여 카메라의 앞에 맞춰 움직이도록 구현(2023-07-11 camera의 forward(y = 0)) 완료함.
+2. Player 무기 장착 Idle & 기본 Idle 구현 완료함.
+3. Attack 기초 코딩 구현함.
+4. Weapon Run & Attack Animation 부자연스러운 모습 확인 수정이 필요함.
