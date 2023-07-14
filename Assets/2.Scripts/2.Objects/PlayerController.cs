@@ -11,12 +11,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _cameraOffsetZ; // 카메라 따라가기
     [SerializeField] Transform WeaponPos; // 무기 장착 위치
     [SerializeField] GameObject equipWeapon; // 장착한 무기
+    [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
 
     //참조 변수
     Animator _animController;
     CharacterController _charController;
     GameObject _mainCamera;
-
+    BoxCollider[] _AttackAUFs; // AttackAreUnitFinds;
     //정보 변수
     AnyType _currentAnyType; // animator 움직임
     bool _isEquip; // 장비 착용
@@ -32,8 +33,29 @@ public class PlayerController : MonoBehaviour
         _isAttack = false;
     }
 
+    private void Start()
+    {
+        _AttackAUFs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
+        for (int i = 0; i < _AttackAUFs.Length; i++)
+        {
+            Debug.Log(_AttackAUFs[i].name);
+            _AttackAUFs[i].enabled = false;
+        }
+    }
+
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            _isAttack = !_isAttack;
+            ChangeAniFromType(AnyType.ATTACK);
+        }
+        if (_isAttack)
+        {
+            return;
+        }
+
         Vector3 targetPosition = transform.position;
         PlayerMove();
         CameraRotate(targetPosition);

@@ -1,11 +1,31 @@
+1. Top VIew 마우스 클릭으로 움직이도록 하는 Nav Agent 이용
+or
+2. GetAxis 이용하여 키보드로 움직이면서 마우스 오른쪽 버튼으로 카메라 움직이며 공격하도록 구현
+
+2번 선택
+
+1. GetAxis Obeject안에 카메라와 Player Object를 자식으로 넣어 카메라 각도 조절 방법
+2. Player에 카메라가 추적하도록 하는 방법
+
+Player를 불러올때 좀더 효율적이며 간편하게 이용하려면 2번이 낫다고 생각하여 2번으로 구현
+카메라의 forward & right를 이용하여 카메라의 앞부분을 플레이어의 앞부분으로 변경하도록 하여 
+카메라의 앞방향마다 GetAxis의 값을 변경하여 움직이도록 구현 및 설계함.
+
+
+
 Attack => Cartoon or 3dproject에서 사용한 연계형 공격 참조하기
 
-mixamo에서 가져온 animation을 이용하여 공격 및 무기 준비자세 변경하기
+mixamo에서 가져온 animation을 이용하여 공격 및 무기 준비자세 변경하기 => 일단 변경 완료
 
 캐릭터 스텟 관련 스크립트 구현
 
 
-AttackUnitFind script
+AttackUnitFind script 생성 완료
+Tag로 Monster 정보 불러와서 맞춰지는 안맞춰지는지 구현할 것
+AttackUnitFind 를가지고있는 Object들의 부모 오브젝트에 Layer 생성
+
+
+
 AttackCollider Player Empty Object => 연계 되도록 script 구현(Attack 1 - 2- 3)
 
 
