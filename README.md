@@ -56,4 +56,18 @@
     자식오브젝트인 Area에 Collider 및 AttackAreUnitFind Scirpt를 추가함, Collider가 Monster에 반응하는지 확인함.
     AttackAreUnitFind는 Area의 Collider별로 반응하게 하기위해 만든 Script
 
+2023-07-17 ~ 2023-07-18
+1. AttackAreUnitFind.Script에서 List UnitList에 Collider에 OntriggerEnter하면 Add Exit하면 Remove 하여 Unit List를 받은 후
+   PlayerController에서 AttackAreUnitFind의 배열체를 가져와서 공격 타이밍에 읽어온 UnitList에 데미지를 주는 방법
+   BoxCollider를 끌 이유가 없음.
+2. AttackAreUnitFInd.Script에서 PlayerController를 함수로 등록하는 Initialize 함수 생성 후 Collider의 OntriggerEnter에 들어오면
+   PlayerController.script의 Attack()함수가 적용 되도록 함. PlayerController.Script에서는 BoxCollider의 배열체를 가져온 후.
+   처음 세팅으로 BoxCollider를 끄고 각 배열체안에 있는 AttackAreUnitFind에서 본인의 Controller.Script를 가져가도록 InitializeSet()함수를 적용시킴.
+   그 후, BoxCollider를 끄고 키고 하며 데미지를 주도록 함.
 
+   1번 방법 사용시 (동적콜라이더)RIgidbody Iskinematic을 사용하여 Cpu부하를 막아야 함. 계속 킨상태로 움직이면 메모리와 성능면에서 우위를 점할지가 고민됨.
+   2번 방법 사용시 (정적콜라이더)Rigidbody를 사용 안해도 됨. 어택 시에 콜라이더를 활성화 하기 때문에 메모리와 성능면에서 우위를 점할거 같음.
+
+   2번 방법을 이용하여 구현하기로 함.
+   + Attack 애니메이션 이용 시 적절하고 매끄러운 연결을 위해서 PlayerController의 스크립트를 재정리 및 코딩 추가 구현을 할 필요가 있음
+   + Monster를 구현하기 위한 Object 찾기 Boss & Normal 몬스터들을 구현할 Object들 정리 및 찾는 중.
