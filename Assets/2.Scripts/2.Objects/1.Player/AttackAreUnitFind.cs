@@ -15,7 +15,7 @@ public class AttackAreUnitFind : MonoBehaviour
     {
         if(other.CompareTag("Monster"))
         {
-            _player.Attack(other.gameObject);
+            _player.SetDemage(other.gameObject);
             Debug.Log(this.name + " : 몬스터 명중");
         }
     }

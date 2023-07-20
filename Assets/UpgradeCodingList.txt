@@ -48,3 +48,28 @@ UnitBase Scirpt
 
    Combo효과를 위해 key Buffer(Queue)를 용하여 input시간을 구하자
    매끄러운 연결을 위해서 player의 스크립트를 정리할 필요가 있음.
+
+2023-07-19 ~ 2023-07-20
+점프 구현 완료
+Animation에 고정적인 모습으로 점프하는 애니메이션이 아닌
+움직이며 점프하는 Animation을 사용함.
+그 과정에서 발생하는 문제점이 생김
+Jump.fbx에서의 Root transform position을 bake into pose를 체크하여 활성하 하게되면
+애니메이션에 문제는 없지만 앞으로 나아가는 점프이기 때문에 다시 제자리로 돌아오는 점이 매우 부자연스럽게 움직이는 것을 확인하여 다른 별도의 기능으로 구현해야됨을 알았음.
+캐릭터 컨트롤러의 isgrounded를 이용하여 땅에 닿아잇는 경우에만 y값을 주어 띄워주려고하였음.
+그러면 짧게나마 Jump가 가능하지만 액션에 비해서 점프의높이가 매우 작으며 땅에 닿으면 바로 점프모션이 없어지는 경우가 발생하였음.
+그래서 bool 변수를 이용하여 _isJump를 구현함.
+Jump 애니메이션이 실행시에 _isJump를 True로 바꿔주고 Jump의 애니메이션이 끝나는지점에 Animevent를 이용하여 False로 바꾸도록 하였음.
+false->true로 바뀌는 과정에서 안에 있는 Animation Run , Idle을 관리하는 곳이 발생하기 떄문에
+SPace를 누르면 이과정을 넘어가기 위해 return을 사용함.
+그리고 Jump의 Bake Into Pose를 해제하여 움직이도록 함.
+애니메이션의 움직임이 부드러워 졌으나 점프 높이가 많이 아쉬움이 남음.
+그래서 _isJump가 True일 경우에 CharacterController의 move에 이용되는 Vector3 Mv(X, 0, Z)
+에 Jump애니메이션이 뛰려고 하는 곳에 AnimEvent를 넣어 y에 0.5f의 값을 넣어주었음.
+그리고 떨어지는 모션을 취하는 첫 부분에 다시 y를 0으로 바꿔주웠음.
+자연스러운 애니메이션과 점프높이를 구현하게 되었음.
+이과정에서 점프를 하게되면 캐릭터의 위치를 따라가는 Camera가 매우 흔들리는것을 발견하였고.
+이부분은 CharacterController의 isgrounded를 다시 활용하여 땅에 닿아있는 경우에만 카메라가 추적할
+player의 Y값을 다시 받도록 하였음.
+
+몬스터 Object 및animation 들 자료수집

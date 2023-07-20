@@ -486,6 +486,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
+      propertyPath: _JumpOffsetY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859725274617827771, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2156,6 +2164,8 @@ MonoBehaviour:
   _cameraOffsetX: 0
   _cameraOffsetY: 0.5
   _cameraOffsetZ: -0.5
+  _cameraFixY: 0
+  _JumpOffsetY: 0
   WeaponPos: {fileID: 2168325524476274455}
   equipWeapon: {fileID: 0}
   _AttackAreaPrefab: {fileID: 0}

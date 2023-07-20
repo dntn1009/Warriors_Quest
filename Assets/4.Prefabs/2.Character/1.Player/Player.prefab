@@ -3928,8 +3928,8 @@ CharacterController:
   m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.1
-  m_SkinWidth: 0.05
-  m_MinMoveDistance: 0.001
+  m_SkinWidth: 0.02
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.925, z: 0}
 --- !u!95 &3859725274617827771
 Animator:
@@ -3968,6 +3968,7 @@ MonoBehaviour:
   _cameraOffsetX: 0
   _cameraOffsetY: 0.5
   _cameraOffsetZ: -0.5
+  _JumpOffsetY: 4
   WeaponPos: {fileID: 2295380717471391972}
   equipWeapon: {fileID: 536788939789660260, guid: 88298cc7113a7aa45a733ca80072f103, type: 3}
   _AttackAreaPrefab: {fileID: 1473756782}

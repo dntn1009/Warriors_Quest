@@ -11,6 +11,7 @@ namespace DefineHelper
         IDLE                        = 0,
         RUN,
         ATTACK,
+        JUMP,
         SKILL1,         // 단일
         SKILL2,         // 광역
         SKILL3,         // 버프
