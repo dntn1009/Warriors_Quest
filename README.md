@@ -88,6 +88,7 @@
      이 남음. 그래서 _isJump가 True일 경우에 CharacterController의 move에 이용되는 Vector3 Mv(X, 0, Z)에 Jump애니메이션이 뛰려고 하는 곳에 AnimEvent를 넣어 
      y에 0.5f의 값을 넣어주었음. 그리고 떨어지는 모션을 취하는 첫 부분에 다시 y를 0으로 바꿔주웠음.
    3번을 이용하여 Player의 점프를 구현하였음.
+
 3.Player가 점프하는 과정에서 카메라의 포커스가 흔들리는 것을 발견하여 이 부분은 CharacterController의 isgrounded를 다시 활용하여 땅에 닿아있는 경우에만 카메라가
   추적할 Player의 Y의값을 받아 카메라가 흔들리는 것을 방지하였음.
      
