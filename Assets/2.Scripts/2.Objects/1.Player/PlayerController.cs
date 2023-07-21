@@ -1,4 +1,5 @@
 using DefineHelper;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -21,18 +22,27 @@ public class PlayerController : MonoBehaviour
     BoxCollider[] _AttackRngs; // AttackAreUnitFinds;
     //정보 변수
     AnyType _currentAnyType; // animator 움직임
-    bool _isEquip; // 장비 착용
-    bool _isAttack; // 공격
-    bool _isJump;
     Vector3 mv; // Player Object Vector3
+    bool _isJump;
+    bool _isEquip; // 장비 착용
+    Queue<KeyCode> _keyBuffer; // 공격시 키입력으로인한 콤보를 위해만든 변수
+    bool _isPressAttack;
+    int _comboIndex;
+    bool _isAttack { get { if (_currentAnyType == AnyType.ATTACK) 
+                    return true;
+                        return false;
+        } } // 공격
+    
     void Awake()
     {
+        _keyBuffer = new Queue<KeyCode>();
         _animController = GetComponent<Animator>();
         _charController = GetComponent<CharacterController>();
         CameraSetting();
         _isEquip = false;
-        _isAttack = false;
         _isJump = false;
+        _isPressAttack = false;
+        _comboIndex = 0;
     }
 
     private void Start()
@@ -43,18 +53,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            _isAttack = !_isAttack;
-            ChangeAniFromType(AnyType.ATTACK);
-        }
-        if (_isAttack)
-        {
-            return;
-        }
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             EquipWeapon(WeaponType.OneHandSword, !_isEquip);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            OnPressAttack();
+        }
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            OnReleaseAttack();
         }
         PlayerMove();
         CameraRotate(transform.position);
@@ -66,6 +76,12 @@ public class PlayerController : MonoBehaviour
         if (_charController.isGrounded)
             _cameraFixY = transform.position.y; // Camera Y축 고정을 위해서
 
+        if (_isAttack)
+        {
+            mv = Vector3.zero;
+            return;
+        }
+
         if (!_isJump)
         {
             float mz = Input.GetAxis("Vertical");
@@ -74,18 +90,23 @@ public class PlayerController : MonoBehaviour
             Vector3 dv = new Vector3(mx, 0, mz);
             dv = (dv.magnitude > 1) ? dv.normalized : dv; // normalized화
             mv = Player_cameraMove(dv) * _movSpeed; // 카메라 포커스에 맞춰 변경
-            if (Input.GetKeyDown(KeyCode.Space))
+
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 ChangeAniFromType(AnyType.JUMP);
                 return;
             }
-            if (mv.magnitude > 0)
+
+            if (!_isAttack)
             {
-                ChangeAniFromType(AnyType.RUN);
-                transform.forward = new Vector3(mv.x, 0, mv.z);
+                if (mv.magnitude > 0)
+                {
+                    ChangeAniFromType(AnyType.RUN);
+                    transform.forward = new Vector3(mv.x, 0, mv.z);
+                }
+                else
+                    ChangeAniFromType(AnyType.IDLE);
             }
-            else
-                ChangeAniFromType(AnyType.IDLE);
         }
         _charController.Move(mv * Time.deltaTime);
     }
@@ -174,6 +195,7 @@ public class PlayerController : MonoBehaviour
             case AnyType.RUN:
                 break;
             case AnyType.ATTACK:
+                _animController.SetInteger("AttackCombo", _comboIndex);
                 break;
             case AnyType.JUMP:
                 _isJump = true;
@@ -220,5 +242,95 @@ public class PlayerController : MonoBehaviour
         Debug.Log(monster.name + "공격하였습니다.");
     }
 
+    #endregion
+
+    #region Attack KeyBufferMethods
+    void _AttackFinished() //Animation _Finish
+    {
+        bool IsCombo = false; // 연타했을경우를 위한 변수
+        if (_isPressAttack)
+            IsCombo = true;
+        if (_keyBuffer.Count == 1)
+        {
+            var key = _keyBuffer.Dequeue();
+            if (key == KeyCode.Space)
+                IsCombo = true;
+        }
+        else if (_keyBuffer.Count > 1)
+        {
+            ReleaseKeyBuffer();
+            IsCombo = false;
+        }
+        if (IsCombo)
+        {
+            _comboIndex++;
+            if (_comboIndex > 2)
+                _comboIndex = 0;
+            ChangeAniFromType(AnyType.ATTACK);
+        }
+        else
+        {
+            ChangeAniFromType(AnyType.IDLE);
+            _comboIndex = 0;
+        }
+    }
+
+    public void OnPressAttack()
+    {
+        if (_isAttack)
+        {
+            if (IsInvoking("ReleaseKeyBuffer")) // 아직 리셋이 안되었단 이야기
+                CancelInvoke("ReleaseKeyBuffer");
+            float time = _animController.GetCurrentAnimatorStateInfo(0).length - 1;
+            Debug.Log("받아온 시간 : " + time);
+            Invoke("ReleaseKeyBuffer", time);
+            _keyBuffer.Enqueue(KeyCode.V);
+        }// 눌린시점으로부터 일정시간동안 값이 안들어오면 이값을 비울것이란 예약
+        if (_currentAnyType == AnyType.IDLE || _currentAnyType == AnyType.RUN)
+        {
+            ChangeAniFromType(AnyType.ATTACK);
+        }
+        _isPressAttack = true;
+    }
+
+    public void AttackAnimTest()
+    {
+        if (_currentAnyType == AnyType.IDLE || _currentAnyType == AnyType.RUN)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                ChangeAniFromType(AnyType.ATTACK);
+            }
+        }
+
+        if(_currentAnyType == AnyType.ATTACK)
+            KeySettingTest();
+    }
+
+    public void KeySettingTest()
+    {
+        // 이부분에 키버퍼를 이용해야함.
+        if (_keyBuffer.Count == 0) // 마우스 클릭을 안하면 Idle로 가게 + Attack01 ~ 03 까지 각자의 시간안에 행하도록 짜야함.
+        {
+            _comboIndex = 0;
+            ChangeAniFromType(AnyType.IDLE);
+        }
+        else // 잠깐 마우스 클릭을 한게 포착되면 공격 콤보 진행
+        {
+            if (_comboIndex >= 2)
+                _comboIndex = 0;
+            else
+                _comboIndex++;
+            ChangeAniFromType(AnyType.ATTACK);
+        }
+    }
+    public void OnReleaseAttack()
+    {
+        _isPressAttack = false;
+    }
+    void ReleaseKeyBuffer()
+    {
+        _keyBuffer.Clear();
+    }
     #endregion
 }

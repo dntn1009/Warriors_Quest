@@ -3968,7 +3968,7 @@ MonoBehaviour:
   _cameraOffsetX: 0
   _cameraOffsetY: 0.5
   _cameraOffsetZ: -0.5
-  _JumpOffsetY: 4
+  _cameraFixY: 0
   WeaponPos: {fileID: 2295380717471391972}
   equipWeapon: {fileID: 536788939789660260, guid: 88298cc7113a7aa45a733ca80072f103, type: 3}
   _AttackAreaPrefab: {fileID: 1473756782}
