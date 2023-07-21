@@ -71,3 +71,24 @@
    2번 방법을 이용하여 구현하기로 함.
    + Attack 애니메이션 이용 시 적절하고 매끄러운 연결을 위해서 PlayerController의 스크립트를 재정리 및 코딩 추가 구현을 할 필요가 있음
    + Monster를 구현하기 위한 Object 찾기 Boss & Normal 몬스터들을 구현할 Object들 정리 및 찾는 중.
+
+2023-07-19 ~ 2023-07-20
+1. 일반 몬스터들 & 보스몬스터를 구현하기 전에 필요한 Prefab 및 Animation을 위한 fbx 자료 수집
+2. Player의 Jump 구현 완료
+   - MixAmo에서 적합한 Animation을 찾아서 적용하였음.
+   - 사용하려는 Animation은 고정으로 움직이는 것이 아닌 앞으로 점프하는 Animationdmf 이용함
+   - 1.움직이는 애니메이션을 고정하기 위해 fbx의 animation에서 Root transform position의 bake into pose를 체크하여 활성화한 후에,
+     CharacterController.move()에 쓰이는 Vector3 mv의 y값을 더하여 점프형식을 구현해보려 하였으나 활공 상태가 많이 짧고 앞으로 간후에 제자리로 돌아오는 모션이 
+     매우 부자연스러웠음.
+     2. 애니메이션은 배제하고 자연스러운 점프 형식을 구현하기 위해 charactercontroller의 isgrounded기능을 이용하여 땅에 닿아있는 경우 Y값을 주고 점프를 구현하려
+     고 하였으나 애니메이션이 땅에 떨어져있는 시간이 매우 짧아 애니메이션의 마지막이 실행되기전에 Idle & Run으로 변경되는 일이 발생하였음.
+     3. bool 변수를 이용하여 _isJump를 구현함. Jump 애니메이션이 실행 시 _isJump를 True로 바꿔주고 Jump의 애니메이션이 끝나는지점에 Animevent를 이용하여 
+     False로 바꾸도록 하였음. false->true로 바뀌는 과정에서 안에 있는 Animation Run , Idle을 관리하는 곳이 발생하기 떄문에 SPace를 누르면 이과정을 넘어가기 위 
+     해 return을 사용함.그리고 Jump의 Bake Into Pose를 해제하여 움직이도록 함. 애니메이션의 움직임과 앞으로가는 점프가 자연스러워졌으나 점프 높이가 많이 아쉬움 
+     이 남음. 그래서 _isJump가 True일 경우에 CharacterController의 move에 이용되는 Vector3 Mv(X, 0, Z)에 Jump애니메이션이 뛰려고 하는 곳에 AnimEvent를 넣어 
+     y에 0.5f의 값을 넣어주었음. 그리고 떨어지는 모션을 취하는 첫 부분에 다시 y를 0으로 바꿔주웠음.
+   3번을 이용하여 Player의 점프를 구현하였음.
+
+3.Player가 점프하는 과정에서 카메라의 포커스가 흔들리는 것을 발견하여 이 부분은 CharacterController의 isgrounded를 다시 활용하여 땅에 닿아있는 경우에만 카메라가
+  추적할 Player의 Y의값을 받아 카메라가 흔들리는 것을 방지하였음.
+     
