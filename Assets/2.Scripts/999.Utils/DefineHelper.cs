@@ -18,6 +18,13 @@ namespace DefineHelper
         DEATH                       = 99
     }
 
+    public enum AttackType
+    {
+        Attack1                     = 0,
+        Attack2,
+        Attack3
+    }
+
     public enum WeaponType
     {
         OneHandSword                = 0,
