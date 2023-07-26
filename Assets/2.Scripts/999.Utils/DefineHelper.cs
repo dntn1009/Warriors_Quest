@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace DefineHelper
 {
-#region [캐릭터용]
+    #region [캐릭터용]
 
     public enum AnyType
     {
         IDLE                        = 0,
         RUN,
-        ATTACK,
+        ATTACK1,
+        ATTACK2,
+        ATTACK3,
         JUMP,
         SKILL1,         // 단일
         SKILL2,         // 광역

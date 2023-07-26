@@ -116,6 +116,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70bd111fa51544b428c525d508ef4672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1252725658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1252725659}
+  m_Layer: 7
+  m_Name: FollowCam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1252725659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252725658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7165318698277571521}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1473756782
 GameObject:
   m_ObjectHideFlags: 0
@@ -3910,6 +3941,7 @@ Transform:
   - {fileID: 2287976179202218847}
   - {fileID: 5836158721574956286}
   - {fileID: 1473756783}
+  - {fileID: 1252725659}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3964,11 +3996,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movSpeed: 1.5
-  _rotateSpeed: 300
-  _cameraOffsetX: 0
-  _cameraOffsetY: 0.5
-  _cameraOffsetZ: -0.5
-  _cameraFixY: 0
   WeaponPos: {fileID: 2295380717471391972}
   equipWeapon: {fileID: 536788939789660260, guid: 88298cc7113a7aa45a733ca80072f103, type: 3}
   _AttackAreaPrefab: {fileID: 1473756782}

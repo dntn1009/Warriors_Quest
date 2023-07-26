@@ -123,6 +123,62 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &627655588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627655589}
+  - component: {fileID: 627655590}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: FollowCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &627655589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627655588}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -32, y: 30.15, z: -32}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1182316676}
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &627655590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627655588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61ae3c6f182af94fa2c86ee6178bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectTofollow: {fileID: 0}
+  _realCamera: {fileID: 1182316676}
+  followSpeed: 10
+  sensitivity: 200
+  clampAngle: 70
+  minDistance: 0.2
+  maxDistance: 0.5
+  finalDistance: 0
+  smoothness: 10
+  _dirNormalized: {x: 0, y: 0, z: 0}
+  _finalDir: {x: 0, y: 0, z: 0}
 --- !u!1 &1182316673
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,14 +255,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1182316673}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: -32, y: 30.5, z: -32.5}
+  m_LocalRotation: {x: 0.008726558, y: -0, z: -0, w: 0.999962}
+  m_LocalPosition: {x: 0, y: 0.15, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_Father: {fileID: 627655589}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 1, y: 0, z: 0}
 --- !u!1 &1271680645
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,7 +359,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1271680650
 Rigidbody:
@@ -477,7 +533,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1858043672
 PrefabInstance:
@@ -486,9 +542,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1252725659, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.35
+      objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -648,7 +708,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &10556635297295946
 SkinnedMeshRenderer:
@@ -2151,12 +2211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fad6128c024cbd4ba73143f5f2dccd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animController: {fileID: 0}
+  _currentAnyType: 0
   _movSpeed: 1.5
-  _rotateSpeed: 300
-  _cameraOffsetX: 0
-  _cameraOffsetY: 0.5
-  _cameraOffsetZ: -0.5
-  _cameraFixY: 0
   WeaponPos: {fileID: 2168325524476274455}
   equipWeapon: {fileID: 0}
   _AttackAreaPrefab: {fileID: 0}
@@ -5273,7 +5330,7 @@ Transform:
   - {fileID: 5851186805205773069}
   - {fileID: 8163699807383965828}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7117086356075802738
 GameObject:
