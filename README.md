@@ -91,4 +91,20 @@
 
 3.Player가 점프하는 과정에서 카메라의 포커스가 흔들리는 것을 발견하여 이 부분은 CharacterController의 isgrounded를 다시 활용하여 땅에 닿아있는 경우에만 카메라가
   추적할 Player의 Y의값을 받아 카메라가 흔들리는 것을 방지하였음.
-     
+
+2023-07-24
+1. KeyBuffer를 Queue를 이용하여 KeyCode를 받아 원하는 시점에 Attak Keybutton 입력 시 연계 공격을 하도록 구현하려고 하였음.
+   - 구현은 하였으나, 원래 사용하던 Keybuffer는 각 연계 Attack에서 Animation Event Clip간의 시간들을 체크해 그 사이에 해당하는 값을 적용받아 연계 공격을 하는거였음.
+     그러나 지금 구현하는 방법은 Clip을 가져오기에 부적합한 Animatior와 Event Clip 그리고 함수로 적용시켜놓아서 수정을 하여 적용할지 다시 Reset후 재적용할지 고민이       필요함.
+2023-07-25 ~2023-07-26
+1. 연계 공격이 더 쉽게 할 수 있도록Animator에 bool IsComobo를 추가하여 마우스 클릭시 공격 연계 하도록 설정하였음 (마우스 클릭을 떼면 IsCombo = false)
+   - 여기서 변수가 발생함. MakeTransition을 이용하여 animation 변화를 주어 구현하려고 하였음
+     현재 지금 애니메이션 상태를 뚜렷하게 체크하기가 어려움 => Scirpt내에 _CurrentAnyType을 이용하여 현재의 애니메이션이 무엇인지 알아내려고 하였음.
+     Has Exit Time을 해제하지 않는 이상 공격 타이밍 시에 _CurrentAnyType을 이용하기 힘들어짐
+     또한 연계 Attack1~3을 구현하는데 매우 불편한 상황이 계속 생겨남.
+     Animator를 예전에 사용하여 구현했던 방식인 Any State에 연결하여 애니메이션 움직이기 기능을 사용하려고함.
+     Make Transtition으로 연결해 놨던 Animation을 정리한 후 Any State에 연결하였고, 해당 이름에 맞춘 Trigger를 생성함.
+     Idle - WeaponEquipIdle(Run - WeaponEquipRun 도 포함)은 blend Tree를 이용하여 무기 장착시 IdleKind => 1로 바꿔 무기장착 시 모션으로 바꾸어줌.
+     해당 과정을 구현하기 위해 AnimationController -> PlayerController -> PlayerStat -> PlayerController로 상속해줌.
+     기존에 구현해놓았던 Move 및 Jump 그리고 Attack1 모션 진행까지 수정하여 구현완료함.
+     다음부터 Attack1~3까지의 연계공격을 구현만 하면 Player의 기본 움직임 구현완료.
