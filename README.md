@@ -102,6 +102,7 @@
      그 후 카메라가 회전하여 따라다니도록 CameraMovement에서 구현함. (나중에 따로 어떻게 구현하였는지 방식 적기)
      PlayerController에서는 palyer의 컨트롤 부분만 건드리기 위해 Camera 추적 함수들은 지우고  Camera에서 관리하도록 하였음.
      Player가 움직일때 필요한 Camera의 transform은 Tag로 찾아서 구현하기로 하였음.(= Camera Object도 Player의 자식 오브젝트를 찾아야 하므로 동일)
+
 2023-07-25 ~2023-07-26
 1. 연계 공격이 더 쉽게 할 수 있도록Animator에 bool IsComobo를 추가하여 마우스 클릭시 공격 연계 하도록 설정하였음 (마우스 클릭을 떼면 IsCombo = false)
    - 여기서 변수가 발생함. MakeTransition을 이용하여 animation 변화를 주어 구현하려고 하였음
