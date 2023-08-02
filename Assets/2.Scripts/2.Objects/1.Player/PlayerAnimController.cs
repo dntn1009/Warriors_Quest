@@ -7,7 +7,8 @@ using DefineHelper;
 public class PlayerAnimController : AnimationController
 {
     StringBuilder m_sb = new StringBuilder();
-    public AnyType _currentAnyType;
+    AnyType _currentAnyType;
+
     public AnyType GetAnimState()
     {
         return _currentAnyType;

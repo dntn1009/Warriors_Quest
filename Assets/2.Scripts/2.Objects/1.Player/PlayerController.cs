@@ -17,23 +17,26 @@ public class PlayerController : PlayerStat
     Transform _mainCamera;
     BoxCollider[] _AttackRngs; // AttackAreUnitFinds;
     //정보 변수
-    //AnyType _currentAnyType; // animator 움직임
     Vector3 mv; // Player Object Vector3
     bool _isJump; // 점프
     bool _isEquip; // 장비 착용
 
-    bool _isAttack;
+   
+    List<AnyType> _comboList = new List<AnyType>() { AnyType.ATTACK1, AnyType.ATTACK2, AnyType.ATTACK3 }; // 기본공격 시 연계되는 동작 구현하기 위함.
+    Queue<KeyCode> _keyBuffer = new Queue<KeyCode>();
+    bool _isAttack { get { if (GetAnimState() == AnyType.ATTACK1 || GetAnimState() == AnyType.ATTACK2 || GetAnimState() == AnyType.ATTACK3) // 기본 공격시 되는 것들과 안되는 것들 구분하기 위함.  
+                            return true;
+                                 return false;   } }
     bool _isPressAttack;
+    int _comboIndex; // 0~3 까지 Comoblist에잇는 anytype을 실행하기 위한 int
 
     void Awake()
     {
-        //_animController = GetComponent<Animator>();
         AnimatorResetting();
         _mainCamera = GameObject.FindWithTag("FollowCamera").transform;
         _charController = GetComponent<CharacterController>();
         _isEquip = false;
         _isJump = false;
-        _isAttack = false;
         _isPressAttack = false;
     }
 
@@ -47,7 +50,7 @@ public class PlayerController : PlayerStat
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!_isAttack)
+            if (!_isAttack && !_isJump)
             {
                 _isJump = true;
                 ChangeAniFromType(AnyType.JUMP);
@@ -60,19 +63,30 @@ public class PlayerController : PlayerStat
         if(Input.GetMouseButtonDown(0))
         {
             if ((GetAnimState() == AnyType.IDLE || GetAnimState() == AnyType.RUN) && _isEquip)
+            {
                 ChangeAniFromType(AnyType.ATTACK1);
+                AttackForward();
+            }
+            if(_isAttack)
+            {
+                if (IsInvoking("ReleaseKeyBuffer"))
+                    CancelInvoke("ReleaseKeyBuffer");
+                Invoke("ReleaseKeyBuffer", GetComboInputTime(GetAnimState().ToString()));
+                _keyBuffer.Enqueue(KeyCode.Mouse0);
+            }
+
             _isPressAttack = true;
         }
         if(Input.GetMouseButtonUp(0))
         {
-            ChangeAniFromType(AnyType.IDLE);
             _isPressAttack = false;
         }
         //공격메서드 추가
         Move();
     }
 
-    #region [Character Move]
+    #region [Character Move & Jump Methods]
+    //Move Methods
     public void Move()
     {
         if(_isAttack)
@@ -103,6 +117,18 @@ public class PlayerController : PlayerStat
         }
         _charController.Move(mv * Time.deltaTime);
     }
+    public Vector3 Player_cameraMove(Vector3 dv)
+    {
+        var cameraforward = _mainCamera.forward.normalized;
+        cameraforward.y = 0f;
+        var cameraright = _mainCamera.right.normalized;
+        cameraright.y = 0f;
+        Vector3 movedir = cameraforward * dv.z + cameraright * dv.x;
+        return movedir;
+    } // CharacterMove;
+    //Move Methods
+
+    //Jump Methods
     public void FirstJumpOffsetPlus(float offsetY)
     {
         mv.y = offsetY;
@@ -116,20 +142,8 @@ public class PlayerController : PlayerStat
         _isJump = false;
         ChangeAniFromType(AnyType.IDLE);
     }
-    #endregion [Character Move]
-
-    #region [Camera_Methods]
-
-    public Vector3 Player_cameraMove(Vector3 dv)
-    {
-        var cameraforward = _mainCamera.forward.normalized;
-        cameraforward.y = 0f;
-        var cameraright = _mainCamera.right.normalized;
-        cameraright.y = 0f;
-        Vector3 movedir = cameraforward * dv.z + cameraright * dv.x;
-        return movedir;
-    }
-    #endregion [Camera_Methods]
+    //Jump Methods
+    #endregion [Character Move & Jump Methods]
 
     #region WeaponMethods
     public void EquipWeapon(WeaponType type, bool equip = true)
@@ -159,8 +173,9 @@ public class PlayerController : PlayerStat
    
     #endregion WeaponMethopds & AnimationTypeMethods
 
-    #region Attack & Attack Animation Methods
+    #region [Attack & Attack Animation Methods]
 
+    //Attack Methods
     public void InitializeSet()
     {
         _AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
@@ -171,6 +186,16 @@ public class PlayerController : PlayerStat
             _AttackRngs[i].enabled = false;
         }
     }
+
+    public void AttackForward()
+    {
+        var cameraforward = _mainCamera.forward.normalized;
+        cameraforward.y = 0f;
+        transform.forward = cameraforward;
+    }
+    //Attack Methods
+
+    //AnimEvent Methods
     public void AllOffAttackEnabled()
     {
         for (int i = 0; i < _AttackRngs.Length; i++)
@@ -188,24 +213,46 @@ public class PlayerController : PlayerStat
         _AttackRngs[id].enabled = false;
     }
 
+    public void AttackFinished()
+    {
+        bool _isCombo = false;
+        if (_isPressAttack) // 누르고 있으면 _isPressAttack이 true이기 때문에 isCombo가 true가 됌.
+            _isCombo = true;
+        if(_keyBuffer.Count == 1) // keybuffer를 이용하여 타이밍 안에 눌럿고 그안에 count가 1이면 뺀 후에 _isComobo를 true 시킴
+        {
+            var key = _keyBuffer.Dequeue();
+            if (key == KeyCode.Mouse0)
+                _isCombo = true;
+        }// 1이외에 나머지 값이 더 계속 들어왔다면 초기화시킴.
+        else
+        {
+            ReleaseKeyBuffer();
+        }
+        if (_isCombo) // _isCombo 누른게 확인이 되면 ComboIndex 를 1 증가시키고 ComoboList에 있는 Attack애니메이션을 고르기 위함 1~3
+        {
+            _comboIndex++;
+            if (_comboIndex >= _comboList.Count)
+                _comboIndex = 0;
+            ChangeAniFromType(_comboList[_comboIndex]);
+        }
+        else
+        {
+            ChangeAniFromType(AnyType.IDLE);
+            _comboIndex = 0;
+        }
+    }
+    //AnimEvent Methods
     public void SetDemage(GameObject monster)
     {
         Debug.Log(monster.name + "공격하였습니다.");
     }
 
-    #endregion
+    #endregion [Attack & Attack Animation Methods]
 
     #region Attack KeyBufferMethods
-    public void AttackComobo(bool isAttack)
+    void ReleaseKeyBuffer()
     {
-        /*if(isAttack && (_animController.GetCurrentAnimatorStateInfo(0).IsName("WIdle") || _animController.GetCurrentAnimatorStateInfo(0).IsName("WRun")))
-        {
-            var cameraforward = _mainCamera.forward.normalized;
-            cameraforward.y = 0f;
-            transform.forward = cameraforward;
-        }// 공격하는 동안 해당 방향만 가리키게
-        _animController.SetBool("IsCombo", isAttack);
-        _isAttack = isAttack;*/
+        _keyBuffer.Clear();
     }
     #endregion
 

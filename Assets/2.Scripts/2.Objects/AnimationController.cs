@@ -19,20 +19,22 @@ public class AnimationController : MonoBehaviour
     public void AnimatorResetting()
     {
         _animController = GetComponent<Animator>();
+        CalculateCombonputTime();
     }
 
     public void CalculateCombonputTime()
     {
        
-        var cilps = _animController.runtimeAnimatorController.animationClips; //애니메이션안에 등록되어있는 클립들 정보
-        for (int i = 0; i < cilps.Length; i++)
+        var clips = _animController.runtimeAnimatorController.animationClips; //애니메이션안에 등록되어있는 클립들 정보
+        for (int i = 0; i < clips.Length; i++)
         {
-            if (cilps[i].events.Length >= 2)
+            if (clips[i].events.Length >= 2)
             {
-                float attackTime = cilps[i].events[0].time;
-                float endFrameTime = cilps[i].events[1].time;
+                float attackTime = clips[i].events[0].time;
+                float endFrameTime = clips[i].events[1].time;
                 float result = (endFrameTime - attackTime);
-                m_dicComboInputTime.Add(cilps[i].name, result);
+                Debug.Log(clips[i].name + " : " + result);
+                m_dicComboInputTime.Add(clips[i].name, result);
             }
         }
     }
