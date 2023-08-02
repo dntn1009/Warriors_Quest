@@ -116,6 +116,7 @@
      Player의 Animation는 PlayerAnimation.cs에서 관리하도록 하였고, PlayerStat에서는 Player의 Stat 그리고 PlayerController는 기본적인 컨트롤 기능들을 구현하려고      정리하였음.
      기존에 구현해놓았던 Move 및 Jump 그리고 Attack1 모션 진행까지 수정하여 구현완료함.
      다음부터 Attack1~3까지의 연계공격을 구현만 하면 Player의 기본 움직임 구현완료.
+
 2023-07-27 ~ 2023-08-01
 가족 여행 및 친구 여행
 
