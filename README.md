@@ -115,3 +115,18 @@
      Player의 Animation는 PlayerAnimation.cs에서 관리하도록 하였고, PlayerStat에서는 Player의 Stat 그리고 PlayerController는 기본적인 컨트롤 기능들을 구현하려고      정리하였음.
      기존에 구현해놓았던 Move 및 Jump 그리고 Attack1 모션 진행까지 수정하여 구현완료함.
      다음부터 Attack1~3까지의 연계공격을 구현만 하면 Player의 기본 움직임 구현완료.
+2023-07-27 ~ 2023-08-01
+가족 여행 및 친구 여행
+
+2023-08-02
+1. Player Animation에서 Attack1~3(기본연계공격)을 구현
+   - bool _isPressAtack로 MouseButton Up,Down 별로 True, False를 주어 꾹누르게 될 경우 기본 연계 공격이 나가도록 구현함.
+     거기서 KeyBuffer(Queue<KeyCode>)에 타이밍에 맞게 Enqueue로 가져오게 되면 꾹 누르지 않아도 연타클릭으로도 연계 공격이 나가도록 구현함.
+   - 무기 장착후에 점프를 하게 되면 공중에 뜨는 현상이 발생하게 되어서, 확인 결과 무기 장착 IDLE에서 BakeIntoPose를 체크를 해주지 않아서 공중에 뜨게됨
+     그래서 체크 후 정상적으로 구현함.
+2. BossMonster (Gnoll) 구현
+   - Gnoll의 Fbx에 Texture, Material를 적용시켜줌. 그런 후에 Fbx를 Unpack Prefab후 Prefab으로 다시 만들어 줌.
+   - Animatior에 들어가야할 Animation을 넣어줌.
+   - 보스몬스터에 걸맞는 무기를 껴야할 것 같아서 원하는 Mesh와 Material을 적용하여 만든 도끼 Object를 붙여줌.
+4. Map1(SetActive)Scene에 MonsterManager 적용
+ -각 Map별로 MonsterManager에 적용된 몬스터를 다르게 하여 맵별로 다른 몬스터 생성하도록 할 예정으로 구현해 둠.
