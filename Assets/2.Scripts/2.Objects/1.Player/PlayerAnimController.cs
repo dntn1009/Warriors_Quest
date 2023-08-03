@@ -9,6 +9,11 @@ public class PlayerAnimController : AnimationController
     StringBuilder m_sb = new StringBuilder();
     AnyType _currentAnyType;
 
+    public override void AnimatorResetting()
+    {
+        base.AnimatorResetting();
+        CalculateCombonputTime();
+    }
     public AnyType GetAnimState()
     {
         return _currentAnyType;

@@ -9,6 +9,7 @@ namespace DefineHelper
     public enum AnyType
     {
         IDLE                        = 0,
+        WALK,
         RUN,
         ATTACK1,
         ATTACK2,

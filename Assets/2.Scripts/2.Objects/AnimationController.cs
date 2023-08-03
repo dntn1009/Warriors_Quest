@@ -16,12 +16,34 @@ public class AnimationController : MonoBehaviour
         CalculateCombonputTime();
     }
 
-    public void AnimatorResetting()
+    #region [Initialize Setting Methods & Virtual Methods]
+    public virtual void AnimatorResetting()
     {
         _animController = GetComponent<Animator>();
-        CalculateCombonputTime();
     }
+    #endregion [Initialize Setting Methods]
 
+    #region [public Animation function Methods]
+    public void Play(string animName, bool isBlend = true)
+    {
+        if (!string.IsNullOrEmpty(m_prevMotion))
+        {
+            _animController.ResetTrigger(m_prevMotion);
+            m_prevMotion = null;
+        }
+        if (isBlend)
+        {
+            _animController.SetTrigger(animName);
+        }
+        else
+        {
+            _animController.Play(animName, 0, 0f);
+        }
+        m_prevMotion = animName;
+    }
+    #endregion [public Animation function Methods]
+
+    #region [Player Animation Methods]
     public void CalculateCombonputTime()
     {
        
@@ -33,7 +55,6 @@ public class AnimationController : MonoBehaviour
                 float attackTime = clips[i].events[0].time;
                 float endFrameTime = clips[i].events[1].time;
                 float result = (endFrameTime - attackTime);
-                Debug.Log(clips[i].name + " : " + result);
                 m_dicComboInputTime.Add(clips[i].name, result);
             }
         }
@@ -44,27 +65,15 @@ public class AnimationController : MonoBehaviour
         m_dicComboInputTime.TryGetValue(animName, out time);
         return time;
     }
-    public void Play(string animName, bool isBlend = true)
-    {
-        if(!string.IsNullOrEmpty(m_prevMotion))
-        {
-            _animController.ResetTrigger(m_prevMotion);
-            m_prevMotion = null;
-        }
-        if(isBlend)
-        {
-            _animController.SetTrigger(animName);
-        }
-        else
-        {
-            _animController.Play(animName, 0, 0f);
-        }
-        m_prevMotion = animName;
-    }
-
     public void ChangeEquipWeaponMotion(float num)
     {
         _animController.SetFloat("IdleKind", num);
     }
+
+    #endregion [Player Animation Methods]
+
+    #region [Monster Animation Methods]
+
+    #endregion [Monster Animation Methods]
 
 }
