@@ -113,7 +113,7 @@
      Make Transtition으로 연결해 놨던 Animation을 정리한 후 Any State에 연결하였고, 해당 이름에 맞춘 Trigger를 생성함.
      Idle - WeaponEquipIdle(Run - WeaponEquipRun 도 포함)은 blend Tree를 이용하여 무기 장착시 IdleKind => 1로 바꿔 무기장착 시 모션으로 바꾸어줌.
      해당 과정을 구현하기 위해 AnimationController -> PlayerController -> PlayerStat -> PlayerController로 상속해줌.
-     Player의 Animation는 PlayerAnimation.cs에서 관리하도록 하였고, PlayerStat에서는 Player의 Stat 그리고 PlayerController는 기본적인 컨트롤 기능들을 구현하려고      정리하였음.
+     Player의 Animation는 PlayerAnimation.cs에서 관리하도록 하였고, PlayerStat에서는 Player의 Stat 그리고 PlayerController는 기본적인 컨트롤 기능들을 구현하려고        정리하였음.
      기존에 구현해놓았던 Move 및 Jump 그리고 Attack1 모션 진행까지 수정하여 구현완료함.
      다음부터 Attack1~3까지의 연계공격을 구현만 하면 Player의 기본 움직임 구현완료.
 
