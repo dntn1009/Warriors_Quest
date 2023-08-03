@@ -132,3 +132,15 @@
    - 보스몬스터에 걸맞는 무기를 껴야할 것 같아서 원하는 Mesh와 Material을 적용하여 만든 도끼 Object를 붙여줌.
 4. Map1(SetActive)Scene에 MonsterManager 적용
  -각 Map별로 MonsterManager에 적용된 몬스터를 다르게 하여 맵별로 다른 몬스터 생성하도록 할 예정으로 구현해 둠.
+
+2023-08-03
+1. Map & Struct 구조 구현 후 Navigation Bake
+   - Map에 꾸며줄만한 건물 Object를 생성하여 구현하였습니다. 그리고 Navigation을 이용하기 위해 Bake를 하였습니다.
+2. 일반 필드 몬스터를 구현하기 위해 Mushroom몬스터 Object 구현
+   - Animatior에 Animation을 연결하였습니다. 
+     AnimationController - MonsterAnimController - MonsterStat - MonsterController순으로 스크립트를 상속하도록 하였습니다.
+     AnimationController에 있는 AnimationResetting()함수를 Virtual로 만들어 Player와 Monster AnimationController에 Override하여 재정의하여 사용하였습니다.
+     MushRoom Object에 NavMeshAgent를 추가하여 MonsterAnimController에 _navAgent를 이용하도록 하였습니다. AnimationResetting() override에 NavMeshAgent를
+     GetComponent하였습니다. 애니메이션 모션 중 WALK | RUN 별로 NavMeshAgent의 Speed를 다르게 주도록 SerializedField를 구현해 놓았습니다. 상속받은 
+     MonsterController의 Inpsector창에 보이는지 확인하였습니다. 그리고 MonsterController에 _limit (float)변수를 만들어 본인의 위치에서 사각의 형태를 만들어
+     사각형 안의 랜덤 포지션으로 움직여 돌아다니도록 구현하였습니다.
