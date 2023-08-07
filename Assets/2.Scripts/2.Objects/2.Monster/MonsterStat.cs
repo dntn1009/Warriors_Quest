@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class MonsterStat : MonsterAnimController
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Data Edit Param")]
+    [SerializeField] MonsterData _data;
+
+    //정보 변수 (data)
+    //정보 변수 (data)
+    void Awake()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
+
+
 }

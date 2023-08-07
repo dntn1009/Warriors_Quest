@@ -233,7 +233,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 4
+  m_Height: 3.8
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -251,8 +251,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 0.5
   _runSpeed: 1
-  _limitWidth: 4
-  _limitFrontBack: 4
+  _data: {fileID: 11400000, guid: b44493549e7201541837f13050cd9cab, type: 2}
+  _limitWidth: 2
+  _limitFrontBack: 2
 --- !u!1 &711057290755009530
 GameObject:
   m_ObjectHideFlags: 0

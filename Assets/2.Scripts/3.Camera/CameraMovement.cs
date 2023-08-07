@@ -25,6 +25,7 @@ public class CameraMovement : MonoBehaviour
     void Awake()
     {
         _objectTofollow = GameObject.FindWithTag("Player").transform.Find("FollowCam");
+        this.transform.position = _objectTofollow.position;
     }
 
     void Start()

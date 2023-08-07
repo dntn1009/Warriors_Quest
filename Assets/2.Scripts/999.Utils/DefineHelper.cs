@@ -34,5 +34,6 @@ namespace DefineHelper
         OneHandMace
     }
 
-#endregion [캐릭터용]
+    #endregion [캐릭터용]
+
 }
