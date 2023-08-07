@@ -113,7 +113,7 @@
      Make Transtition으로 연결해 놨던 Animation을 정리한 후 Any State에 연결하였고, 해당 이름에 맞춘 Trigger를 생성함.
      Idle - WeaponEquipIdle(Run - WeaponEquipRun 도 포함)은 blend Tree를 이용하여 무기 장착시 IdleKind => 1로 바꿔 무기장착 시 모션으로 바꾸어줌.
      해당 과정을 구현하기 위해 AnimationController -> PlayerController -> PlayerStat -> PlayerController로 상속해줌.
-     Player의 Animation는 PlayerAnimation.cs에서 관리하도록 하였고, PlayerStat에서는 Player의 Stat 그리고 PlayerController는 기본적인 컨트롤 기능들을 구현하려고      정리하였음.
+     Player의 Animation는 PlayerAnimation.cs에서 관리하도록 하였고, PlayerStat에서는 Player의 Stat 그리고 PlayerController는 기본적인 컨트롤 기능들을 구현하려고        정리하였음.
      기존에 구현해놓았던 Move 및 Jump 그리고 Attack1 모션 진행까지 수정하여 구현완료함.
      다음부터 Attack1~3까지의 연계공격을 구현만 하면 Player의 기본 움직임 구현완료.
 
@@ -132,3 +132,15 @@
    - 보스몬스터에 걸맞는 무기를 껴야할 것 같아서 원하는 Mesh와 Material을 적용하여 만든 도끼 Object를 붙여줌.
 4. Map1(SetActive)Scene에 MonsterManager 적용
  -각 Map별로 MonsterManager에 적용된 몬스터를 다르게 하여 맵별로 다른 몬스터 생성하도록 할 예정으로 구현해 둠.
+
+2023-08-03
+1. Map & Struct 구조 구현 후 Navigation Bake
+   - Map에 꾸며줄만한 건물 Object를 생성하여 구현하였습니다. 그리고 Navigation을 이용하기 위해 Bake를 하였습니다.
+2. 일반 필드 몬스터를 구현하기 위해 Mushroom몬스터 Object 구현
+   - Animatior에 Animation을 연결하였습니다. 
+     AnimationController - MonsterAnimController - MonsterStat - MonsterController순으로 스크립트를 상속하도록 하였습니다.
+     AnimationController에 있는 AnimationResetting()함수를 Virtual로 만들어 Player와 Monster AnimationController에 Override하여 재정의하여 사용하였습니다.
+     MushRoom Object에 NavMeshAgent를 추가하여 MonsterAnimController에 _navAgent를 이용하도록 하였습니다. AnimationResetting() override에 NavMeshAgent를
+     GetComponent하였습니다. 애니메이션 모션 중 WALK | RUN 별로 NavMeshAgent의 Speed를 다르게 주도록 SerializedField를 구현해 놓았습니다. 상속받은 
+     MonsterController의 Inpsector창에 보이는지 확인하였습니다. 그리고 MonsterController에 _limit (float)변수를 만들어 본인의 위치에서 사각의 형태를 만들어
+     사각형 안의 랜덤 포지션으로 움직여 돌아다니도록 구현하였습니다.
