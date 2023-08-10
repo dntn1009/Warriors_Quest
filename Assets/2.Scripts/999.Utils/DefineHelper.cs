@@ -23,9 +23,10 @@ namespace DefineHelper
 
     public enum AttackType
     {
-        Attack1                     = 0,
-        Attack2,
-        Attack3
+        Normal,
+        Critical,
+        Dodge,
+        Max
     }
 
     public enum WeaponType

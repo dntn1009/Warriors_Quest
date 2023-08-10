@@ -16,6 +16,10 @@ public class MonsterController : MonsterStat
     //정보 변수
     Vector3 _genPosition;
 
+    public bool _isDeath { get { if (GetAnimState() == AnyType.DEATH)
+                return true;
+            return false;} }
+
     private void Awake()
     {
         AnimatorResetting();

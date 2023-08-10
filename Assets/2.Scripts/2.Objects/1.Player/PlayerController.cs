@@ -242,9 +242,15 @@ public class PlayerController : PlayerStat
         }
     }
     //AnimEvent Methods
-    public void SetDemage(GameObject monster)
+    public void SetAttack(GameObject monster)
     {
-        Debug.Log(monster.name + "공격하였습니다.");
+        var mon = monster.GetComponent<MonsterController>();
+        var dummy = Util.FindChildObject(monster, "Monster_Hit");
+        if (!mon._isDeath && dummy != null)
+        {
+            // 몬스터가 죽지 않은 상태이며 몬스터 부분이 널이 아니라면.!!
+            // 데미지
+        }
     }
 
     #endregion [Attack & Attack Animation Methods]
@@ -257,10 +263,6 @@ public class PlayerController : PlayerStat
     #endregion
 
     #region Couroutine Methods
-    IEnumerator EquipAnimMove()
-    {
 
-        yield return null;
-    }
     #endregion
 }
