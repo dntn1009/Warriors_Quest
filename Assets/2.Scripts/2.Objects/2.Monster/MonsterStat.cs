@@ -7,17 +7,8 @@ public class MonsterStat : MonsterAnimController
     [Header("Data Edit Param")]
     [SerializeField] MonsterData _data;
 
-    //정보 변수 (data)
-    //정보 변수 (data)
-    void Awake()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
+    [Header("Stat Edit Param")]
+    public Stat _stat;
+   
 
 }

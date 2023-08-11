@@ -227,6 +227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1035856224}
+  - component: {fileID: 1035856225}
   m_Layer: 0
   m_Name: MonsterManager
   m_TagString: Untagged
@@ -241,14 +242,26 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035856223}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1035856225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035856223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c17f2880c67fe3547aa46468a757ca86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &500356636187858288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -258,7 +271,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 711057290754586584, guid: dc66a55e8a7821041b85eba8e6d0156a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 711057290754586584, guid: dc66a55e8a7821041b85eba8e6d0156a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -304,13 +317,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mushroom
       objectReference: {fileID: 0}
-    - target: {fileID: 1094288273345110701, guid: dc66a55e8a7821041b85eba8e6d0156a, type: 3}
-      propertyPath: _runSpeed
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 1094288273345110701, guid: dc66a55e8a7821041b85eba8e6d0156a, type: 3}
-      propertyPath: _walkSpeed
-      value: 0.5
+    - target: {fileID: 711057290755009528, guid: dc66a55e8a7821041b85eba8e6d0156a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc66a55e8a7821041b85eba8e6d0156a, type: 3}

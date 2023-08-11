@@ -15,6 +15,7 @@ namespace DefineHelper
         ATTACK2,
         ATTACK3,
         JUMP,
+        HIT,
         SKILL1,         // 단일
         SKILL2,         // 광역
         SKILL3,         // 버프
@@ -37,4 +38,18 @@ namespace DefineHelper
 
     #endregion [캐릭터용]
 
+    #region [몬스터용]
+    public enum BehaviourState
+    {
+        IDLE                        = 0,
+        CHASE,
+        PATROL,
+        ATTACK1,
+        ATTACK2,
+        DEMAGED,
+        DEATH,
+        Max
+    }
+
+    #endregion
 }

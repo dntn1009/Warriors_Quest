@@ -27,6 +27,9 @@ public class PlayerController : PlayerStat
     bool _isAttack { get { if (GetAnimState() == AnyType.ATTACK1 || GetAnimState() == AnyType.ATTACK2 || GetAnimState() == AnyType.ATTACK3) // 기본 공격시 되는 것들과 안되는 것들 구분하기 위함.  
                             return true;
                                  return false;   } }
+    bool _isDeath { get { if (GetAnimState() == AnyType.DEATH)
+                return true;
+                    return false;   } }
     bool _isPressAttack;
     int _comboIndex; // 0~3 까지 Comoblist에잇는 anytype을 실행하기 위한 int
 
@@ -85,6 +88,22 @@ public class PlayerController : PlayerStat
         Move();
     }
 
+    #region [Character Setting Methods]
+    public void InitializeSet()
+    {
+        //임시
+        _stat = new Stat(600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60);
+        // Player Stat Setting 구현해야함.
+
+        _AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
+        for (int i = 0; i < _AttackRngs.Length; i++)
+        {
+            AttackAreUnitFind attackAUF = _AttackRngs[i].GetComponent<AttackAreUnitFind>();
+            attackAUF.Initialize(this);
+            _AttackRngs[i].enabled = false;
+        }
+    }
+    #endregion [Character Setting Methods]
     #region [Character Move & Jump Methods]
     //Move Methods
     public void Move()
@@ -175,23 +194,47 @@ public class PlayerController : PlayerStat
 
     #region [Attack & Attack Animation Methods]
 
-    //Attack Methods
-    public void InitializeSet()
-    {
-        _AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
-        for (int i = 0; i < _AttackRngs.Length; i++)
-        {
-            AttackAreUnitFind attackAUF = _AttackRngs[i].GetComponent<AttackAreUnitFind>();
-            attackAUF.Initialize(this);
-            _AttackRngs[i].enabled = false;
-        }
-    }
+    //Attack & Demage Methods
 
     public void AttackForward()
     {
         var cameraforward = _mainCamera.forward.normalized;
         cameraforward.y = 0f;
         transform.forward = cameraforward;
+    }
+
+    public void SetAttack(GameObject monster)
+    {
+        var mon = monster.GetComponent<MonsterController>();
+        var dummy = Util.FindChildObject(monster, "Monster_Hit");
+        float demage = 0f;
+        Debug.Log("1번 확인");
+        if (!mon._isDeath && dummy != null)
+        {
+            Debug.Log("들어감");
+            AttackType type = Util.AttackProcess(this, mon, out demage);
+            mon.SetDemage(type, demage);
+            if (type == AttackType.Dodge) return;
+        }
+    }
+
+    public void SetDemage(AttackType attackType, float damage)
+    {
+        if (_isDeath) return;
+        _stat.HP -= Mathf.CeilToInt(damage);
+        //m_hudCtr.DisplayDamage(attackType, damage, playInfo.hp / (float)playInfo.hpMax);
+        //데미지  UI 표시
+
+        if (attackType == AttackType.Dodge) return;
+
+        if (attackType == AttackType.Critical)
+            ChangeAniFromType(AnyType.HIT, false);
+
+        if (_stat.HP <= 0f)
+        {
+            ChangeAniFromType(AnyType.DEATH);
+        }
+
     }
     //Attack Methods
 
@@ -242,16 +285,6 @@ public class PlayerController : PlayerStat
         }
     }
     //AnimEvent Methods
-    public void SetAttack(GameObject monster)
-    {
-        var mon = monster.GetComponent<MonsterController>();
-        var dummy = Util.FindChildObject(monster, "Monster_Hit");
-        if (!mon._isDeath && dummy != null)
-        {
-            // 몬스터가 죽지 않은 상태이며 몬스터 부분이 널이 아니라면.!!
-            // 데미지
-        }
-    }
 
     #endregion [Attack & Attack Animation Methods]
 
