@@ -144,3 +144,24 @@
      GetComponent하였습니다. 애니메이션 모션 중 WALK | RUN 별로 NavMeshAgent의 Speed를 다르게 주도록 SerializedField를 구현해 놓았습니다. 상속받은 
      MonsterController의 Inpsector창에 보이는지 확인하였습니다. 그리고 MonsterController에 _limit (float)변수를 만들어 본인의 위치에서 사각의 형태를 만들어
      사각형 안의 랜덤 포지션으로 움직여 돌아다니도록 구현하였습니다.
+
+2023-08-07, 2023-08-10 ~ 2023-08-11
+게임을 만드는 과정에서 편하게 구현하기 위해서 구현과정 순서를 정리하는데에 중점을 두고 정리하였습니다. 그 후에 다시 구현에 들어갔습니다.
+1.Player & Monster Stat 임시 구현
+  -Player와 Monster의 공격시 Demage 및 크리티컬, 회피, 방어율과 데미지의 연관관계를 이용해서 구현하기 위해 스텟을 임시 
+  로 구현 하였습니다. Stat Script를 생성 후에 필요한 변수와 프로퍼티를 구현하여 각 Player & Monster Stat Script에 넣어 
+  주었습니다.
+2..Player & Monster Attack 구현
+  - Noraml Attack - Critical Attack Decision을 이용하여 일반 데미지를 줄지 크리티컬 데미지를 줄지 몬스터가 회피할지를 선택
+    하여 데미지를 주도록 하는 Process함수를 만들어 데미지를 주도록 구현하였습니다. AttackType을 이용하여 UI표시로 일반과 크리
+    티컬 공격시에 나타나는 이펙트도 다르게 구현하기 위해 Enum으로 생성하였습니다. 그리고 Monster가 피격 시 Monster안에 있는
+    오브젝트인 Monster_Hit부분에 나타나도록 하기위해 Util 스크립트에 공용으로 쓸 수 있는 타겟오브젝트안에있는 자식오브젝트 찾
+    기 함수를 구현하였습니다. 공격 함수들 또한 Util에 구현해 놓아 편하게 쓰도록 하였습니다.
+3.Monster BehaviourState 기초 구현
+  - 몬스터가 알아서 움직이도록 구현하기 위해 FSM을 이용하기 위하여 Behaviour enum을 만들어 Behaviour Process 함수를 구현하였
+    습니다. 기초적인 부분만 구현해 놓았습니다.
+4.Monster 생성시 필요한 ObjectPool 스크립트 생성 및 구현
+  - GameObjectPool 스크립트를 생성하여 몬스터를 생성하는 과정에서 낭비를 막기 위하여 구현하였습니다. MonsterManager에서 쓰일 
+    예정입니다.
+5.MonsterManager 스크립트 생성
+  - 몬스터의 전반적인 관리를 하기위한 스크립트를 생성하였습니다.
