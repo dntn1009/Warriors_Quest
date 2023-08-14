@@ -55,20 +55,37 @@ public class MonsterController : MonsterStat
 
     public void BehaviourProcess()
     {
+        // _isHit True => Chase, _isHit false => Patrol
         switch (_state)
         {
             case BehaviourState.IDLE:
                 if (_navAgent.remainingDistance <= 0)
+                {
+                    ChangeAniFromType(AnyType.WALK);
                     _navAgent.destination = GetRandomPos();
+                    _state = BehaviourState.PATROL;
+                }
+
                 break;
             case BehaviourState.PATROL:
-                break;
+                if (_navAgent.remainingDistance <= 0)
+                {
+                    //Idle Deceision을 만들어서 랜덤으로 아이들 가만히 있게 하거나, 움직이도록 구현해야함.
+                    //피격시에 Idle & Patrol에서 Chase로 넘어가고 Chase <-> Attack 연계 되도록 해야함.
+                    //Chase에서 Genposition 안에 있으면 계속 Chase 아니면 PATROL로 넘어가게 구현.
+                    //일반 몹
+                    _state = BehaviourState.IDLE;
+                    //_navAgent.destination = GetRandomPos();
+                }
+
+                    break;
             case BehaviourState.CHASE:
+                ChangeAniFromType(AnyType.RUN);
                 break;
             case BehaviourState.ATTACK1:
                 break;
             case BehaviourState.DEATH:
-                ChangeAniFromType(AnyType.DEATH);
+
                 break;
 
         }
@@ -102,9 +119,9 @@ public class MonsterController : MonsterStat
 
         if (_stat.HP <= 0f)
         {
+            ChangeAniFromType(AnyType.DEATH);
             _state = BehaviourState.DEATH;
         }
-
     }
     #endregion [Attack & Demage Methods]
 }

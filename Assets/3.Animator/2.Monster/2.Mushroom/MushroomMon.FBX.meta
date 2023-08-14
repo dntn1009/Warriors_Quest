@@ -53,7 +53,7 @@ ModelImporter:
     second: ATTACK1
   - first:
       74: 7400006
-    second: DEMAGE
+    second: HIT
   - first:
       74: 7400008
     second: DEATH
@@ -219,7 +219,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: DEMAGE
+      name: HIT
       takeName: max_04_Ani
       internalID: 0
       firstFrame: 95
