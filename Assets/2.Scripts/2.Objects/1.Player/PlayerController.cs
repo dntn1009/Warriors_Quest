@@ -104,6 +104,7 @@ public class PlayerController : PlayerStat
         }
     }
     #endregion [Character Setting Methods]
+
     #region [Character Move & Jump Methods]
     //Move Methods
     public void Move()
@@ -213,7 +214,7 @@ public class PlayerController : PlayerStat
         {
             Debug.Log("µé¾î°¨");
             AttackType type = Util.AttackProcess(this, mon, out demage);
-            mon.SetDemage(type, demage);
+            mon.SetDemage(this.transform, type, demage);
             if (type == AttackType.Dodge) return;
         }
     }

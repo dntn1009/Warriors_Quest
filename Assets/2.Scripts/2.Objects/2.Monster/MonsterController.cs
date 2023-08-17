@@ -8,20 +8,30 @@ public class MonsterController : MonsterStat
     [Header("Edit Param")]
     [SerializeField] float _limitWidth = 8;
     [SerializeField] float _limitFrontBack = 8;
-    
+    [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
 
     //참조 변수
     // _navAgent - MonsterAnimController Protected
     BehaviourState _state;
+    BoxCollider[] _AttackRngs; // AttackAreUnitFinds;
+
     //정보 변수
     Vector3 _genPosition;
+    float _idleDuration;
+    float _idleTime;
+
+    Transform _playerPos;
 
     public bool _isDeath { get { if (_state == BehaviourState.DEATH)
                 return true;
-            return false;} }
+            return false; } }
+
+    bool _isHit;
 
     private void Awake()
     {
+        _isHit = false;
+        _idleTime = 0f;
         AnimatorResetting();
         _genPosition = transform.position;
     }
@@ -44,13 +54,13 @@ public class MonsterController : MonsterStat
         _stat = new Stat(400, 400, 0, 0, 38, 0, 80, 7, 15, 10, 55);
         // Monster Stat Setting 구현해야함.
 
-        /*_AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
+        _AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
         for (int i = 0; i < _AttackRngs.Length; i++)
         {
             AttackAreUnitFind attackAUF = _AttackRngs[i].GetComponent<AttackAreUnitFind>();
             attackAUF.Initialize(this);
             _AttackRngs[i].enabled = false;
-        }*/
+        }
     }
 
     public void BehaviourProcess()
@@ -59,39 +69,84 @@ public class MonsterController : MonsterStat
         switch (_state)
         {
             case BehaviourState.IDLE:
+                SetHitChase();
+
+                _idleDuration += Time.deltaTime;
+                if (_idleTime <= _idleDuration)
+                {
+                    if (_navAgent.remainingDistance <= 0)
+                    {
+                        ChangeAniFromType(AnyType.WALK);
+                        _navAgent.destination = GetRandomPos();
+                        SetState(BehaviourState.PATROL);
+                    }
+                }
+                break;
+            case BehaviourState.PATROL:
+                SetHitChase();
+
                 if (_navAgent.remainingDistance <= 0)
                 {
-                    ChangeAniFromType(AnyType.WALK);
-                    _navAgent.destination = GetRandomPos();
-                    _state = BehaviourState.PATROL;
+                    SetIdleDuration(1f);
                 }
 
                 break;
-            case BehaviourState.PATROL:
-                if (_navAgent.remainingDistance <= 0)
-                {
-                    //Idle Deceision을 만들어서 랜덤으로 아이들 가만히 있게 하거나, 움직이도록 구현해야함.
-                    //피격시에 Idle & Patrol에서 Chase로 넘어가고 Chase <-> Attack 연계 되도록 해야함.
-                    //Chase에서 Genposition 안에 있으면 계속 Chase 아니면 PATROL로 넘어가게 구현.
-                    //일반 몹
-                    _state = BehaviourState.IDLE;
-                    //_navAgent.destination = GetRandomPos();
-                }
-
-                    break;
             case BehaviourState.CHASE:
-                ChangeAniFromType(AnyType.RUN);
+                CheckZoneSetIdle();
+
+                //만약 findtarget에 되면 attack으로 넘어가고
+                //else
+                _navAgent.destination = _playerPos.position;
+
+                //CHASE면 PLAYER 쫒아다녀야함.
+                //현재 포지션에 GENPOSITION안에 네모난 툴에 벗어나면 원래 포지션으로 이동하기.
+                //일반 몹
                 break;
             case BehaviourState.ATTACK1:
                 break;
             case BehaviourState.DEATH:
-
+                _playerPos = null;
+                _isHit = false;
                 break;
-
         }
+    }
+    void SetState(BehaviourState state)
+    {
+        _state = state;
     }
 
     #endregion [Character Setting Methods]
+
+    #region [Behaviour Methods]
+    public void SetIdleDuration(float duration) // IDLE로 있는 Term 발생
+    {
+        _idleTime = duration;
+        _idleDuration = 0f;
+        SetState(BehaviourState.IDLE);
+    }
+
+    public void SetHitChase()
+    {
+        if (_isHit)
+        {
+            SetState(BehaviourState.CHASE);
+            ChangeAniFromType(AnyType.RUN);
+        }
+    } // Demage를 입으면 _playerpos를 등록하여 쫒아다니도록 함.
+    public void CheckZoneSetIdle()
+    {
+        if (this.transform.position.x <= _genPosition.x + _limitWidth
+            && this.transform.position.x >= _genPosition.x - _limitWidth
+            && this.transform.position.y <= _genPosition.y + _limitFrontBack
+            && this.transform.position.y >= _genPosition.y - _limitFrontBack)
+        {
+            _isHit = false;
+            _playerPos = null;
+            ChangeAniFromType(AnyType.WALK);
+            SetIdleDuration(1f);
+        }
+    } // Chase 과정 중에 구역을 벗어나면 원래자리로 돌아가도록 함.
+    #endregion [Animation Methods]
 
     #region [Move Methods]
     Vector3 GetRandomPos()
@@ -105,9 +160,25 @@ public class MonsterController : MonsterStat
     #endregion [Move Methods]
 
     #region [Attack & Demage Methods]
-    public void SetDemage(AttackType attackType, float damage)
+    bool FindTarget(Transform target, float distance)
+    {
+        var dir = target.position - transform.position;
+        dir.y = 0f;
+        RaycastHit hit;
+        Debug.DrawRay(transform.position + Vector3.up * 1f, dir.normalized * distance, Color.red);
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, dir.normalized, out hit, distance, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Player")))
+        {
+            if (hit.collider.CompareTag("Player"))
+                return true;
+        }
+        return false;
+    }
+
+    public void SetDemage(Transform playerPos, AttackType attackType, float damage)
     {
         if (_isDeath) return;
+        _isHit = true; // 공격시 따라가게 하기위함 (CHASE)
+        _playerPos = playerPos;
         _stat.HP -= Mathf.CeilToInt(damage);
         //m_hudCtr.DisplayDamage(attackType, damage, playInfo.hp / (float)playInfo.hpMax);
         //데미지  UI 표시
