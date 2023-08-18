@@ -335,6 +335,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map1
       objectReference: {fileID: 0}
+    - target: {fileID: 106889817564505745, guid: e676990803ee7954e9f5f2e5c566a859, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 106889817564505756, guid: e676990803ee7954e9f5f2e5c566a859, type: 3}
       propertyPath: m_RootOrder
       value: 0

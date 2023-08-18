@@ -27,7 +27,7 @@ public class PlayerController : PlayerStat
     bool _isAttack { get { if (GetAnimState() == AnyType.ATTACK1 || GetAnimState() == AnyType.ATTACK2 || GetAnimState() == AnyType.ATTACK3) // 기본 공격시 되는 것들과 안되는 것들 구분하기 위함.  
                             return true;
                                  return false;   } }
-    bool _isDeath { get { if (GetAnimState() == AnyType.DEATH)
+    public bool _isDeath { get { if (GetAnimState() == AnyType.DEATH)
                 return true;
                     return false;   } }
     bool _isPressAttack;
@@ -214,7 +214,7 @@ public class PlayerController : PlayerStat
         {
             Debug.Log("들어감");
             AttackType type = Util.AttackProcess(this, mon, out demage);
-            mon.SetDemage(this.transform, type, demage);
+            mon.SetDemage(type, demage);
             if (type == AttackType.Dodge) return;
         }
     }
