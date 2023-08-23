@@ -4,22 +4,34 @@ using UnityEngine;
 
 public class AttackAreUnitFind : MonoBehaviour
 {
+    List<GameObject> m_unitList = new List<GameObject>();
+    public List<GameObject> UnitList { get { return m_unitList; } }
+
     PlayerController _player;
     MonsterController _monster;
     private void OnTriggerEnter(Collider other)
     {
-        if(_player != null && other.CompareTag("Monster"))
+        if (_player != null && other.CompareTag("Monster"))
         {
-            var _monObj = other.gameObject;
-            _player.SetAttack(_monObj);
+            m_unitList.Add(other.gameObject);
         }
-
         if (_monster != null && other.CompareTag("Player"))
         {
-            var _playerObj = other.gameObject;
+            m_unitList.Add(other.gameObject);
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (_player != null && other.CompareTag("Monster"))
+        {
+            m_unitList.Remove(other.gameObject);
+        }
+        if (_monster != null && other.CompareTag("Player"))
+        {
+            m_unitList.Remove(other.gameObject);
+        }
+    }
 
     public void Initialize(PlayerController _owner)
     {

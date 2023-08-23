@@ -10,12 +10,13 @@ public class PlayerController : PlayerStat
     [SerializeField] Transform WeaponPos; // 무기 장착 위치
     [SerializeField] GameObject equipWeapon; // 장착한 무기
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
+    [SerializeField] GameObject[] _fxHitPrefab;
 
     //참조 변수
     //Animator _animController;
     CharacterController _charController;
     Transform _mainCamera;
-    BoxCollider[] _AttackRngs; // AttackAreUnitFinds;
+    AttackAreUnitFind[] _AttackAreUnitFind;
     //정보 변수
     Vector3 mv; // Player Object Vector3
     bool _isJump; // 점프
@@ -95,12 +96,10 @@ public class PlayerController : PlayerStat
         _stat = new Stat(600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60);
         // Player Stat Setting 구현해야함.
 
-        _AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
-        for (int i = 0; i < _AttackRngs.Length; i++)
+        _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
+        for (int i = 0; i < _AttackAreUnitFind.Length; i++)
         {
-            AttackAreUnitFind attackAUF = _AttackRngs[i].GetComponent<AttackAreUnitFind>();
-            attackAUF.Initialize(this);
-            _AttackRngs[i].enabled = false;
+            _AttackAreUnitFind[i].Initialize(this);
         }
     }
     #endregion [Character Setting Methods]
@@ -235,29 +234,46 @@ public class PlayerController : PlayerStat
         {
             ChangeAniFromType(AnyType.DEATH);
         }
-
     }
     //Attack Methods
 
     //AnimEvent Methods
-    public void AllOffAttackEnabled()
+    public void AnimEvent_Attack(int _areaNum)
     {
-        for (int i = 0; i < _AttackRngs.Length; i++)
+        float damage = 0f;
+        var unitList = _AttackAreUnitFind[_areaNum].UnitList;
+        for (int i = 0; i < unitList.Count; i++)
         {
-            _AttackRngs[i].enabled = false;
+            var mon = unitList[i].GetComponent<MonsterController>();
+            var dummy = Util.FindChildObject(unitList[i], "Monster_Hit");
+            if (dummy != null && mon != null)
+            {
+                if (mon._isDeath) continue;
+                AttackType type = Util.AttackProcess(this, mon, out damage);
+                mon.SetDemage(type, damage);
+                Debug.Log("데미지 : " + damage);
+                if (type == AttackType.Dodge) return;
+                else if (type == AttackType.Normal)
+                {
+                    var effect = Instantiate(_fxHitPrefab[0]);
+                    effect.transform.position = dummy.transform.position;
+                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
+                    Destroy(effect, 1.5f);
+                }
+                else if(type == AttackType.Critical)
+                {
+                    var effect = Instantiate(_fxHitPrefab[1]);
+                    effect.transform.position = dummy.transform.position;
+                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
+                    Destroy(effect, 1.5f);
+                }
+            }
         }
-    }
-    public void OnAttackEnabled(int id)
-    {
-        _AttackRngs[id].enabled = true;
+        for (int i = 0; i < _AttackAreUnitFind.Length; i++)
+            _AttackAreUnitFind[i].UnitList.RemoveAll(obj => obj.GetComponent<MonsterController>()._isDeath);
     }
 
-    public void OffAttackEnabled(int id)
-    {
-        _AttackRngs[id].enabled = false;
-    }
-
-    public void AttackFinished()
+    public void AnimEvent_AttackFinished()
     {
         bool _isCombo = false;
         if (_isPressAttack) // 누르고 있으면 _isPressAttack이 true이기 때문에 isCombo가 true가 됌.
