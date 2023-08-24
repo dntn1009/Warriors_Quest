@@ -165,3 +165,13 @@
     예정입니다.
 5.MonsterManager 스크립트 생성
   - 몬스터의 전반적인 관리를 하기위한 스크립트를 생성하였습니다.
+
+2023~08-23
+1.Monster FSM 구현 완료.
+ - Player와 Monster의 Attack & Demage를 주기 위하여 함수를 구현 적용 완료하였습니다.
+ - Monster FSM 과정 중에 Attack해야하는 경우를 위하여 Player & MAP의 LAYER를 이용하여 RAYCAST를 쏘아 계산한 거리에 적중한 것이 Player일 경우 ATTACK &FSM 애니메이션이 적용되도록 구현함.
+ - PlayerHit, MonsterHit이라는 자식 오브젝트를 각각 넣어주어 그 Position에 Fx효과를 주려고 하였음. 몬스터를 크리티컬 & 일반 공격시 이펙트가 나가도록 구현함.
+
+2. Player & Monster Attack 관련 Script (AttackAreUnitFind, Controller의 Collider관련 부분) 방식 변경
+   - 몬스터나 Player가 공격할 경우에 해당 Target을 맞출 수 있음에도 불구하고 Demage가 안들어가는 경우가 발생함.
+   - 찰나의 순간이라 Collider로 인식하는 경우가 안좋다는걸 느끼게 되었음.
