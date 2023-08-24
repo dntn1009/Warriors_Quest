@@ -333,4 +333,14 @@ public class MonsterController : MonsterStat
     //AnimEvent Methods
 
     #endregion [Attack & Demage Methods]
+
+    #region [MonsterManager Script Methods]
+
+    public void InitMonster(Transform _genTransform)
+    {
+        transform.position = _genTransform.position;
+        _genPosition = _genTransform.position;
+    }
+
+    #endregion [MonsterManager Script Methods]
 }

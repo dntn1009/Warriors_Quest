@@ -52,4 +52,15 @@ namespace DefineHelper
     }
 
     #endregion
+
+    #region [MAP¿ë]
+
+    public enum MapType
+    {
+        Stage1                    = 0,
+        Stage2,
+        Max
+    }
+
+    #endregion
 }
