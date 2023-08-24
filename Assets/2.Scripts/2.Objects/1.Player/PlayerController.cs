@@ -203,21 +203,6 @@ public class PlayerController : PlayerStat
         transform.forward = cameraforward;
     }
 
-    public void SetAttack(GameObject monster)
-    {
-        var mon = monster.GetComponent<MonsterController>();
-        var dummy = Util.FindChildObject(monster, "Monster_Hit");
-        float demage = 0f;
-        Debug.Log("1번 확인");
-        if (!mon._isDeath && dummy != null)
-        {
-            Debug.Log("들어감");
-            AttackType type = Util.AttackProcess(this, mon, out demage);
-            mon.SetDemage(type, demage);
-            if (type == AttackType.Dodge) return;
-        }
-    }
-
     public void SetDemage(AttackType attackType, float damage)
     {
         if (_isDeath) return;
@@ -227,8 +212,8 @@ public class PlayerController : PlayerStat
 
         if (attackType == AttackType.Dodge) return;
 
-        if (attackType == AttackType.Critical)
-            ChangeAniFromType(AnyType.HIT, false);
+        /*if (attackType == AttackType.Critical)
+            ChangeAniFromType(AnyType.HIT, false);*/
 
         if (_stat.HP <= 0f)
         {

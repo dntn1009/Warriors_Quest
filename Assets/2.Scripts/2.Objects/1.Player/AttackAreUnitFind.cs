@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AttackAreUnitFind : MonoBehaviour
 {
-    List<GameObject> m_unitList = new List<GameObject>();
-    public List<GameObject> UnitList { get { return m_unitList; } }
+    List<GameObject> _unitList = new List<GameObject>();
+    public List<GameObject> UnitList { get { return _unitList; } }
 
     PlayerController _player;
     MonsterController _monster;
@@ -13,11 +13,11 @@ public class AttackAreUnitFind : MonoBehaviour
     {
         if (_player != null && other.CompareTag("Monster"))
         {
-            m_unitList.Add(other.gameObject);
+            _unitList.Add(other.gameObject);
         }
         if (_monster != null && other.CompareTag("Player"))
         {
-            m_unitList.Add(other.gameObject);
+            _unitList.Add(other.gameObject);
         }
     }
 
@@ -25,11 +25,11 @@ public class AttackAreUnitFind : MonoBehaviour
     {
         if (_player != null && other.CompareTag("Monster"))
         {
-            m_unitList.Remove(other.gameObject);
+            _unitList.Remove(other.gameObject);
         }
         if (_monster != null && other.CompareTag("Player"))
         {
-            m_unitList.Remove(other.gameObject);
+            _unitList.Remove(other.gameObject);
         }
     }
 

@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 4, z: 4}
-  m_Center: {x: 0, y: 2, z: 2}
+  m_Size: {x: 4, y: 4.5, z: 5}
+  m_Center: {x: 0, y: 2.25, z: 2.5}
 --- !u!114 &13185063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 418245980}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Monster_Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ Transform:
   - {fileID: 711057290754586578}
   m_Father: {fileID: 711057290754586584}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -93.34475}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -89.99998}
 --- !u!1 &711057290755009522
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ Transform:
   - {fileID: 711057290754586580}
   m_Father: {fileID: 711057290754586576}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -4.0120554e-13, y: -8.856105e-12, z: -2.593896}
+  m_LocalEulerAnglesHint: {x: -4.721868e-18, y: -8.865158e-12, z: -0.000030517576}
 --- !u!1 &711057290755009524
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +216,7 @@ Transform:
   - {fileID: 711057290754586582}
   m_Father: {fileID: 711057290754586578}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -2.7982684e-28, y: -3.8603833e-25, z: -0.718946}
+  m_LocalEulerAnglesHint: {x: 1.941307e-31, y: -3.644743e-25, z: 0.000030517576}
 --- !u!1 &711057290755009526
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +247,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 711057290754586580}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 2.8797743e-12, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.500089e-13, y: -90, z: 0}
 --- !u!1 &711057290755009528
 GameObject:
   m_ObjectHideFlags: 0

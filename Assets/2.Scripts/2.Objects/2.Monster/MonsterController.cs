@@ -15,12 +15,16 @@ public class MonsterController : MonsterStat
     //참조 변수
     // _navAgent - MonsterAnimController Protected
     BehaviourState _state; // 현재 상태
-    BoxCollider[] _AttackRngs; // AttackAreUnitFinds;
+    AttackAreUnitFind[] _AttackAreUnitFind; // AttackAreUnitFinds;
 
     //정보 변수
     Vector3 _genPosition;
+    Vector3 _attackForward;
     float _idleDuration;
     float _idleTime;
+
+    float _attackDuration;
+    float _attackTime;
 
     PlayerController _player;
 
@@ -33,11 +37,16 @@ public class MonsterController : MonsterStat
             return false;} }
 
     bool _isHit;
+    bool _isAttack;
+    int _isCombo;
 
     private void Awake()
     {
         _isHit = false;
+        _isAttack = false;
+        _isCombo = 0;
         _idleTime = 0f;
+        _attackTime = 0f;
         AnimatorResetting();
         _genPosition = transform.position;
         _navAgent.isStopped = false;
@@ -62,18 +71,18 @@ public class MonsterController : MonsterStat
         _stat = new Stat(400, 400, 0, 0, 38, 0, 80, 7, 15, 10, 55);
         // Monster Stat Setting 구현해야함.
 
-        _AttackRngs = _AttackAreaPrefab.GetComponentsInChildren<BoxCollider>();
-        for (int i = 0; i < _AttackRngs.Length; i++)
+        _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
+        for (int i = 0; i < _AttackAreUnitFind.Length; i++)
         {
-            AttackAreUnitFind attackAUF = _AttackRngs[i].GetComponent<AttackAreUnitFind>();
+            AttackAreUnitFind attackAUF = _AttackAreUnitFind[i].GetComponent<AttackAreUnitFind>();
             attackAUF.Initialize(this);
-            _AttackRngs[i].enabled = false;
         }
     }
 
     public void BehaviourProcess()
     {
         // _isHit True => Chase, _isHit false => Patrol
+
         switch (_state)
         {
             case BehaviourState.IDLE:
@@ -94,6 +103,7 @@ public class MonsterController : MonsterStat
                 if (_navAgent.remainingDistance <= 0)
                 {
                     SetIdleDuration(1f);
+                    ChangeAniFromType(AnyType.IDLE);
                 }
 
                 break;
@@ -104,18 +114,64 @@ public class MonsterController : MonsterStat
                 {
                     if (FindTarget(_player.transform, _attackPos))
                     {
+                        _isAttack = true;
                         _navAgent.isStopped = true;
-                        SetState(BehaviourState.ATTACK1);
-                        ChangeAniFromType(AnyType.ATTACK1);
+
+                        if(_isCombo == 0)
+                        {
+                            SetState(BehaviourState.ATTACK1);
+                            ChangeAniFromType(AnyType.ATTACK1);
+                        }
+                        else if(_isCombo == 1)
+                        {
+                            SetState(BehaviourState.ATTACK2);
+                            ChangeAniFromType(AnyType.ATTACK2);
+                        }
                     }
                     else
                         _navAgent.destination = _player.transform.position;
                 }
                 break;
             case BehaviourState.ATTACK1:
+                if (!_isAttack)
+                {
+                    _attackDuration += Time.deltaTime;
+                    if (_attackTime <= _attackDuration)
+                    {
+                        if (_AttackAreUnitFind.Length <= 1)
+                            _isCombo = 0;
+                        else
+                            _isCombo = 1;
+                        SetState(BehaviourState.CHASE);
+                        ChangeAniFromType(AnyType.RUN);
+                        _navAgent.isStopped = false;
+                    }
+                }
+                else
+                {
+                    _attackForward = _player.transform.position - transform.position;
+                    _attackForward.y = 0f;
+                    transform.forward = _attackForward;
+                }
                 break;
             case BehaviourState.ATTACK2:
-
+                if (!_isAttack)
+                {
+                    _attackDuration += Time.deltaTime;
+                    if(_attackTime <= _attackDuration)
+                    {
+                        _isCombo = 0;
+                        SetState(BehaviourState.CHASE);
+                        ChangeAniFromType(AnyType.RUN);
+                        _navAgent.isStopped = false;
+                    }
+                }
+                else
+                {
+                    _attackForward = _player.transform.position - transform.position;
+                    _attackForward.y = 0f;
+                    transform.forward = _attackForward;
+                }
                 break;
             case BehaviourState.DEATH:
                 _isHit = false;
@@ -138,20 +194,26 @@ public class MonsterController : MonsterStat
         SetState(BehaviourState.IDLE);
     }
 
+    public void SetAttackDuration(float duration) // IDLE로 있는 Term 발생
+    {
+        _attackTime = duration;
+        _attackDuration = 0f;
+    }
+
     public void SetHitChase()
     {
-        if (_isPreemptive)
+        if (_isPreemptive) // 선제공격 몬스터일 경우
         {
             if (this.transform.position.x > _genPosition.x + _limitWidth
             || this.transform.position.x < _genPosition.x - _limitWidth
             || this.transform.position.y > _genPosition.y + _limitFrontBack
-            || this.transform.position.y < _genPosition.y - _limitFrontBack)
+            || this.transform.position.y < _genPosition.y - _limitFrontBack) // 정해진 범위 바깥이라면
             {
                 _isHit = false;
                 ChangeAniFromType(AnyType.WALK);
                 SetIdleDuration(1f);
-            }
-            else if (FindTarget(_player.transform, _preemptivePos))
+            } // 비선공으로 바꿔주고
+            else if (FindTarget(_player.transform, _preemptivePos)) // 정해진 범위안에 정해진 길이만큼 RayCast가 맞으면
             {
                 _isHit = true;
                 SetState(BehaviourState.CHASE);
@@ -209,18 +271,6 @@ public class MonsterController : MonsterStat
         }
         return false;
     }
-    public void SetAttack(GameObject player)
-    {
-        var _player = player.GetComponent<PlayerController>();
-        var dummy = Util.FindChildObject(player, "Player_Hit");
-        float demage = 0f;
-        if (!_player._isDeath && dummy != null)
-        {
-            AttackType type = Util.AttackProcess(this, _player, out demage);
-            _player.SetDemage(type, demage);
-            if (type == AttackType.Dodge) return;
-        }
-    }
 
     public void SetDemage(AttackType attackType, float damage)
     {
@@ -234,7 +284,8 @@ public class MonsterController : MonsterStat
 
         if (attackType == AttackType.Critical)
         {
-            ChangeAniFromType(AnyType.HIT, false);
+            ChangeAniFromType(AnyType.HIT);
+            //ChangeAniFromType(AnyType.HIT, false);
             _navAgent.isStopped = true;
         }
 
@@ -255,65 +306,29 @@ public class MonsterController : MonsterStat
     }
     public void AnimEvent_Attack(int _areaNum)
     {
-      /*  float damage = 0f;
+        float damage = 0f;
         var unitList = _AttackAreUnitFind[_areaNum].UnitList;
         for (int i = 0; i < unitList.Count; i++)
         {
-            var mon = unitList[i].GetComponent<MonsterController>();
-            var dummy = Util.FindChildObject(unitList[i], "Monster_Hit");
-            if (dummy != null && mon != null)
+            var player = unitList[i].GetComponent<PlayerController>();
+            var dummy = Util.FindChildObject(unitList[i], "Player_Hit");
+            if (dummy != null && player != null)
             {
-                if (mon._isDeath) continue;
-                AttackType type = Util.AttackProcess(this, mon, out damage);
-                mon.SetDemage(type, damage);
-                Debug.Log("데미지 : " + damage);
+                if (player._isDeath) continue;
+                AttackType type = Util.AttackProcess(this, player, out damage);
+                player.SetDemage(type, damage);
+                Debug.Log("머쉬룸 데미지 : " + damage);
                 if (type == AttackType.Dodge) return;
-                else if (type == AttackType.Normal)
-                {
-                    var effect = Instantiate(_fxHitPrefab[0]);
-                    effect.transform.position = dummy.transform.position;
-                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1.5f);
-                }
-                else if (type == AttackType.Critical)
-                {
-                    var effect = Instantiate(_fxHitPrefab[1]);
-                    effect.transform.position = dummy.transform.position;
-                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1.5f);
-                }
             }
         }
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
-            _AttackAreUnitFind[i].UnitList.RemoveAll(obj => obj.GetComponent<MonsterController>()._isDeath);*/
+            _AttackAreUnitFind[i].UnitList.RemoveAll(obj => obj.GetComponent<PlayerController>()._isDeath);
     }
-    public void AttackFinished()
+    public void AnimEvent_AttackFinished()
     {
-    /*    bool _isCombo = false;
-        if (_isPressAttack) // 누르고 있으면 _isPressAttack이 true이기 때문에 isCombo가 true가 됌.
-            _isCombo = true;
-        if (_keyBuffer.Count == 1) // keybuffer를 이용하여 타이밍 안에 눌럿고 그안에 count가 1이면 뺀 후에 _isComobo를 true 시킴
-        {
-            var key = _keyBuffer.Dequeue();
-            if (key == KeyCode.Mouse0)
-                _isCombo = true;
-        }// 1이외에 나머지 값이 더 계속 들어왔다면 초기화시킴.
-        else
-        {
-            ReleaseKeyBuffer();
-        }
-        if (_isCombo) // _isCombo 누른게 확인이 되면 ComboIndex 를 1 증가시키고 ComoboList에 있는 Attack애니메이션을 고르기 위함 1~3
-        {
-            _comboIndex++;
-            if (_comboIndex >= _comboList.Count)
-                _comboIndex = 0;
-            ChangeAniFromType(_comboList[_comboIndex]);
-        }
-        else
-        {
-            ChangeAniFromType(AnyType.IDLE);
-            _comboIndex = 0;
-        }*/
+        _isAttack = false;
+        SetAttackDuration(1.5f);
+        ChangeAniFromType(AnyType.IDLE);
     }
     //AnimEvent Methods
 
