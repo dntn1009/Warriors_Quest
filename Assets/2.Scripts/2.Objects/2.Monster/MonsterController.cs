@@ -27,6 +27,7 @@ public class MonsterController : MonsterStat
     float _attackTime;
 
     PlayerController _player;
+    int _monNum;
 
     public bool _isDeath { get { if (_state == BehaviourState.DEATH)
                 return true;
@@ -35,6 +36,8 @@ public class MonsterController : MonsterStat
     public bool _isCriticalHit { get { if (GetAnimState() == AnyType.HIT)
                 return true;
             return false;} }
+
+    public int _monNumber { get { return _monNum; } set { _monNum = value; } }
 
     bool _isHit;
     bool _isAttack;
@@ -133,6 +136,9 @@ public class MonsterController : MonsterStat
                 }
                 break;
             case BehaviourState.ATTACK1:
+                if (GetAnimState() == AnyType.HIT)
+                    return;
+
                 if (!_isAttack)
                 {
                     _attackDuration += Time.deltaTime;
@@ -155,6 +161,9 @@ public class MonsterController : MonsterStat
                 }
                 break;
             case BehaviourState.ATTACK2:
+                if (GetAnimState() == AnyType.HIT)
+                    return;
+
                 if (!_isAttack)
                 {
                     _attackDuration += Time.deltaTime;
@@ -176,6 +185,7 @@ public class MonsterController : MonsterStat
             case BehaviourState.DEATH:
                 _isHit = false;
                 _navAgent.isStopped = true;
+                Invoke("DeathMonster", 1.5f);
                 break;
         }
     }
@@ -336,10 +346,17 @@ public class MonsterController : MonsterStat
 
     #region [MonsterManager Script Methods]
 
-    public void InitMonster(Transform _genTransform)
+    public void InitMonster(SpawnPos _genTransform)
     {
-        transform.position = _genTransform.position;
-        _genPosition = _genTransform.position;
+        _monNum = _genTransform._MONNUM;
+        transform.position = _genTransform.transform.position;
+        _genPosition = _genTransform.transform.position;
+        gameObject.SetActive(true);
+    }
+
+    public void DeathMonster()
+    {
+        MonsterManager.Instance.RemoveMonster(this);
     }
 
     #endregion [MonsterManager Script Methods]

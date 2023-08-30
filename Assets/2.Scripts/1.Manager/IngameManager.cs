@@ -15,12 +15,13 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
     private void Start()
     {
-        _currentMap = MapType.Stage1; // 임시로 Stage1로 설정
+        ChangeMapFromMapType(MapType.Stage1); // 임시로 Stage1로 설정
         //플레이어를 불러올때 위치를 보고 스테이지를 불러올 거임.
     }
 
     private void Update()
     {
+        MapState();
     }
 
     public void MapState()
@@ -40,7 +41,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     public void ChangeMapFromMapType(MapType _type)
     {
         //맵이 변경되도록 구현 addtive.
-        _spawnMAX = MonsterManager.Instance._genPosition.Length;
+        _spawnMAX = _spawnNum = MonsterManager.Instance._genPosition.Length;
         _currentMap = _type;
     }
 
@@ -53,11 +54,11 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
             if(!MonsterManager.Instance._genCheck[i])
             {
                 _positionNum = i;
-                MonsterManager.Instance._genCheck[i] = true;
                 break;
             }
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
+        MonsterManager.Instance.CreateMonster(_positionNum);
         //몬스터 생성
     }
     #endregion
