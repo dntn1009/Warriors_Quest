@@ -12,6 +12,7 @@ public class MonsterController : MonsterStat
     [SerializeField] float _preemptivePos = 1.2f; // 선제 공격 범위
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
     [SerializeField] bool _isPreemptive; // 선제 공격하는 몬스터인지 아닌지 체크
+    [SerializeField] HudController _hudObjcet;
     //참조 변수
     // _navAgent - MonsterAnimController Protected
     BehaviourState _state; // 현재 상태
@@ -185,7 +186,7 @@ public class MonsterController : MonsterStat
             case BehaviourState.DEATH:
                 _isHit = false;
                 _navAgent.isStopped = true;
-                Invoke("DeathMonster", 1.5f);
+                Invoke("DeathMonster", 2.5f);
                 break;
         }
     }
@@ -238,6 +239,7 @@ public class MonsterController : MonsterStat
                 ChangeAniFromType(AnyType.RUN);
             }
         }
+
     } // Demage를 입으면 _playerpos를 등록하여 쫒아다니도록 함.
     public void CheckZoneSetIdle()
     {
@@ -249,6 +251,7 @@ public class MonsterController : MonsterStat
             _isHit = false;
             ChangeAniFromType(AnyType.WALK);
             SetIdleDuration(1f);
+            _hudObjcet.HideHPBar();
         }
     } // Chase 과정 중에 구역을 벗어나면 원래자리로 돌아가도록 함.
     #endregion [Animation Methods]
@@ -285,8 +288,10 @@ public class MonsterController : MonsterStat
     public void SetDemage(AttackType attackType, float damage)
     {
         if (_isDeath) return;
+
         _isHit = true; // 공격시 따라가게 하기위함 (CHASE)
         _stat.HP -= Mathf.CeilToInt(damage);
+        _hudObjcet.UpdateHPBar(_stat.HP, _stat.MAXHP);
         //m_hudCtr.DisplayDamage(attackType, damage, playInfo.hp / (float)playInfo.hpMax);
         //데미지  UI 표시
 
@@ -327,7 +332,7 @@ public class MonsterController : MonsterStat
                 if (player._isDeath) continue;
                 AttackType type = Util.AttackProcess(this, player, out damage);
                 player.SetDemage(type, damage);
-                Debug.Log("머쉬룸 데미지 : " + damage);
+                Debug.Log("몬스터의 공격 : " + damage);
                 if (type == AttackType.Dodge) return;
             }
         }
@@ -348,6 +353,9 @@ public class MonsterController : MonsterStat
 
     public void InitMonster(SpawnPos _genTransform)
     {
+        //HP ReSetting
+        _hudObjcet.InitHPBar();
+        //Monster Spawn 지역
         _monNum = _genTransform._MONNUM;
         transform.position = _genTransform.transform.position;
         _genPosition = _genTransform.transform.position;

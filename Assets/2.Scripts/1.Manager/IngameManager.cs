@@ -6,6 +6,8 @@ using DefineHelper;
 public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
     public GameObject[] SwordWeapons;
+    [SerializeField] GameObject DamageManager;
+    [SerializeField] Canvas DamageObject;
 
     //정보 변수
     MapType _currentMap;
@@ -24,6 +26,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         MapState();
     }
 
+    #region [Map & Spawn Methods]
     public void MapState()
     {
         if (_runningCoroutine != null)
@@ -45,6 +48,22 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         _currentMap = _type;
     }
 
+    #endregion [Map & Spawn Methods]
+
+
+    #region [Damage Methods]
+
+    public void ShowDamage()
+    {
+
+    }
+
+    public void HideDamage()
+    {
+
+    }
+
+    #endregion [Damage Methods]
     #region Couroutine Methods
     IEnumerator MonsterReSpwan()
     {
@@ -60,6 +79,6 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         yield return new WaitForSeconds(2f);
         MonsterManager.Instance.CreateMonster(_positionNum);
         //몬스터 생성
-    }
+    } // 몬스터를 자동으로 소환시켜주기 위한 코루틴
     #endregion
 }

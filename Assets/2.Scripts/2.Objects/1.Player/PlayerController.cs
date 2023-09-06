@@ -37,7 +37,7 @@ public class PlayerController : PlayerStat
     void Awake()
     {
         AnimatorResetting();
-        _mainCamera = GameObject.FindWithTag("FollowCamera").transform;
+        _mainCamera = Camera.main.transform;
         _charController = GetComponent<CharacterController>();
         _isEquip = false;
         _isJump = false;
