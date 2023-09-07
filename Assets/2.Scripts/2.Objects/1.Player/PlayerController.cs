@@ -212,8 +212,10 @@ public class PlayerController : PlayerStat
 
         if (attackType == AttackType.Dodge) return;
 
-        /*if (attackType == AttackType.Critical)
-            ChangeAniFromType(AnyType.HIT, false);*/
+        if (attackType == AttackType.Normal)
+            IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Player_Hit").transform.position, damage.ToString(), Color.gray); //데미지  UI 표시
+        if (attackType == AttackType.Critical)
+            IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Player_Hit").transform.position, damage.ToString(), Color.yellow); //데미지  UI 표시
 
         if (_stat.HP <= 0f)
         {

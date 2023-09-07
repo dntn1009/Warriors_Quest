@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DefineHelper;
+using TMPro;
 
 public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
     public GameObject[] SwordWeapons;
-    [SerializeField] GameObject DamageManager;
-    [SerializeField] Canvas DamageObject;
+    [SerializeField] Transform DamageManager;
+    [SerializeField] GameObject DamageObject;
 
     //정보 변수
     MapType _currentMap;
@@ -51,19 +52,19 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     #endregion [Map & Spawn Methods]
 
 
-    #region [Damage Methods]
+    #region [Damage UI Methods]
 
-    public void ShowDamage()
+    public void CreateDamage(Vector3 position, string text, Color color)
     {
-
+        var obj = Instantiate(DamageObject, position, Quaternion.identity);
+        obj.transform.SetParent(DamageManager);
+        var temp = obj.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        temp.text = text;
+        temp.faceColor = color;
+        Destroy(obj, 1f);
     }
 
-    public void HideDamage()
-    {
-
-    }
-
-    #endregion [Damage Methods]
+    #endregion [Damage UI Methods]
     #region Couroutine Methods
     IEnumerator MonsterReSpwan()
     {

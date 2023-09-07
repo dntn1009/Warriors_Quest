@@ -292,15 +292,16 @@ public class MonsterController : MonsterStat
         _isHit = true; // 공격시 따라가게 하기위함 (CHASE)
         _stat.HP -= Mathf.CeilToInt(damage);
         _hudObjcet.UpdateHPBar(_stat.HP, _stat.MAXHP);
-        //m_hudCtr.DisplayDamage(attackType, damage, playInfo.hp / (float)playInfo.hpMax);
-        //데미지  UI 표시
 
         if (attackType == AttackType.Dodge) return;
 
+        if(attackType == AttackType.Normal)
+            IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Monster_Hit").transform.position, damage.ToString(), Color.white); //데미지  UI 표시
+
         if (attackType == AttackType.Critical)
         {
+            IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Monster_Hit").transform.position, damage.ToString(), Color.red); //데미지  UI 표시
             ChangeAniFromType(AnyType.HIT);
-            //ChangeAniFromType(AnyType.HIT, false);
             _navAgent.isStopped = true;
         }
 
@@ -316,8 +317,15 @@ public class MonsterController : MonsterStat
 
     public void AnimEvent_Hit()
     {
-        ChangeAniFromType(AnyType.RUN);
-        _navAgent.isStopped = false;
+        if (_state == BehaviourState.ATTACK1)
+            ChangeAniFromType(AnyType.ATTACK1);
+        else if (_state == BehaviourState.ATTACK2)
+            ChangeAniFromType(AnyType.ATTACK2);
+        else
+        {
+            ChangeAniFromType(AnyType.RUN);
+            _navAgent.isStopped = false;
+        }
     }
     public void AnimEvent_Attack(int _areaNum)
     {
