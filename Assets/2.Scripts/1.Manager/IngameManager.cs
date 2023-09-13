@@ -9,6 +9,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     public GameObject[] SwordWeapons;
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
+    [SerializeField] GameObject Inventory;
 
     //정보 변수
     MapType _currentMap;
@@ -25,15 +26,21 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     private void Update()
     {
         MapState();
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            if (Inventory.activeSelf)
+                Inventory.SetActive(false);
+            else
+                Inventory.SetActive(true);
+        }
     }
 
     #region [Map & Spawn Methods]
     public void MapState()
     {
-        if (_runningCoroutine != null)
+        if (_runningCoroutine == null)
         {
-            return;
-
             if (_spawnNum < _spawnMAX)
             {
                 _spawnNum++;

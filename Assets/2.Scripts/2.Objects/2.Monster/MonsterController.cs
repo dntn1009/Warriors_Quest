@@ -31,8 +31,8 @@ public class MonsterController : MonsterStat
     int _monNum;
 
     public bool _isDeath { get { if (_state == BehaviourState.DEATH)
-                return true;
-            return false; } }
+                                    return true;
+                                  return false; } }
 
     public bool _isCriticalHit { get { if (GetAnimState() == AnyType.HIT)
                 return true;
@@ -53,7 +53,6 @@ public class MonsterController : MonsterStat
         _attackTime = 0f;
         AnimatorResetting();
         _genPosition = transform.position;
-        _navAgent.isStopped = false;
     }
     private void Start()
     {
