@@ -51,6 +51,8 @@ public class PlayerController : PlayerStat
 
     void Update()
     {
+        if (Cursor.visible)
+            return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {

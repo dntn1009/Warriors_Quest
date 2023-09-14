@@ -19,6 +19,8 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         ChangeMapFromMapType(MapType.Stage1); // 임시로 Stage1로 설정
         //플레이어를 불러올때 위치를 보고 스테이지를 불러올 거임.
     }
@@ -30,9 +32,17 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         if(Input.GetKeyDown(KeyCode.I))
         {
             if (Inventory.activeSelf)
+            {
                 Inventory.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
             else
+            {
                 Inventory.SetActive(true);
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+            }
         }
     }
 
@@ -72,6 +82,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     }
 
     #endregion [Damage UI Methods]
+
     #region Couroutine Methods
     IEnumerator MonsterReSpwan()
     {

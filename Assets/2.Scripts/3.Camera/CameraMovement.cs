@@ -35,13 +35,13 @@ public class CameraMovement : MonoBehaviour
 
         _dirNormalized = _realCamera.localPosition.normalized;
         finalDistance = _realCamera.localPosition.magnitude;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     void Update()
     {
+        if (Cursor.visible)
+            return;
+
         rotX += -(Input.GetAxis("Mouse Y")) * sensitivity * Time.deltaTime;
         rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 
