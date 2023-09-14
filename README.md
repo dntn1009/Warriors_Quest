@@ -175,3 +175,47 @@
 2. Player & Monster Attack 관련 Script (AttackAreUnitFind, Controller의 Collider관련 부분) 방식 변경
    - 몬스터나 Player가 공격할 경우에 해당 Target을 맞출 수 있음에도 불구하고 Demage가 안들어가는 경우가 발생함.
    - 찰나의 순간이라 Collider로 인식하는 경우가 안좋다는걸 느끼게 되었음.
+
+2023-08-24
+1. Monster의 Attack부분에 안좋은 점이 있는 것을 발견하여 다시 구현
+   - BoxColider에서 타겟을 잘못 잡아서 demage를 입히지 못하는 상황이 발생하여. UnitList를 추가하여 BoxCollider를 켜놓은 상태에서 사냥하도록 구현하였습니다.
+
+2023-08-25 ~ 2023-08-30
+1. Monster를 Map에 생성하기 위한 Script & gameobject(transform position) 작업 및 구현
+   - MonsterController에서 InitMonster()함수를 이용하여 몬스터 본인의 첫 포지션과 범위내 활동을 위한 포지션을 초기에 세팅하도록 함.
+     맵별로 ActiveScene을 이용하여 만들 예정이므로 싱글턴을 부모로 삼는 MonsterManager스크립트를 생성하여 몬스터 프리팹들과 몬스터를 미리 생성하도록 함
+     그래서 게임오브젝트풀링을 이용하였고 각 몬스터 프리팹마다 지정한 숫자만큼 생성하도록 구현함.
+     그리고 맵별로 GenPosition이라는 Empty Object를 생성하여 몬스터를 소환하고 싶은 위치를 정해 놓았습니다. 그리고 MonsterManager에 Transform 배열을 받아와
+     _genCheck라는 Bool 배열을 만들어 해당 위치가 false일 경우 그위치에 소환하도록 하였습니다.
+
+~2023-09-04
+1. IngameManager & MonsterManager를 연계하여 몬스터 관련 부분 구현
+   - IngameManager는 SetActiveScene 밖에 있는 스크립트로 인게임 내 총괄 관리 스크립트로 사용하기 위하여 만들었습니다.
+     현재 맵을 확인하기 위한 함수와 변수가 있고 맵에 최대 소환할 수 있는 몬스터 숫자와 계속 몬스터를 생산하기 위한 함수와 코루틴 함수가 있습니다.
+     그리고 현재 몬스터가 생성중이면 잠깐 코루틴을 중지시키기 위하여 따로 코루틴 변수(?)를 만들어 놓고 Null이 되면 다시 생성하도록 하였습니다.
+     맵이 변경 될때마다(SecActiveScene) 최대 몬스터 숫자와 현재 맵이 변경되도록 구현하였습니다.
+     정리하자면 MapState() 함수로는 실행중인 코루틴이 있는 경우에는 바로 return 하도록 하였으며
+     만약 현재 스폰한 몬스터가 최대 스폰 몬스터 수보다 적을 경우 스폰한 몬스터 += 1을 해주고 코루틴을 작동하도록 하였습니다.
+     코루틴으로는 현재 MonsterManager에 있는 bool _genCheck[]를 이용하여 false인 부분을 찾고 거기에 true를 해주고 그 해당 배열구역을저장하여 그 _genPosition[찾은
+     부분]의 transform 위치에 소환시켜주도록하였습니다.
+ ~2023-09-07
+1. Monster HUD Controller & 몬스터 HPBAR 구현
+   - UGU를 이용하여 HUD를 만들거나 다른 UI를 구현할 경우에 Canvas를 하나만 이용해서 만들려는 생각은 아주 안좋고 부적절한 습관이자 생각이라고 함.
+     그래서 WorldPositon으로 구현한 Monster HUD Canavs에 몬스터의 이름과 HP가 나오도록 구현하였습니다.
+     그리고 몬스터가 피격시 HPBar가 닳는 현상을 구현하였습니다.
+     그리고 몬스터와 전투상태가 풀리거나 공격한지 3초가 지난 후면 HPBar가 사라지도록 구현하였습니다.
+     애초에 피격하지 않은 상태면 HPBar가 뜨지 않은 상태로 되어있습니다.
+2. Monster HUD DemageUI 구현
+   - 데미지를 입을 시에 Monster Object에서 Hit object의 위치에 데미지 숫자가 나오도록 구현하였습니다.
+     각 크리티컬 노말 별로 데미지가 나오도록 구현하였으며 플레이어의 데미지는 색깔이 다르게 나오도록 구현하였습니다.
+     데미지가 위로올라가면서 사라지는 등의 애니메이션을 커브를 이용하여 구현하였습니다.
+     따로 demage Canvas가 생성되는 부분을 만들어 지저분하지 않게 관리하도록 하였습니다.
+
+ ~2023-09-14
+ 1. Inventory 구현
+    - 스크립터블 오브젝트를 이용하여 아이템의 성질을 정한 Object를 구현하였습니다.
+      그리드 레이아웃을 이용하여 아이템칸을 정해두었습니다. Item : 30 HotKeyItem : 7 EquipItem : 5(Head, Chest, Legs, Feet, Weapon)
+      그리고 Raw Image와 Render Texture 그리고 Player Object의 자식에 Camera를 설치하여 Inventory에 아이템을 착용 시 변하는 모습을 보여주기 위하여
+      현재 Player의 모습을 띄워놓았습니다.
+      그리고 Cursor를 잠궈놓은 상태지만 Inventory를 열 경우에는 커서가 생기고 화면이 회전하거나 플레이어가 공격하는 모션등이 구현되지 return하였습니다.
+      (포인터 및 아이템 터치 이동 기능 등은 다시 정리하여 적기로 함)
