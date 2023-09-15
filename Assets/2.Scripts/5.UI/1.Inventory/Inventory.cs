@@ -36,7 +36,7 @@ public class Inventory : MonoBehaviour
         carriedItem.transform.position = Input.mousePosition;
     }
 
-    public void SetCarriedItem(InventoryItem item)
+    public void SetCarriedItem(InventoryItem item) //아이템 옮기기
     {
         if(carriedItem != null)
         {
@@ -85,9 +85,15 @@ public class Inventory : MonoBehaviour
 
         for (int i = 0; i < inventorySlots.Length; i++)
         {
-
+            if (inventorySlots[i].myItem != null
+                 && _item.sprite == inventorySlots[i].myItem.myItem.sprite 
+                  && inventorySlots[i].myItem.currentCount < inventorySlots[i].myItem.myItem.MaxNumber)
+            {
+                inventorySlots[i].myItem.increaseCount(1);
+                break;
+            }
             // Check if the slot is empty
-            if(inventorySlots[i].myItem == null)
+            else if(inventorySlots[i].myItem == null)
             {
                 Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i]);
                 break;

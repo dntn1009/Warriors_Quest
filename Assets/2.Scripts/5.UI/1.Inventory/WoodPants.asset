@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e17c24be7447df48ad1f12dd6180fe4, type: 3}
   m_Name: WoodPants
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: 7d4f9cff490ea9e4e8de620ec2fadcb5, type: 3}
+  sprite: {fileID: -85935377, guid: a58ee72581ff5024cb49d7954261833e, type: 3}
   itemTag: 3
+  itemname: "\uBAA9\uC7AC\uBC14\uC9C0"
+  explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uBC14\uC9C0."
+  MaxNumber: 1
+  money: 100
   equipmentPrefab: {fileID: 0}

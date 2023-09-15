@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum SlotTag { None, Head, Chest, Legs, Feet, Weapon }
+public enum SlotTag { None, Potion, Head, Chest, Legs, Feet, Gloves, Weapon }
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {

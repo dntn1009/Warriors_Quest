@@ -7,7 +7,11 @@ public class Item : ScriptableObject
 {
     public Sprite sprite;
     public SlotTag itemTag;
+    public string itemname;
+    public string explane;
     public int MaxNumber;
+    public int money;
+
     [Header("If the item can be equipped")]
     public GameObject equipmentPrefab;
 }
