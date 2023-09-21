@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum SlotTag { None, Potion, Head, Chest, Legs, Feet, Gloves, Weapon }
+public enum SlotTag { None, Potion, Head, Chest, Legs, Feet, Gloves, Shoulders, Weapon }
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
     public InventoryItem myItem { get; set; }
 
     public SlotTag myTag;
+    public string equipmentStr;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -34,7 +35,10 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         myItem.transform.SetParent(transform);
         myItem.canvasGroup.blocksRaycasts = true;
 
-        if(myTag != SlotTag.None)
-        { Inventory.Singleton.EquipEquipment(myTag, myItem); }
+        if(myTag != SlotTag.None && myTag != SlotTag.Potion)
+        {
+            Inventory.Singleton.EquipEquipment(myTag, myItem);
+        }
     }
+
 }

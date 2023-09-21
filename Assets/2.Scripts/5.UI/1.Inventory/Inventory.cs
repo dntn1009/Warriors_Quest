@@ -23,6 +23,16 @@ public class Inventory : MonoBehaviour
     [Header("Debug")]
     [SerializeField] Button giveItemBtn;
 
+    [Header("PlayerEquipmentInfo")]
+    [SerializeField] PlayerEquipmentInfo _playerEquipemntInfo;
+    string _head;
+    string _chest;
+    string _legs;
+    string _feets;
+    string _gloves;
+    string _shoulders;
+    string _weapon;
+
     void Awake()
     {
         Singleton = this;
@@ -57,25 +67,51 @@ public class Inventory : MonoBehaviour
         switch (tag)
         {
             case SlotTag.Head:
-                if(item == null)
-                {
-                    // Destroy item.equipmentPrefab on the Player Object;
-                    Debug.Log("Unequipped helmet on " + tag);
-                }
-                else
-                {
-                    // Instantiate item.equipmentPrefab on the Player Object;
-                    Debug.Log("Equipped " + item.myItem.name + " on " + tag);
-                }
+                EquipAmor(item, ref _head);
                 break;
             case SlotTag.Chest:
+                EquipAmor(item, ref _chest);
                 break;
             case SlotTag.Legs:
+                EquipAmor(item, ref _legs);
+                if (_legs.Equals(string.Empty))
+                    _playerEquipemntInfo.UnderwearSetActive(true);
+                else
+                    _playerEquipemntInfo.UnderwearSetActive(false);
                 break;
             case SlotTag.Feet:
+                EquipAmor(item, ref _feets);
+                break;
+            case SlotTag.Gloves:
+                EquipAmor(item, ref _gloves);
+                break;
+            case SlotTag.Shoulders:
+                EquipAmor(item, ref _shoulders);
                 break;
         }
     }
+
+    public void EquipAmor(InventoryItem item, ref string partStr)
+    {
+        if (item == null)
+        {
+            SetEquipment(_playerEquipemntInfo._amorObjectDic[partStr], false);
+            partStr = string.Empty;
+        }
+        else
+        {
+            partStr = item.myItem.equipmentStr;
+            SetEquipment(_playerEquipemntInfo._amorObjectDic[partStr], true);
+        }
+    }
+
+    public void SetEquipment(GameObject obj, bool set)
+    {
+        obj.SetActive(set);
+
+        // 장비 효과 player에 주기
+    }
+
 
     public void SpawnInventoryItem(Item item = null)
     {
@@ -106,4 +142,11 @@ public class Inventory : MonoBehaviour
         int random = Random.Range(0, items.Length);
         return items[random];
     }
+
+
+    public void UnEquipAmor(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
+
 }
