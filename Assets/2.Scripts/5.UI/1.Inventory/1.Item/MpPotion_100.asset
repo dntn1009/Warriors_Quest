@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: MpPotion_100
   m_EditorClassIdentifier: 
   sprite: {fileID: -1536168238, guid: a58ee72581ff5024cb49d7954261833e, type: 3}
-  itemTag: 0
+  itemTag: 1
   itemname: "MP\uD68C\uBCF5\uD3EC\uC158 100"
   explane: "MP \uC804\uC6A9 \uD68C\uBCF5 \uD3EC\uC158\uC785\uB2C8\uB2E4. MP  +100"
   MaxNumber: 99
   money: 15
-  equipmentPrefab: {fileID: 0}
+  equipmentStr: 
   Att: 0
   Def: 0
   hp: 0

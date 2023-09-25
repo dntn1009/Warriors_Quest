@@ -18,9 +18,8 @@ MonoBehaviour:
   explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uAC11\uC637."
   MaxNumber: 1
   money: 100
-  equipmentPrefab: {fileID: 4787836179948348810, guid: ecd48e8cfaea39544b3f9158f164b11b, type: 3}
   equipmentStr: Starter_Chest
   Att: 0
-  Def: 0
+  Def: 7
   hp: 0
   mp: 0

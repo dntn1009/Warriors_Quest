@@ -20,6 +20,11 @@ public class PlayerEquipmentInfo : MonoBehaviour
     [SerializeField] GameObject SteelAmor_Gloves;
     [SerializeField] GameObject SteelAmor_Shoulders;
 
+    [Header("Weapon")]
+    [SerializeField] GameObject Wooden_Stick;
+    [SerializeField] GameObject Steel_Sword;
+    [SerializeField] GameObject Steel_Master_Sword;
+
 
     public Dictionary<string, GameObject> _amorObjectDic;
 
@@ -35,6 +40,9 @@ public class PlayerEquipmentInfo : MonoBehaviour
         _amorObjectDic.Add("SteelAmor_Boots", SteelAmor_Boots);
         _amorObjectDic.Add("SteelAmor_Gloves", SteelAmor_Gloves);
         _amorObjectDic.Add("SteelAmor_Shoulders", SteelAmor_Shoulders);
+        _amorObjectDic.Add("Wooden_Stick", Wooden_Stick);
+        _amorObjectDic.Add("Steel_Sword", Steel_Sword);
+        _amorObjectDic.Add("Steel_Master_Sword", Steel_Master_Sword);
     }
 
     public void UnderwearSetActive(bool set)
