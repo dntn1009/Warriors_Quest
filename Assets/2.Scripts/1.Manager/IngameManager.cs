@@ -6,7 +6,6 @@ using TMPro;
 
 public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
-    public GameObject[] SwordWeapons;
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
     [SerializeField] GameObject Inventory;

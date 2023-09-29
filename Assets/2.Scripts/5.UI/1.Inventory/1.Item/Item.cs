@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DefineHelper;
 
 [CreateAssetMenu(menuName = "1.Scriptable Object/UI/Item")]
 public class Item : ScriptableObject

@@ -64,7 +64,7 @@ public class PlayerController : PlayerStat
         }
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            EquipWeapon(WeaponType.OneHandSword, !_isEquip);
+            EquipWeapon(!_isEquip);
         }
         if(Input.GetMouseButtonDown(0))
         {
@@ -95,8 +95,9 @@ public class PlayerController : PlayerStat
     public void InitializeSet()
     {
         //임시
-        _stat = new Stat(600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60);
+        _stat = new Stat("수레야", 600, 600, 300, 300, 5, 50, 0, 100, 15, 25, 10, 60);
         // Player Stat Setting 구현해야함.
+        StatusController.Instance.Init_StatusSetting(this);
 
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
@@ -167,30 +168,35 @@ public class PlayerController : PlayerStat
     #endregion [Character Move & Jump Methods]
 
     #region WeaponMethods
-    public void EquipWeapon(WeaponType type, bool equip = true)
+    public void EquipWeapon(bool equip = true)
     {
-        //type에 따른 프리팹 가져와 손에 쥐어주기
+        /*//type에 따른 프리팹 가져와 손에 쥐어주기
         switch (type)
         {
             case WeaponType.OneHandSword:
-                if (equip)
-                {
-                    equipWeapon = Instantiate(IngameManager.Instance.SwordWeapons[0], WeaponPos);
-                }
-                else
-                    Destroy(equipWeapon);
                 break;
-            case WeaponType.OneHandMace:
-                break;
-        }
+        }*/
+        if (equipWeapon == null)
+            return;
 
-        _isEquip = equip;
-        if (_isEquip)
+        if (equip)
+        {
             ChangeEquipWeaponMotion(1);
+            equipWeapon.SetActive(true);
+        }
         else
+        {
             ChangeEquipWeaponMotion(0);
+            equipWeapon.SetActive(false);
+        }
+        _isEquip = equip;
+
     }
 
+    public void WeaponEquip(GameObject obj)
+    {
+        equipWeapon = obj;
+    }
    
     #endregion WeaponMethopds & AnimationTypeMethods
 

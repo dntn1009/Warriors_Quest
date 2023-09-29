@@ -64,5 +64,9 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         {
             Inventory.Singleton.SetCarriedItem(this);
         }
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            Inventory.Singleton.SetItemInfo(this);
+        }
     }
 }

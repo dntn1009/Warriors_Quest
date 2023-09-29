@@ -36,6 +36,18 @@ namespace DefineHelper
         OneHandMace
     }
 
+    public enum SlotTag 
+    {
+        None                        = 0,
+        Potion, 
+        Head,
+        Chest,
+        Legs,
+        Feet,
+        Gloves,
+        Shoulders,
+        Weapon }
+
     #endregion [캐릭터용]
 
     #region [몬스터용]

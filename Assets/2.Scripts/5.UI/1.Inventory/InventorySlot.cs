@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
-public enum SlotTag { None, Potion, Head, Chest, Legs, Feet, Gloves, Shoulders, Weapon }
+using DefineHelper;
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {

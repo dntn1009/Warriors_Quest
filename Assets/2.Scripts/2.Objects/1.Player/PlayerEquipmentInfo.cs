@@ -25,6 +25,8 @@ public class PlayerEquipmentInfo : MonoBehaviour
     [SerializeField] GameObject Steel_Sword;
     [SerializeField] GameObject Steel_Master_Sword;
 
+    [Header("PlayerController")]
+    [SerializeField] public PlayerController _player;
 
     public Dictionary<string, GameObject> _amorObjectDic;
 
@@ -49,4 +51,5 @@ public class PlayerEquipmentInfo : MonoBehaviour
     {
         underwear.SetActive(set);
     }
+
 }

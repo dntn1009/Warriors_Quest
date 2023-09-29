@@ -71,7 +71,7 @@ public class MonsterController : MonsterStat
     {
         _state = BehaviourState.IDLE;
         //임시
-        _stat = new Stat(400, 400, 0, 0, 38, 0, 80, 7, 15, 10, 55);
+        _stat = new Stat(string.Empty, 400, 400, 0, 0, 1, 38, 0, 80, 7, 15, 10, 55);
         // Monster Stat Setting 구현해야함.
 
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();

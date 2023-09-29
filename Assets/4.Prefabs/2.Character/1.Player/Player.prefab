@@ -6022,7 +6022,7 @@ MonoBehaviour:
     _hitrate: 0
   _movSpeed: 1.5
   WeaponPos: {fileID: 2295380717471391972}
-  equipWeapon: {fileID: 1753325093932854839, guid: a3884a940f9a8d3418a27008b045837c, type: 3}
+  equipWeapon: {fileID: 0}
   _AttackAreaPrefab: {fileID: 1473756782}
   _fxHitPrefab:
   - {fileID: 164312, guid: 1ba67cac78ceada41a4fff7198da83e0, type: 3}
@@ -6052,6 +6052,7 @@ MonoBehaviour:
   Wooden_Stick: {fileID: 536788938596611078}
   Steel_Sword: {fileID: 1753325094686326161}
   Steel_Master_Sword: {fileID: 2220497613294415805}
+  _player: {fileID: 3859725274617827717}
 --- !u!1 &7517119055106427589
 GameObject:
   m_ObjectHideFlags: 0
