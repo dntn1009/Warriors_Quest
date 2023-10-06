@@ -21,11 +21,12 @@ public class Stat
     [SerializeField] float _defence;
     [SerializeField] float _dodgerate;
     [SerializeField] float _hitrate;
+    [SerializeField] int _exp;
 
     //position
     Vector3 _genpos;
     // 정보 변수 (Data)
-    public Stat(string name, int maxhp, int hp, int maxmp, int mp, int level, float attack, float buffattack, float criattack, float crirate, float defence, float dodgerate, float hitrate)
+    public Stat(string name, int maxhp, int hp, int maxmp, int mp, int level, float attack, float buffattack, float criattack, float crirate, float defence, float dodgerate, float hitrate, int exp)
     {
         this._name = name;
         this._maxhp = maxhp;
@@ -40,7 +41,25 @@ public class Stat
         this._defence = defence;
         this._dodgerate = dodgerate;
         this._hitrate = hitrate;
+        this._exp = exp;
     }
+
+    public Stat(MonsterData _data)
+    {
+        this._name = _data._name;
+        this._maxhp = this._hp = _data._hp;
+        this._level = _data._level;
+        this._attack = _data._attack;
+        this._buffattack = _data._buffattack;
+        this._criattack = _data._criattack;
+        this._crirate = _data._crirate;
+        this._defence = _data._denfence;
+        this._dodgerate = _data._dodgerate;
+        this._hitrate = _data._hitrate;
+        this._exp = _data._exp;
+
+    }
+
     #region [Property]
     public string NAME { get { return _name; } set { _name = value; } }
     public int MAXHP { get { return _maxhp; } set { _maxhp = value; } }
@@ -55,7 +74,12 @@ public class Stat
     public float DEFENCE { get { return _defence; } set { _defence = value; } }
     public float DODGERATE { get { return _dodgerate; } set { _dodgerate = value; } }
     public float HITRATE { get { return _hitrate; } set { _hitrate = value; } }
-
+    public int EXP { get { return _exp; } set { _exp = value; } }
 
     #endregion [Property]
+
+    #region [Methods]
+
+
+    #endregion [Methods]
 }

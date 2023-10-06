@@ -21,5 +21,4 @@ public class Item : ScriptableObject
     [Header("If the item can be healing")]
     public int hp;
     public int mp;
-
 }

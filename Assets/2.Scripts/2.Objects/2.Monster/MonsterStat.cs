@@ -10,5 +10,9 @@ public class MonsterStat : MonsterAnimController
     [Header("Stat Edit Param")]
     public Stat _stat;
    
+    protected void Init_StatSetting()
+    {
+        _stat = new Stat(_data);
+    }
 
 }

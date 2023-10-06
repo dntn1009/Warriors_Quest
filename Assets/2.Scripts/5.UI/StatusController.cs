@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatusController : SingletonMonobehaviour<StatusController>
+public class StatusController : MonoBehaviour
 {
     [Header("Status")]
-    [SerializeField] TextMeshProUGUI player_name;
-    [SerializeField] TextMeshProUGUI player_level;
+    [SerializeField] TextMeshProUGUI obj_name;
+    [SerializeField] TextMeshProUGUI obj_level;
 
     [Header("HP / MP Bar")]
     [SerializeField] Slider Hp_bar;
@@ -17,16 +17,59 @@ public class StatusController : SingletonMonobehaviour<StatusController>
     [SerializeField] TextMeshProUGUI Mp_text;
 
 
+    #region [Init Setting Methods]
     public void Init_StatusSetting(PlayerController _player)
     {
-        player_name.text = _player._stat.NAME;
-        player_level.text = "Lv." + _player._stat.LEVEL;
+        obj_name.text = _player._stat.NAME;
+        obj_level.text = "Lv." + _player._stat.LEVEL;
         Hp_text.text = _player._stat.HP + " / " + _player._stat.MAXHP;
         Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
     }
 
-    public void Init_StatusSetting(MonsterController _monster)
+    public void Init_StatusSetting(MonsterController _mon)
     {
-
+        this.gameObject.SetActive(true);
+        obj_name.text = _mon._stat.NAME;
+        obj_level.text = "Lv." + _mon._stat.LEVEL;
+        Hp_text.text = _mon._stat.HP + " / " + _mon._stat.MAXHP;
+        float normalizedHP = _mon._stat.HP / (float)_mon._stat.MAXHP;
+        Hp_bar.value = normalizedHP;
+        if (normalizedHP <= 0f)
+            Hp_bar.value = 0f;
     }
+    #endregion [Init Setting Methods]
+
+    #region [Set Bar Methods]
+    public void SetHP(PlayerController _player)
+    {
+        float normalizedHP = _player._stat.HP / (float)_player._stat.MAXHP;
+        Hp_bar.value = normalizedHP;
+        if (normalizedHP <= 0f)
+            Hp_bar.value = 0f;
+        Hp_text.text = _player._stat.HP + " / " + _player._stat.MAXHP;
+        //HPBAR VALUE 변경
+    }
+
+    public void SetMP(PlayerController _player)
+    {
+        float normalizedMP = _player._stat.MP / (float)_player._stat.MAXMP;
+        Hp_bar.value = normalizedMP;
+        if (normalizedMP <= 0f)
+            Mp_bar.value = 0f;
+        Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
+        //HPBAR VALUE 변경
+    }
+
+    public void MonsterSetHP(MonsterController mon)
+    {
+        Init_StatusSetting(mon);
+        Invoke("SetActiveFalse", 4f);
+    }
+    
+    void SetActiveFalse()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+    #endregion [Set Bar Methods]
 }

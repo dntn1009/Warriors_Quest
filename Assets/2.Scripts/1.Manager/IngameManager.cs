@@ -15,7 +15,6 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     int _spawnMAX; // 최대 소환할 수 있는 몬스터들 수
     public int _spawnNum;
     Coroutine _runningCoroutine;
-
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -30,18 +29,17 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
         if(Input.GetKeyDown(KeyCode.I))
         {
-            if (Inventory.activeSelf)
-            {
-                Inventory.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-            else
-            {
-                Inventory.SetActive(true);
-                Cursor.lockState = CursorLockMode.Confined;
-                Cursor.visible = true;
-            }
+            InventoryOpen();   
+        }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        if(!Inventory.activeSelf && Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -81,6 +79,26 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     }
 
     #endregion [Damage UI Methods]
+
+    #region [Inventory UI Methods]
+    public void InventoryOpen()
+    {
+        if (Inventory.activeSelf)
+        {
+            Inventory.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Inventory.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+
+
+    #endregion [Inventory UI Methods]
 
     #region Couroutine Methods
     IEnumerator MonsterReSpwan()

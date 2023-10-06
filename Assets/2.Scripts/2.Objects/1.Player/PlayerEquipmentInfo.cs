@@ -52,4 +52,17 @@ public class PlayerEquipmentInfo : MonoBehaviour
         underwear.SetActive(set);
     }
 
+    public void EquipStatData(InventoryItem item, bool _EquipCheck)
+    {
+        if(!_EquipCheck)
+        {
+            _player._stat.ATTACK += item.myItem.Att;
+            _player._stat.DEFENCE += item.myItem.Def;
+        }
+        else
+        {
+            _player._stat.ATTACK -= item.myItem.Att;
+            _player._stat.DEFENCE -= item.myItem.Def;
+        }
+    }
 }

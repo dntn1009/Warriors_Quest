@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class HudController : MonoBehaviour
     [SerializeField] Image _hpBar; // HPBAR
     [SerializeField] Image _hpRateBar; // HPBAR 안에 있는 Foreground
     [SerializeField] float _Speed = 2f; // HPBAR가 데미지를 입었을 시에 움직이는 속도
+    [SerializeField] TextMeshProUGUI _nameText;
 
     float _hpRate; // HPRATE를 받아오는 float
 
@@ -16,7 +18,6 @@ public class HudController : MonoBehaviour
 
     void Start()
     {
-        InitHPBar();
         _camera = Camera.main;
     }
 
@@ -37,6 +38,11 @@ public class HudController : MonoBehaviour
         _hpBar.gameObject.SetActive(false);
         _hpRate = 1;
         _hpRateBar.fillAmount = 1f;
+    }
+
+    public void InitName(MonsterController _mon)
+    {
+        _nameText.text = _mon._stat.NAME;
     }
 
     public void UpdateHPBar(float _current, float _max)

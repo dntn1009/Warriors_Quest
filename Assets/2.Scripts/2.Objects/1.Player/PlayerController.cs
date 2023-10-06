@@ -1,5 +1,4 @@
 using DefineHelper;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +10,8 @@ public class PlayerController : PlayerStat
     [SerializeField] GameObject equipWeapon; // 장착한 무기
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
     [SerializeField] GameObject[] _fxHitPrefab;
-
+    [SerializeField] StatusController _statusbar; // PlayerStatus
+    [SerializeField] StatusController _monstatusbar; // 가운데 상단 몬스터 hp 표시
     //참조 변수
     //Animator _animController;
     CharacterController _charController;
@@ -22,15 +22,27 @@ public class PlayerController : PlayerStat
     bool _isJump; // 점프
     bool _isEquip; // 장비 착용
 
-   
+
     List<AnyType> _comboList = new List<AnyType>() { AnyType.ATTACK1, AnyType.ATTACK2, AnyType.ATTACK3 }; // 기본공격 시 연계되는 동작 구현하기 위함.
     Queue<KeyCode> _keyBuffer = new Queue<KeyCode>();
-    bool _isAttack { get { if (GetAnimState() == AnyType.ATTACK1 || GetAnimState() == AnyType.ATTACK2 || GetAnimState() == AnyType.ATTACK3) // 기본 공격시 되는 것들과 안되는 것들 구분하기 위함.  
-                            return true;
-                                 return false;   } }
-    public bool _isDeath { get { if (GetAnimState() == AnyType.DEATH)
+    bool _isAttack
+    {
+        get
+        {
+            if (GetAnimState() == AnyType.ATTACK1 || GetAnimState() == AnyType.ATTACK2 || GetAnimState() == AnyType.ATTACK3) // 기본 공격시 되는 것들과 안되는 것들 구분하기 위함.  
                 return true;
-                    return false;   } }
+            return false;
+        }
+    }
+    public bool _isDeath
+    {
+        get
+        {
+            if (GetAnimState() == AnyType.DEATH)
+                return true;
+            return false;
+        }
+    }
     bool _isPressAttack;
     int _comboIndex; // 0~3 까지 Comoblist에잇는 anytype을 실행하기 위한 int
 
@@ -66,14 +78,14 @@ public class PlayerController : PlayerStat
         {
             EquipWeapon(!_isEquip);
         }
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if ((GetAnimState() == AnyType.IDLE || GetAnimState() == AnyType.RUN) && _isEquip)
             {
                 ChangeAniFromType(AnyType.ATTACK1);
                 AttackForward();
             }
-            if(_isAttack)
+            if (_isAttack)
             {
                 if (IsInvoking("ReleaseKeyBuffer"))
                     CancelInvoke("ReleaseKeyBuffer");
@@ -83,7 +95,7 @@ public class PlayerController : PlayerStat
 
             _isPressAttack = true;
         }
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             _isPressAttack = false;
         }
@@ -95,9 +107,9 @@ public class PlayerController : PlayerStat
     public void InitializeSet()
     {
         //임시
-        _stat = new Stat("수레야", 600, 600, 300, 300, 5, 50, 0, 100, 15, 25, 10, 60);
+        _stat = new Stat("수레야", 600, 600, 300, 300, 5, 50, 0, 100, 15, 25, 10, 60, 0);
         // Player Stat Setting 구현해야함.
-        StatusController.Instance.Init_StatusSetting(this);
+        _statusbar.Init_StatusSetting(this);
 
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
@@ -111,7 +123,7 @@ public class PlayerController : PlayerStat
     //Move Methods
     public void Move()
     {
-        if(_isAttack)
+        if (_isAttack)
         {
             mv = Vector3.zero;
             return;
@@ -195,9 +207,26 @@ public class PlayerController : PlayerStat
 
     public void WeaponEquip(GameObject obj)
     {
-        equipWeapon = obj;
+        if(equipWeapon != null)
+            equipWeapon.SetActive(false);
+
+        if (obj == null)
+        {
+            equipWeapon = null;
+            ChangeEquipWeaponMotion(0);
+            _isEquip = false;
+        }
+        else
+        {
+            equipWeapon = obj;
+
+            if (_isEquip)
+                equipWeapon.SetActive(true);
+            else
+                equipWeapon.SetActive(false);
+        }
     }
-   
+
     #endregion WeaponMethopds & AnimationTypeMethods
 
     #region [Attack & Attack Animation Methods]
@@ -215,8 +244,7 @@ public class PlayerController : PlayerStat
     {
         if (_isDeath) return;
         _stat.HP -= Mathf.CeilToInt(damage);
-        //m_hudCtr.DisplayDamage(attackType, damage, playInfo.hp / (float)playInfo.hpMax);
-        //데미지  UI 표시
+        _statusbar.SetHP(this);
 
         if (attackType == AttackType.Dodge) return;
 
@@ -255,13 +283,14 @@ public class PlayerController : PlayerStat
                     effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
                     Destroy(effect, 1.5f);
                 }
-                else if(type == AttackType.Critical)
+                else if (type == AttackType.Critical)
                 {
                     var effect = Instantiate(_fxHitPrefab[1]);
                     effect.transform.position = dummy.transform.position;
                     effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
                     Destroy(effect, 1.5f);
                 }
+                _monstatusbar.Init_StatusSetting(mon);
             }
         }
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
@@ -273,7 +302,7 @@ public class PlayerController : PlayerStat
         bool _isCombo = false;
         if (_isPressAttack) // 누르고 있으면 _isPressAttack이 true이기 때문에 isCombo가 true가 됌.
             _isCombo = true;
-        if(_keyBuffer.Count == 1) // keybuffer를 이용하여 타이밍 안에 눌럿고 그안에 count가 1이면 뺀 후에 _isComobo를 true 시킴
+        if (_keyBuffer.Count == 1) // keybuffer를 이용하여 타이밍 안에 눌럿고 그안에 count가 1이면 뺀 후에 _isComobo를 true 시킴
         {
             var key = _keyBuffer.Dequeue();
             if (key == KeyCode.Mouse0)

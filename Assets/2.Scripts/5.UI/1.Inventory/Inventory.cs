@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using DefineHelper;
 using UnityEngine;
 using UnityEngine.UI;
-using DefineHelper;
 
 public class Inventory : MonoBehaviour
 {
@@ -29,37 +27,41 @@ public class Inventory : MonoBehaviour
 
     [Header("PlayerEquipmentInfo")]
     [SerializeField] PlayerEquipmentInfo _playerEquipemntInfo;
-    string[] _amorPart;
 
     void Awake()
     {
         Singleton = this;
-        giveItemBtn.onClick.AddListener( delegate { SpawnInventoryItem(); } );
+        giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(); });
         _closeBtn.onClick.AddListener(delegate { Close_Inventory(); });
-        _amorPart = new string[(int)SlotTag.Weapon];
     }
 
     void Update()
     {
-        if(carriedItem == null) return;
+        if (carriedItem == null) return;
 
         carriedItem.transform.position = Input.mousePosition;
     }
 
     public void SetCarriedItem(InventoryItem item) //아이템 옮기기
     {
-        if(carriedItem != null)
+        if (carriedItem != null)
         {
-            if(item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != carriedItem.myItem.itemTag) return;
-            item.activeSlot.SetItem(carriedItem);
+            if (item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != carriedItem.myItem.itemTag) return;
+            item.activeSlot.SetItem(carriedItem); // 여기가 아이템 장착 장소
         }
-
-        if(item.activeSlot.myTag != SlotTag.None)
-        { EquipEquipment(item.activeSlot.myTag, null); }
+        else if(carriedItem == null && item != null && item.activeSlot.myTag == SlotTag.Weapon)
+        {
+            unEquipWeapon();
+        }
 
         carriedItem = item;
         carriedItem.canvasGroup.blocksRaycasts = false;
         item.transform.SetParent(draggablesTransform);
+
+        if (carriedItem != null && item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != SlotTag.Potion)
+        { 
+                EquipEquipment(carriedItem.activeSlot.myTag, carriedItem, true);
+        } // 여기가 아이템 해제 장소
     }
 
     public void SetItemInfo(InventoryItem item)
@@ -79,94 +81,119 @@ public class Inventory : MonoBehaviour
         inventoryInfo.Item_InfoNull();
     }
 
-    public void EquipEquipment(SlotTag tag, InventoryItem item = null)
+    public void EquipEquipment(SlotTag tag, InventoryItem item, bool _EquipCheck = false)
     {
         switch (tag)
         {
             case SlotTag.Head:
-                EquipAmor(item, ref _amorPart[(int)SlotTag.Head]);
+                EquipAmor(item, _EquipCheck);
                 break;
             case SlotTag.Chest:
-                EquipAmor(item, ref _amorPart[(int)SlotTag.Chest]);
+                EquipAmor(item, _EquipCheck);
                 break;
             case SlotTag.Legs:
-                EquipAmor(item, ref _amorPart[(int)SlotTag.Legs]);
-                if (_amorPart[(int)SlotTag.Legs].Equals(string.Empty))
-                    _playerEquipemntInfo.UnderwearSetActive(true);
-                else
-                    _playerEquipemntInfo.UnderwearSetActive(false);
+                EquipAmor(item, _EquipCheck);
                 break;
             case SlotTag.Feet:
-                EquipAmor(item, ref _amorPart[(int)SlotTag.Feet]);
+                EquipAmor(item, _EquipCheck);
                 break;
             case SlotTag.Gloves:
-                EquipAmor(item, ref _amorPart[(int)SlotTag.Gloves]);
+                EquipAmor(item, _EquipCheck);
                 break;
             case SlotTag.Shoulders:
-                EquipAmor(item, ref _amorPart[(int)SlotTag.Shoulders]);
+                EquipAmor(item, _EquipCheck);
                 break;
             case SlotTag.Weapon:
-                EquipWeapon(item);
+                EquipWeapon(item, _EquipCheck);
                 break;
         }
     }
 
-    public void EquipAmor(InventoryItem item, ref string partStr)
+    public void EquipAmor(InventoryItem item, bool _EquipCheck)
     {
-        if (item == null)
-        {
-            SetEquipment(_playerEquipemntInfo._amorObjectDic[partStr], false);
-            partStr = string.Empty;
-        }
-        else
-        {
-            partStr = item.myItem.equipmentStr;
-            SetEquipment(_playerEquipemntInfo._amorObjectDic[partStr], true);
-        }
+        var obj = _playerEquipemntInfo._amorObjectDic[item.myItem.equipmentStr];
+        SetEquipment(obj);
+
+        _playerEquipemntInfo.EquipStatData(item, _EquipCheck);
+
+        if (item.activeSlot.myTag == SlotTag.Legs)//바지 속옷
+            _playerEquipemntInfo.UnderwearSetActive(!obj.activeSelf);
     }
 
-    public void EquipWeapon(InventoryItem item)
+    public void EquipWeapon(InventoryItem item, bool _EquipCheck)
     {
-        if(item == null)
-        {
-            _playerEquipemntInfo._player.WeaponEquip(null);
-        }
-        else
-        {
+        if (!_EquipCheck)
+        { 
             var obj = _playerEquipemntInfo._amorObjectDic[item.myItem.equipmentStr];
             _playerEquipemntInfo._player.WeaponEquip(obj);
         }
+
+        _playerEquipemntInfo.EquipStatData(item, _EquipCheck);
     }
 
-    public void SetEquipment(GameObject obj, bool set)
+    public  void unEquipWeapon()
     {
-        obj.SetActive(set);
+        _playerEquipemntInfo._player.WeaponEquip(null);
+    }
+
+    public void SetEquipment(GameObject obj)
+    {
+        obj.SetActive(!obj.activeSelf);
         // 장비 효과 player에 주기
     }
-
 
     public void SpawnInventoryItem(Item item = null)
     {
         Item _item = item;
-        if(_item == null)
+        int _itemNum = -1;
+        bool _createCheck = false;
+        if (_item == null)
         { _item = PickRandomItem(); }
 
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             if (inventorySlots[i].myItem != null
-                 && _item.sprite == inventorySlots[i].myItem.myItem.sprite 
+                 && _item.sprite == inventorySlots[i].myItem.myItem.sprite
                   && inventorySlots[i].myItem.currentCount < inventorySlots[i].myItem.myItem.MaxNumber)
             {
                 inventorySlots[i].myItem.increaseCount(1);
+                _createCheck = true;
                 break;
             }
             // Check if the slot is empty
-            else if(inventorySlots[i].myItem == null)
+            else if (inventorySlots[i].myItem == null && _itemNum == -1)
+                _itemNum = i;
+        }
+
+        if(!_createCheck)
+            Instantiate(itemPrefab, inventorySlots[_itemNum].transform).Initialize(_item, inventorySlots[_itemNum]);
+    }
+
+    public void SpawnInventoryItem_test(Item item, int _number)
+    {
+        Item _item = item;
+        int _itemNum = -1;
+        bool _createCheck = false;
+        if (_item == null)
+        { _item = PickRandomItem(); }
+
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].myItem != null
+                 && _item.sprite == inventorySlots[i].myItem.myItem.sprite
+                  && inventorySlots[i].myItem.currentCount < inventorySlots[i].myItem.myItem.MaxNumber)
             {
-                Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i]);
+                inventorySlots[i].myItem.increaseCount(1);
+                _createCheck = true;
                 break;
             }
+            // Check if the slot is empty
+            else if (inventorySlots[i].myItem == null && _itemNum == -1)
+                _itemNum = i;
         }
+
+        if (!_createCheck)
+            Instantiate(itemPrefab, inventorySlots[_itemNum].transform).Initialize(_item, inventorySlots[_itemNum]);
     }
 
     Item PickRandomItem()
@@ -174,7 +201,7 @@ public class Inventory : MonoBehaviour
         int random = Random.Range(0, items.Length);
         return items[random];
     }
- 
+
     void Close_Inventory()
     {
         SetItemInfoNull();

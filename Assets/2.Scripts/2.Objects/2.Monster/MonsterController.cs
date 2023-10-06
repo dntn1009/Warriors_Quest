@@ -71,7 +71,7 @@ public class MonsterController : MonsterStat
     {
         _state = BehaviourState.IDLE;
         //임시
-        _stat = new Stat(string.Empty, 400, 400, 0, 0, 1, 38, 0, 80, 7, 15, 10, 55);
+        Init_StatSetting();
         // Monster Stat Setting 구현해야함.
 
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
@@ -362,6 +362,7 @@ public class MonsterController : MonsterStat
     {
         //HP ReSetting
         _hudObjcet.InitHPBar();
+        _hudObjcet.InitName(this);
         //Monster Spawn 지역
         _monNum = _genTransform._MONNUM;
         transform.position = _genTransform.transform.position;

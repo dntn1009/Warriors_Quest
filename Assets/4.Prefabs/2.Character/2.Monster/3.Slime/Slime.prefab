@@ -553,6 +553,7 @@ MonoBehaviour:
   _hpBar: {fileID: 257675187}
   _hpRateBar: {fileID: 1716098571}
   _Speed: 2
+  _nameText: {fileID: 584388290}
 --- !u!1 &2128405920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,12 +1128,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 0.25
   _runSpeed: 0.5
-  _data: {fileID: 0}
+  _data: {fileID: 11400000, guid: 3c9bc1a6e93067c4b9f9f07148f0f655, type: 2}
   _stat:
+    _name: 
     _maxhp: 0
     _hp: 0
     _maxmp: 0
     _mp: 0
+    _level: 0
     _attack: 0
     _buffattack: 0
     _criattack: 0
@@ -1140,6 +1143,7 @@ MonoBehaviour:
     _defence: 0
     _dodgerate: 0
     _hitrate: 0
+    _exp: 0
   _limitWidth: 2
   _limitFrontBack: 2
   _attackPos: 0.3
