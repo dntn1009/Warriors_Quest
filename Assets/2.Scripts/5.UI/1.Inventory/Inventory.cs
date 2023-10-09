@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         Singleton = this;
-        giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(); });
+        giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 100); });
         _closeBtn.onClick.AddListener(delegate { Close_Inventory(); });
     }
 
@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
             if (item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != carriedItem.myItem.itemTag) return;
             item.activeSlot.SetItem(carriedItem); // 여기가 아이템 장착 장소
         }
-        else if(carriedItem == null && item != null && item.activeSlot.myTag == SlotTag.Weapon)
+        else if (carriedItem == null && item != null && item.activeSlot.myTag == SlotTag.Weapon)
         {
             unEquipWeapon();
         }
@@ -59,8 +59,8 @@ public class Inventory : MonoBehaviour
         item.transform.SetParent(draggablesTransform);
 
         if (carriedItem != null && item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != SlotTag.Potion)
-        { 
-                EquipEquipment(carriedItem.activeSlot.myTag, carriedItem, true);
+        {
+            EquipEquipment(carriedItem.activeSlot.myTag, carriedItem, true);
         } // 여기가 아이템 해제 장소
     }
 
@@ -123,7 +123,7 @@ public class Inventory : MonoBehaviour
     public void EquipWeapon(InventoryItem item, bool _EquipCheck)
     {
         if (!_EquipCheck)
-        { 
+        {
             var obj = _playerEquipemntInfo._amorObjectDic[item.myItem.equipmentStr];
             _playerEquipemntInfo._player.WeaponEquip(obj);
         }
@@ -131,7 +131,7 @@ public class Inventory : MonoBehaviour
         _playerEquipemntInfo.EquipStatData(item, _EquipCheck);
     }
 
-    public  void unEquipWeapon()
+    public void unEquipWeapon()
     {
         _playerEquipemntInfo._player.WeaponEquip(null);
     }
@@ -142,58 +142,73 @@ public class Inventory : MonoBehaviour
         // 장비 효과 player에 주기
     }
 
-    public void SpawnInventoryItem(Item item = null)
+    public void SpawnInventoryItem(Item item, int _number = 1)
     {
         Item _item = item;
-        int _itemNum = -1;
-        bool _createCheck = false;
+
         if (_item == null)
         { _item = PickRandomItem(); }
 
-        for (int i = 0; i < inventorySlots.Length; i++)
+        if (_item.itemTag != SlotTag.None && _item.itemTag != SlotTag.Potion)
+            _number = 1;
+
+
+        if (_item.itemTag == SlotTag.None || _item.itemTag == SlotTag.Potion)
         {
-            if (inventorySlots[i].myItem != null
-                 && _item.sprite == inventorySlots[i].myItem.myItem.sprite
-                  && inventorySlots[i].myItem.currentCount < inventorySlots[i].myItem.myItem.MaxNumber)
+            for (int i = 0; i < inventorySlots.Length; i++)
             {
-                inventorySlots[i].myItem.increaseCount(1);
-                _createCheck = true;
-                break;
+                if (inventorySlots[i].myItem != null
+                     && _item == inventorySlots[i].myItem.myItem)
+                {
+                    if (inventorySlots[i].myItem.currentCount == inventorySlots[i].myItem.myItem.MaxNumber)
+                        continue;
+                    else if (inventorySlots[i].myItem.currentCount + _number > inventorySlots[i].myItem.myItem.MaxNumber)
+                    {
+                        _number += inventorySlots[i].myItem.currentCount;
+                        _number -= inventorySlots[i].myItem.myItem.MaxNumber;
+                        inventorySlots[i].myItem.increaseMax();
+                    }
+                    else
+                    {
+                        inventorySlots[i].myItem.increaseCount(_number);
+                        _number = 0;
+                        break;
+                    }
+                }
             }
-            // Check if the slot is empty
-            else if (inventorySlots[i].myItem == null && _itemNum == -1)
-                _itemNum = i;
+            if (_number > 0)
+            {
+                for (int i = 0; i < inventorySlots.Length; i++)
+                {
+                    if (inventorySlots[i].myItem == null)
+                    {
+                        if (_number > _item.MaxNumber)
+                        {
+                            Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i], _item.MaxNumber);
+                            _number -= _item.MaxNumber;
+                        }
+                        else
+                        {
+                            Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i], _number);
+                            _number = 0;
+                        }
+                    }
+                    if (_number <= 0)
+                        break;
+                }
+            }
         }
-
-        if(!_createCheck)
-            Instantiate(itemPrefab, inventorySlots[_itemNum].transform).Initialize(_item, inventorySlots[_itemNum]);
-    }
-
-    public void SpawnInventoryItem_test(Item item, int _number)
-    {
-        Item _item = item;
-        int _itemNum = -1;
-        bool _createCheck = false;
-        if (_item == null)
-        { _item = PickRandomItem(); }
-
-        for (int i = 0; i < inventorySlots.Length; i++)
+        else
         {
-            if (inventorySlots[i].myItem != null
-                 && _item.sprite == inventorySlots[i].myItem.myItem.sprite
-                  && inventorySlots[i].myItem.currentCount < inventorySlots[i].myItem.myItem.MaxNumber)
+            for (int i = 0; i < inventorySlots.Length; i++)
             {
-                inventorySlots[i].myItem.increaseCount(1);
-                _createCheck = true;
-                break;
+                if (inventorySlots[i].myItem == null)
+                {
+                    Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i], _number);
+                    break;
+                }
             }
-            // Check if the slot is empty
-            else if (inventorySlots[i].myItem == null && _itemNum == -1)
-                _itemNum = i;
         }
-
-        if (!_createCheck)
-            Instantiate(itemPrefab, inventorySlots[_itemNum].transform).Initialize(_item, inventorySlots[_itemNum]);
     }
 
     Item PickRandomItem()

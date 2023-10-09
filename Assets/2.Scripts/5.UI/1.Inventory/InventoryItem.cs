@@ -10,7 +10,7 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
     Image itemIcon;
     TextMeshProUGUI _countText;
 
-    int _currentCount;
+    [SerializeField] int _currentCount;
     public int currentCount { get { return _currentCount; } set { _currentCount = value; } }
     public CanvasGroup canvasGroup { get; private set; }
     public Item myItem { get; set; }
@@ -23,18 +23,25 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         itemIcon = GetComponent<Image>();
     }
 
-    public void Initialize(Item item, InventorySlot parent)
+    public void Initialize(Item item, InventorySlot parent, int _number)
     {
         activeSlot = parent;
         activeSlot.myItem = this;
         myItem = item;
         itemIcon.sprite = item.sprite;
-        currentCount = 1;
+        currentCount = _number;
+        setCount();
     }
 
     public void increaseCount(int num)
     {
         currentCount += num;
+        setCount();
+    }
+
+    public void increaseMax()
+    {
+        currentCount = myItem.MaxNumber;
         setCount();
     }
 
