@@ -219,3 +219,26 @@
       현재 Player의 모습을 띄워놓았습니다.
       그리고 Cursor를 잠궈놓은 상태지만 Inventory를 열 경우에는 커서가 생기고 화면이 회전하거나 플레이어가 공격하는 모션등이 구현되지 return하였습니다.
       (포인터 및 아이템 터치 이동 기능 등은 다시 정리하여 적기로 함)
+
+ ~2023~10~10
+ 1. Inventory & item & spawnItem & EquipItem(skinnedBones) 구현
+    - Inventory의 EquipSlot 칸을 추가하였습니다. (Head, Chest, Legs, Feet, Gloves, Shoulders, Weapon)
+    - Item의 Info를 알려주기 위한 부분을 Inventory의 오른쪽 상단에 구현하였습니다.
+    - 원하는 EquipItem을 장착하게 되면 해당 장비의 외형과 능력치가 적용되도록 구현하였습니다.
+      포인터로 해당 Equip SLot 부분에 장비를 착용시 Player Obj에 추가한 PlayerEquipmentInfo 스크립트에서 외형 부분은 (Item에 있는 Str, Player의 Amor 외형 Obj)
+      으로 딕셔너리를 만들어 Setactvie가 true가 되도록하였습니다. 그리고 item에 있는 att or def 부분의 정보를 가져와 Player의 stat에 적용시켜주었습니다.
+    - Player의 자식 obj 중 Amor obj가 skinned mesh에 있는 bones가 연결되어있지 않아 안뜨는 현상 수정하여 구현 완료.
+      skinned mesh의 inspector창에는 보이지 않는 bones를 skinnedmeshrendererinfo scirpt를 만들어 그 안에 bones를 연결하여 붙여지도록 구현하였습니다.
+    - potion의 구매량에 따라 원래 있던 포션의 개수를 Max로 채우고 나머지 빈칸에 남은 구매량의 potion이 생성되도록 구현하였습니다(노말 템 또한 가능)
+      장비 및 단일개수 아이템들은 1개로 고정하여 개수가 뜨지 않도록 구현하였습니다.
+  2. Player & Monster & Map의 크기를 변경하였습니다.
+     - 원래는 scale을 0.1로 맞추고 terrain의 크기를 128로 고정하려 하였으나 여러부분에서 크기가작아 불편해지는 상황이 많아져서 terrain맵 기준을 1000으로 만들어
+       scale의 크기를 다시 재조정 하였습니다. 그에 맞춰 obj의 비율을 재설정 하였습니다.
+  3. Player Hud 및 현재 타격하고있는 Monster Status Hud UI 구현
+     - Player Hud를 표시하기위한 Ui를 왼쪽 상단에 만들어 두었으나 skill의 쿨타임확인과 인벤토리, 스텟, 스킬창 등등의 Page를 확인하기 위한
+       Ui창을 열게될떄 필요한 Button들이 있어야 하기 때문에 하단에 일자로 만들 예정입니다.
+     - Monter obj 마다 각 체력바 및 이름이 표시되어 있지만 현재 타격하는 몬스터의 정보를 크게 확인하기 위하 상단 가운데에 타격중인 몬스터의 정보를 확인하는
+       Ui를 구현하였습니다.
+  4. Inventory창에 들어가거나 Cursor가 보일 경우 조종 중인 Player의 Animation이 IDLE로 변경 및 Player 조종 불가 상태로 구현하였습니다.
+  5. EQuip slot에서 Weapon 착용 시에 Player의 Animation 변경 및 다른 세세한 부분을 구현하였습니다.
+      
