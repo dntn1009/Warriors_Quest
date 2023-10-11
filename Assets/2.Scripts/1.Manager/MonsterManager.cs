@@ -7,7 +7,7 @@ public class MonsterManager : SingletonMonobehaviour<MonsterManager>
     [Header("Edit Param")]
     [SerializeField] GameObject[] _monsterPrefab; //등록할 몬스터
     [SerializeField] GameObject _genPositionPrefab; //몬스터가 소환될 위치
-    [SerializeField] int _maxNumber = 6;
+    [SerializeField] int _maxNumber = 8;
 
     GameObjectPool<MonsterController>[] _monsterPool;
     public SpawnPos[] _genPosition; // 소환될 위치들

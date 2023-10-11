@@ -685,7 +685,7 @@ Transform:
   m_GameObject: {fileID: 711057290755009528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 711057290754586576}
@@ -780,8 +780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756563354b6b20c47a464ecfff1acc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 0.25
-  _runSpeed: 0.5
+  _walkSpeed: 5
+  _runSpeed: 7
   _data: {fileID: 11400000, guid: b44493549e7201541837f13050cd9cab, type: 2}
   _stat:
     _name: 
@@ -798,9 +798,9 @@ MonoBehaviour:
     _dodgerate: 0
     _hitrate: 0
     _exp: 0
-  _limitWidth: 2
-  _limitFrontBack: 2
-  _attackPos: 0.3
+  _limitWidth: 32
+  _limitFrontBack: 32
+  _attackPos: 1
   _preemptivePos: 0
   _AttackAreaPrefab: {fileID: 2039571804}
   _isPreemptive: 0

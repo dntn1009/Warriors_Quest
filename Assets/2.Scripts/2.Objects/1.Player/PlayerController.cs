@@ -64,7 +64,12 @@ public class PlayerController : PlayerStat
     void Update()
     {
         if (Cursor.visible)
+        {
+            if (GetAnimState() != AnyType.IDLE)
+                ChangeAniFromType(AnyType.IDLE);
+
             return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -149,6 +154,8 @@ public class PlayerController : PlayerStat
                     ChangeAniFromType(AnyType.IDLE);
             }
         }
+        if (_charController.isGrounded)
+            mv.y = 0f;
         _charController.Move(mv * Time.deltaTime);
     }
     public Vector3 Player_cameraMove(Vector3 dv)
@@ -244,6 +251,12 @@ public class PlayerController : PlayerStat
     {
         if (_isDeath) return;
         _stat.HP -= Mathf.CeilToInt(damage);
+        if (_stat.HP <= 0f)
+        {
+            _stat.HP = 0;
+            ChangeAniFromType(AnyType.DEATH);
+        }
+
         _statusbar.SetHP(this);
 
         if (attackType == AttackType.Dodge) return;
@@ -253,10 +266,6 @@ public class PlayerController : PlayerStat
         if (attackType == AttackType.Critical)
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Player_Hit").transform.position, damage.ToString(), Color.yellow); //데미지  UI 표시
 
-        if (_stat.HP <= 0f)
-        {
-            ChangeAniFromType(AnyType.DEATH);
-        }
     }
     //Attack Methods
 
@@ -275,6 +284,7 @@ public class PlayerController : PlayerStat
                 AttackType type = Util.AttackProcess(this, mon, out damage);
                 mon.SetDemage(type, damage);
                 Debug.Log("데미지 : " + damage);
+                _monstatusbar.MonsterSetHP(mon);
                 if (type == AttackType.Dodge) return;
                 else if (type == AttackType.Normal)
                 {
@@ -290,7 +300,6 @@ public class PlayerController : PlayerStat
                     effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
                     Destroy(effect, 1.5f);
                 }
-                _monstatusbar.Init_StatusSetting(mon);
             }
         }
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)

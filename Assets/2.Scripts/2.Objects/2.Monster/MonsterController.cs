@@ -275,8 +275,8 @@ public class MonsterController : MonsterStat
         dir.y = 0f;
         RaycastHit hit;
         //+ Vector3.up * 1f
-        Debug.DrawRay(transform.position + Vector3.up * 0.1f, dir.normalized * distance, Color.red);
-        if (Physics.Raycast(transform.position + Vector3.up * 0.1f, dir.normalized, out hit, distance, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Player")))
+        Debug.DrawRay(transform.position + Vector3.up * 1f, dir.normalized * distance, Color.red);
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, dir.normalized, out hit, distance, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Player")))
         {
             if (hit.collider.CompareTag("Player"))
                 return true;
@@ -290,6 +290,13 @@ public class MonsterController : MonsterStat
 
         _isHit = true; // 공격시 따라가게 하기위함 (CHASE)
         _stat.HP -= Mathf.CeilToInt(damage);
+        if (_stat.HP <= 0f)
+        {
+            _stat.HP = 0;
+            ChangeAniFromType(AnyType.DEATH);
+            _state = BehaviourState.DEATH;
+        }
+
         _hudObjcet.UpdateHPBar(_stat.HP, _stat.MAXHP);
 
         if (attackType == AttackType.Dodge) return;
@@ -302,12 +309,6 @@ public class MonsterController : MonsterStat
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Monster_Hit").transform.position, damage.ToString(), Color.red); //데미지  UI 표시
             ChangeAniFromType(AnyType.HIT);
             _navAgent.isStopped = true;
-        }
-
-        if (_stat.HP <= 0f)
-        {
-            ChangeAniFromType(AnyType.DEATH);
-            _state = BehaviourState.DEATH;
         }
     }
     //Attack Methods

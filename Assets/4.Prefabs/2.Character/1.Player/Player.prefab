@@ -5945,7 +5945,7 @@ Transform:
   m_GameObject: {fileID: 7510741699056685435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -32, y: 30, z: -32}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2287976179202218847}
@@ -5971,9 +5971,9 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.85
   m_Radius: 0.35
-  m_SlopeLimit: 45
-  m_StepOffset: 0.1
-  m_SkinWidth: 0.02
+  m_SlopeLimit: 15
+  m_StepOffset: 0.5
+  m_SkinWidth: 0.04
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.925, z: 0}
 --- !u!95 &3859725274617827771
@@ -6009,10 +6009,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stat:
+    _name: 
     _maxhp: 0
     _hp: 0
     _maxmp: 0
     _mp: 0
+    _level: 0
     _attack: 0
     _buffattack: 0
     _criattack: 0
@@ -6020,13 +6022,16 @@ MonoBehaviour:
     _defence: 0
     _dodgerate: 0
     _hitrate: 0
-  _movSpeed: 1.5
+    _exp: 0
+  _movSpeed: 8
   WeaponPos: {fileID: 2295380717471391972}
   equipWeapon: {fileID: 0}
   _AttackAreaPrefab: {fileID: 1473756782}
   _fxHitPrefab:
   - {fileID: 164312, guid: 1ba67cac78ceada41a4fff7198da83e0, type: 3}
   - {fileID: 173220, guid: fdf6314b22bdd524982979ed8bde07f3, type: 3}
+  _statusbar: {fileID: 0}
+  _monstatusbar: {fileID: 0}
 --- !u!114 &1548511572
 MonoBehaviour:
   m_ObjectHideFlags: 0

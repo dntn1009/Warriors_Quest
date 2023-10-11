@@ -63,7 +63,9 @@ public class StatusController : MonoBehaviour
     public void MonsterSetHP(MonsterController mon)
     {
         Init_StatusSetting(mon);
-        Invoke("SetActiveFalse", 4f);
+        if (IsInvoking("SetActiveFalse"))
+            CancelInvoke("SetActiveFalse");
+                    Invoke("SetActiveFalse", 2f);
     }
     
     void SetActiveFalse()
