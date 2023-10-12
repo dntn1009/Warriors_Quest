@@ -5945,7 +5945,7 @@ Transform:
   m_GameObject: {fileID: 7510741699056685435}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -32, y: 30, z: -32}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2287976179202218847}
@@ -5972,7 +5972,7 @@ CharacterController:
   m_Height: 1.85
   m_Radius: 0.35
   m_SlopeLimit: 15
-  m_StepOffset: 0.5
+  m_StepOffset: 0.4
   m_SkinWidth: 0.04
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.925, z: 0}

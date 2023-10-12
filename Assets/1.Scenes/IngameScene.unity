@@ -3666,7 +3666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectTofollow: {fileID: 0}
   _realCamera: {fileID: 1182316676}
-  followSpeed: 10
+  followSpeed: 12
   sensitivity: 200
   clampAngle: 70
   minDistance: 7.5
@@ -8352,6 +8352,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
+      propertyPath: _movSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: _statusbar
       value: 
       objectReference: {fileID: 1789506217}
@@ -8359,17 +8363,13 @@ PrefabInstance:
       propertyPath: _monstatusbar
       value: 
       objectReference: {fileID: 1601270280}
-    - target: {fileID: 3859725274617827770, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
-      propertyPath: m_StepOffset
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -432.07
+      value: -370.6
       objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8377,7 +8377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -293.46
+      value: -345
       objectReference: {fileID: 0}
     - target: {fileID: 7165318698277571521, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: m_LocalRotation.w
