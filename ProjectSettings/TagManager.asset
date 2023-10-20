@@ -17,8 +17,8 @@ TagManager:
   - Player
   - AttackArea
   - Monster
-  - 
-  - 
+  - MiniMapMark
+  - MapMark
   - 
   - 
   - 
