@@ -623,7 +623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 1}
+  m_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3687,6 +3687,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a5ae6afd17d7324c8e81718bd5f8ba9, type: 2}
   - {fileID: 11400000, guid: 821f8de02029c4a45a61d73420769c34, type: 2}
   - {fileID: 11400000, guid: 45c280844ff907f4b89e740dea44bd78, type: 2}
+  - {fileID: 11400000, guid: bff057e996a2f8747a2db82bff44f6b8, type: 2}
+  - {fileID: 11400000, guid: 85c0c758fb45fc140869e2a2e6cd8d25, type: 2}
   _closeBtn: {fileID: 1670226885}
   giveItemBtn: {fileID: 1207768424}
   _playerEquipemntInfo: {fileID: 1548511572}

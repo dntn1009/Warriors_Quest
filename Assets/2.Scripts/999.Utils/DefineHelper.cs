@@ -16,9 +16,9 @@ namespace DefineHelper
         ATTACK3,
         JUMP,
         HIT,
-        SKILL1,         // 단일
-        SKILL2,         // 광역
-        SKILL3,         // 버프
+        BUFFSKILL,         // 버프
+        CROSSSKILL,         // 크로스
+        JUMPSKILL,         // 점프
         DEATH                       = 99
     }
 

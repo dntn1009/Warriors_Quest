@@ -1,4 +1,5 @@
 using DefineHelper;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +13,11 @@ public class PlayerController : PlayerStat
     [SerializeField] GameObject[] _fxHitPrefab;
     [SerializeField] StatusController _statusbar; // PlayerStatus
     [SerializeField] StatusController _monstatusbar; // 가운데 상단 몬스터 hp 표시
+    [Header("Edit Param")]
+    [SerializeField] SkillData _buffSkill; //Q Key
+    [SerializeField] Transform _buffPos;
+    [SerializeField] SkillData _crossSkill; //E Key
+    [SerializeField] SkillData _jumpSkill; //R Key
     //참조 변수
     //Animator _animController;
     CharacterController _charController;
@@ -22,7 +28,6 @@ public class PlayerController : PlayerStat
     bool _isJump; // 점프
     bool _isEquip; // 장비 착용
 
-
     List<AnyType> _comboList = new List<AnyType>() { AnyType.ATTACK1, AnyType.ATTACK2, AnyType.ATTACK3 }; // 기본공격 시 연계되는 동작 구현하기 위함.
     Queue<KeyCode> _keyBuffer = new Queue<KeyCode>();
     bool _isAttack
@@ -30,6 +35,26 @@ public class PlayerController : PlayerStat
         get
         {
             if (GetAnimState() == AnyType.ATTACK1 || GetAnimState() == AnyType.ATTACK2 || GetAnimState() == AnyType.ATTACK3) // 기본 공격시 되는 것들과 안되는 것들 구분하기 위함.  
+                return true;
+            return false;
+        }
+    }
+
+    bool _isSkill
+    {
+        get
+        {
+            if (GetAnimState() == AnyType.BUFFSKILL || GetAnimState() == AnyType.CROSSSKILL || GetAnimState() == AnyType.JUMPSKILL)
+                return true;
+            return false;
+        }
+    }
+
+    bool _isBasic
+    {
+        get 
+        {
+            if(GetAnimState() == AnyType.IDLE || GetAnimState() == AnyType.RUN )
                 return true;
             return false;
         }
@@ -67,9 +92,11 @@ public class PlayerController : PlayerStat
         {
             if (GetAnimState() != AnyType.IDLE)
                 ChangeAniFromType(AnyType.IDLE);
-
             return;
         }
+
+        if (_isSkill)
+            return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -85,7 +112,7 @@ public class PlayerController : PlayerStat
         }
         if (Input.GetMouseButtonDown(0))
         {
-            if ((GetAnimState() == AnyType.IDLE || GetAnimState() == AnyType.RUN) && _isEquip)
+            if (_isBasic && _isEquip)
             {
                 ChangeAniFromType(AnyType.ATTACK1);
                 AttackForward();
@@ -103,6 +130,14 @@ public class PlayerController : PlayerStat
         if (Input.GetMouseButtonUp(0))
         {
             _isPressAttack = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (_isEquip && _isBasic)
+            {
+                ChangeAniFromType(AnyType.BUFFSKILL);
+                BuffSkill(_buffSkill._fxSkillPrefab, _buffSkill._demage, _buffSkill._coolTime);
+            }
         }
         //공격메서드 추가
         Move();
@@ -291,14 +326,14 @@ public class PlayerController : PlayerStat
                     var effect = Instantiate(_fxHitPrefab[0]);
                     effect.transform.position = dummy.transform.position;
                     effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1.5f);
+                    Destroy(effect, 1f);
                 }
                 else if (type == AttackType.Critical)
                 {
                     var effect = Instantiate(_fxHitPrefab[1]);
                     effect.transform.position = dummy.transform.position;
                     effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1.5f);
+                    Destroy(effect, 1f);
                 }
             }
         }
@@ -338,6 +373,16 @@ public class PlayerController : PlayerStat
 
     #endregion [Attack & Attack Animation Methods]
 
+    #region [Skill Methods]
+    public void BuffSkill(GameObject fxPrefab, float buffatk, float time)
+    {
+        var obj = Instantiate(fxPrefab, _buffPos);
+        _stat.BUFFATTACK += buffatk;
+        StartCoroutine(Couroutine_BuffSkill(buffatk, time));
+    }
+    
+    #endregion
+
     #region Attack KeyBufferMethods
     void ReleaseKeyBuffer()
     {
@@ -346,6 +391,17 @@ public class PlayerController : PlayerStat
     #endregion
 
     #region Couroutine Methods
+    IEnumerator Couroutine_BuffSkill(float buffatk, float cooltime)
+    {
+        while (cooltime >= 1f)
+        {
+            cooltime -= Time.deltaTime;
+            //image.fillAmount = (1.0f / cool);
+            yield return new WaitForFixedUpdate();
+        }
+        _stat.BUFFATTACK -= buffatk;
+    }   
+
 
     #endregion
 }
