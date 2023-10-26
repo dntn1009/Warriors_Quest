@@ -2430,7 +2430,6 @@ GameObject:
   m_Component:
   - component: {fileID: 324245808}
   - component: {fileID: 324245807}
-  - component: {fileID: 324245806}
   m_Layer: 0
   m_Name: Map_Camera
   m_TagString: Untagged
@@ -2438,14 +2437,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &324245806
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 324245805}
-  m_Enabled: 1
 --- !u!20 &324245807
 Camera:
   m_ObjectHideFlags: 0
@@ -11267,9 +11258,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
+      propertyPath: _jumpSkill
+      value: 
+      objectReference: {fileID: 11400000, guid: 3cce3870025cf754a8b68d04668bc9ff, type: 2}
+    - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: _statusbar
       value: 
       objectReference: {fileID: 1789506217}
+    - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
+      propertyPath: _crossSkill
+      value: 
+      objectReference: {fileID: 11400000, guid: 3a58ede906a92534c86a4a405f1d0ab8, type: 2}
     - target: {fileID: 3859725274617827717, guid: c214c1eb3c8a11c4da8243f508d34ab5, type: 3}
       propertyPath: _monstatusbar
       value: 

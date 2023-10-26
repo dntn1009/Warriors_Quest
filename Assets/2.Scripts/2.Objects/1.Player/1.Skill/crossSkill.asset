@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: crossSkill
   m_EditorClassIdentifier: 
   _fxSkillPrefab: {fileID: 0}
-  _demage: 0
-  _coolTime: 0
+  _demage: 0.5
+  _coolTime: 6

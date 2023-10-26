@@ -15,7 +15,7 @@ public class Stat
     [SerializeField] int _mp;
     [SerializeField] int _level;
     [SerializeField] float _attack;
-    [SerializeField] float _buffattack;
+    [SerializeField] float _skillattack;
     [SerializeField] float _criattack;
     [SerializeField] float _crirate;
     [SerializeField] float _defence;
@@ -26,7 +26,7 @@ public class Stat
     //position
     Vector3 _genpos;
     // 정보 변수 (Data)
-    public Stat(string name, int maxhp, int hp, int maxmp, int mp, int level, float attack, float buffattack, float criattack, float crirate, float defence, float dodgerate, float hitrate, int exp)
+    public Stat(string name, int maxhp, int hp, int maxmp, int mp, int level, float attack, float skillattack, float criattack, float crirate, float defence, float dodgerate, float hitrate, int exp)
     {
         this._name = name;
         this._maxhp = maxhp;
@@ -35,7 +35,7 @@ public class Stat
         this._mp = mp;
         this._level = level;
         this._attack = attack;
-        this._buffattack = buffattack;
+        this._skillattack = skillattack;
         this._criattack = criattack;
         this._crirate = crirate;
         this._defence = defence;
@@ -50,7 +50,7 @@ public class Stat
         this._maxhp = this._hp = _data._hp;
         this._level = _data._level;
         this._attack = _data._attack;
-        this._buffattack = _data._buffattack;
+        this._skillattack = _data._skillattack;
         this._criattack = _data._criattack;
         this._crirate = _data._crirate;
         this._defence = _data._denfence;
@@ -68,7 +68,7 @@ public class Stat
     public int MP { get { return _mp; } set { _mp = value; } }
     public int LEVEL { get { return _level; } set { _level = value; } }
     public float ATTACK { get { return _attack; } set { _attack = value; } }
-    public float BUFFATTACK { get { return _buffattack; } set { _buffattack = value; } }
+    public float SKILLATTACK { get { return _skillattack; } set { _skillattack = value; } }
     public float CRIATTACK { get { return _criattack; } set { _criattack = value; } }
     public float CRIRATE { get { return _crirate; } set { _crirate = value; } }
     public float DEFENCE { get { return _defence; } set { _defence = value; } }

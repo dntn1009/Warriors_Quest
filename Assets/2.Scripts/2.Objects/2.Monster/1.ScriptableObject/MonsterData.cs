@@ -9,7 +9,7 @@ public class MonsterData : ScriptableObject
     public int _hp;
     public int _level;
     public float _attack;
-    public float _buffattack;
+    public float _skillattack;
     public float _criattack;
     public float _crirate;
     public float _denfence;
