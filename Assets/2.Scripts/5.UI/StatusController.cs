@@ -16,7 +16,6 @@ public class StatusController : MonoBehaviour
     [SerializeField] TextMeshProUGUI Hp_text;
     [SerializeField] TextMeshProUGUI Mp_text;
 
-
     #region [Init Setting Methods]
     public void Init_StatusSetting(PlayerController _player)
     {

@@ -3,12 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using DefineHelper;
 using TMPro;
+using UnityEngine.UI;
 
 public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
+    [Header("Demage")]
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
+
+    [Header("Inventory")]
     [SerializeField] GameObject Inventory;
+
+    [Header("Skill & Hot Bar")]
+    [SerializeField] Image Skillbar_Q;
+    [SerializeField] TextMeshProUGUI SkillText_Q;
+    [SerializeField] Image Skillbar_E;
+    [SerializeField] TextMeshProUGUI SkillText_E;
+    [SerializeField] Image Skillbar_R;
+    [SerializeField] TextMeshProUGUI SkillText_R;
 
     //정보 변수
     MapType _currentMap;
@@ -99,6 +111,54 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
 
     #endregion [Inventory UI Methods]
+
+    #region [Skill & Hot bar key Methods]
+
+    public void Qskill_CoolTime(float Initcool, float cooltime)
+    {
+        SkillText_Q.gameObject.SetActive(true);
+        Skillbar_Q.fillAmount = 1 - (cooltime / Initcool);
+        int cool = (int)cooltime;
+        if (cool > 60)
+            SkillText_Q.text = cool / 60 + "m";
+        else
+            SkillText_Q.text = cool.ToString();
+
+        if (cooltime <= 1)
+            SkillText_Q.gameObject.SetActive(false);
+
+    }
+
+    public void Eskill_CoolTime(float Initcool, float cooltime)
+    {
+        SkillText_E.gameObject.SetActive(true);
+        Skillbar_E.fillAmount = 1 - (cooltime / Initcool);
+        int cool = (int)cooltime;
+        if (cool > 60)
+            SkillText_E.text = cool / 60 + "m";
+        else
+            SkillText_E.text = cool.ToString();
+
+        if (cooltime <= 1)
+            SkillText_E.gameObject.SetActive(false);
+
+    }
+
+    public void Rskill_CoolTime(float Initcool, float cooltime)
+    {
+        SkillText_R.gameObject.SetActive(true);
+        Skillbar_R.fillAmount = 1 - (cooltime / Initcool);
+        int cool = (int)cooltime;
+        if (cool > 60)
+            SkillText_R.text = cool / 60 + "m";
+        else
+            SkillText_R.text = cool.ToString();
+
+        if (cooltime <= 1)
+            SkillText_R.gameObject.SetActive(false);
+    }
+
+    #endregion [Skill & Hot bar key Methods]
 
     #region Couroutine Methods
     IEnumerator MonsterReSpwan()

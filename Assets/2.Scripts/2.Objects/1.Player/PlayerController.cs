@@ -146,6 +146,7 @@ public class PlayerController : PlayerStat
                 _isBuffSkill = !_isBuffSkill;
                 ChangeAniFromType(AnyType.BUFFSKILL);
                 BuffSkill(_buffSkill, _buffPos);
+                return;
             }
         }
         if (Input.GetKeyDown(KeyCode.E))
@@ -155,7 +156,7 @@ public class PlayerController : PlayerStat
                 _isCrossSkill = !_isCrossSkill;
                 ChangeAniFromType(AnyType.CROSSSKILL);
                 CrossSkill(_crossSkill);
-
+                return;
             }
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -165,6 +166,7 @@ public class PlayerController : PlayerStat
                 _isJumpSkill = !_isJumpSkill;
                 ChangeAniFromType(AnyType.JUMPSKILL);
                 JumpSkill(_jumpSkill);
+                return;
             }
         }
         //공격메서드 추가
@@ -478,10 +480,12 @@ public class PlayerController : PlayerStat
     #region Couroutine Methods
     IEnumerator Couroutine_BuffSkill(float buffatk, float cooltime)
     {
+        float Initcool = cooltime;
+
         while (cooltime >= 1f)
         {
             cooltime -= Time.deltaTime;
-            //image.fillAmount = (1.0f / cool);
+            IngameManager.Instance.Qskill_CoolTime(Initcool, cooltime);
             yield return new WaitForFixedUpdate();
         }
         _stat.ATTACK -= buffatk;
@@ -490,27 +494,30 @@ public class PlayerController : PlayerStat
 
     IEnumerator Couroutine_CrossSkill(float cooltime)
     {
-        while (cooltime >= 1f)
+        float Initcool = cooltime;
+        while (cooltime >= 0f)
         {
             cooltime -= Time.deltaTime;
-            //image.fillAmount = (1.0f / cool);
+            IngameManager.Instance.Eskill_CoolTime(Initcool, cooltime);
             yield return new WaitForFixedUpdate();
         }
         _isCrossSkill = !_isCrossSkill;
     } // CrossSkill 쿨타임
     IEnumerator Couroutine_JumpSkill(float cooltime)
     {
-        while (cooltime >= 1f)
+        float Initcool = cooltime;
+
+        while (cooltime >= 0f)
         {
             cooltime -= Time.deltaTime;
-            //image.fillAmount = (1.0f / cool);
+            IngameManager.Instance.Rskill_CoolTime(Initcool, cooltime);
             yield return new WaitForFixedUpdate();
         }
         _isJumpSkill = !_isJumpSkill;
     } // JumpSkill 쿨타임
     IEnumerator Couroutine_HPPotion(float cooltime)
     {
-        while (cooltime >= 1f)
+        while (cooltime >= 0f)
         {
             cooltime -= Time.deltaTime;
             //image.fillAmount = (1.0f / cool);
