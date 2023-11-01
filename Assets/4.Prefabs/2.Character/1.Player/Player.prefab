@@ -6280,7 +6280,7 @@ MonoBehaviour:
     _mp: 0
     _level: 0
     _attack: 0
-    _buffattack: 0
+    _skillattack: 0
     _criattack: 0
     _crirate: 0
     _defence: 0
@@ -6294,12 +6294,14 @@ MonoBehaviour:
   _fxHitPrefab:
   - {fileID: 164312, guid: 1ba67cac78ceada41a4fff7198da83e0, type: 3}
   - {fileID: 173220, guid: fdf6314b22bdd524982979ed8bde07f3, type: 3}
+  - {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+  - {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
   _statusbar: {fileID: 0}
   _monstatusbar: {fileID: 0}
   _buffSkill: {fileID: 11400000, guid: 053b419c73720914e99c007ecb5bbc45, type: 2}
   _buffPos: {fileID: 900759343}
-  _crossSkill: {fileID: 0}
-  _jumpSkill: {fileID: 0}
+  _crossSkill: {fileID: 11400000, guid: 3a58ede906a92534c86a4a405f1d0ab8, type: 2}
+  _jumpSkill: {fileID: 11400000, guid: 3cce3870025cf754a8b68d04668bc9ff, type: 2}
 --- !u!114 &1548511572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7213,6 +7215,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2295380717471391972}
     m_Modifications:
+    - target: {fileID: 658522520581079014, guid: ebec99c53d49744418b4b8ed5035fe0b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1556867216915445165, guid: ebec99c53d49744418b4b8ed5035fe0b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -7284,6 +7290,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2295380717471391972}
     m_Modifications:
+    - target: {fileID: 1960272355, guid: 88298cc7113a7aa45a733ca80072f103, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 536788939789660260, guid: 88298cc7113a7aa45a733ca80072f103, type: 3}
       propertyPath: m_Name
       value: Wooden_Stick
@@ -7405,6 +7415,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1753325093932854839, guid: a3884a940f9a8d3418a27008b045837c, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2739490078922110816, guid: a3884a940f9a8d3418a27008b045837c, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

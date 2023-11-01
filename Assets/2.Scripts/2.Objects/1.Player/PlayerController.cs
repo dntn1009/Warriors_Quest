@@ -23,6 +23,7 @@ public class PlayerController : PlayerStat
     CharacterController _charController;
     Transform _mainCamera;
     AttackAreUnitFind[] _AttackAreUnitFind;
+    TrailRenderer WeaponTrail;
     //정보 변수
     Vector3 mv; // Player Object Vector3
     bool _isJump; // 점프
@@ -124,6 +125,7 @@ public class PlayerController : PlayerStat
             {
                 ChangeAniFromType(AnyType.ATTACK1);
                 AttackForward();
+                WeaponTrail.enabled = true;
             }
             if (_isAttack)
             {
@@ -145,6 +147,7 @@ public class PlayerController : PlayerStat
             {
                 _isBuffSkill = !_isBuffSkill;
                 ChangeAniFromType(AnyType.BUFFSKILL);
+                WeaponTrail.enabled = true;
                 BuffSkill(_buffSkill, _buffPos);
                 return;
             }
@@ -155,16 +158,18 @@ public class PlayerController : PlayerStat
             {
                 _isCrossSkill = !_isCrossSkill;
                 ChangeAniFromType(AnyType.CROSSSKILL);
+                WeaponTrail.enabled = true;
                 CrossSkill(_crossSkill);
                 return;
             }
-        }
+        } 
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (_isEquip && !_isJumpSkill && _isBasic)
             {
                 _isJumpSkill = !_isJumpSkill;
                 ChangeAniFromType(AnyType.JUMPSKILL);
+                WeaponTrail.enabled = true;
                 JumpSkill(_jumpSkill);
                 return;
             }
@@ -286,12 +291,13 @@ public class PlayerController : PlayerStat
         {
             equipWeapon = null;
             ChangeEquipWeaponMotion(0);
+            WeaponTrail = null;
             _isEquip = false;
         }
         else
         {
             equipWeapon = obj;
-
+            WeaponTrail = obj.transform.GetChild(0).GetComponent<TrailRenderer>();
             if (_isEquip)
                 equipWeapon.SetActive(true);
             else
@@ -392,10 +398,12 @@ public class PlayerController : PlayerStat
             if (_comboIndex >= _comboList.Count)
                 _comboIndex = 0;
             ChangeAniFromType(_comboList[_comboIndex]);
+            WeaponTrail.enabled = true;
         }
         else
         {
             ChangeAniFromType(AnyType.IDLE);
+            WeaponTrail.enabled = false;
             _comboIndex = 0;
         }
     }
@@ -465,6 +473,7 @@ public class PlayerController : PlayerStat
     {
         _skillatt = 0;
         _stat.SKILLATTACK = 0;
+        WeaponTrail.enabled = false;
         ChangeAniFromType(AnyType.IDLE);
     } // AttackSkill 애니메이션 종료
 
