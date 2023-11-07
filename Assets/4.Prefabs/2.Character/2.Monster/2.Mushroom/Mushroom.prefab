@@ -44,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 4.5, z: 5}
-  m_Center: {x: 0, y: 2.25, z: 2.5}
+  m_Size: {x: 4, y: 4.5, z: 7}
+  m_Center: {x: 0, y: 2.25, z: 3.5}
 --- !u!114 &13185063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,7 +758,7 @@ NavMeshAgent:
   m_Radius: 1.25
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 1
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -783,26 +783,16 @@ MonoBehaviour:
   _walkSpeed: 4
   _runSpeed: 5
   _data: {fileID: 11400000, guid: b44493549e7201541837f13050cd9cab, type: 2}
-  _stat:
-    _name: 
-    _maxhp: 0
-    _hp: 0
-    _maxmp: 0
-    _mp: 0
-    _level: 0
-    _attack: 0
-    _buffattack: 0
-    _criattack: 0
-    _crirate: 0
-    _defence: 0
-    _dodgerate: 0
-    _hitrate: 0
-    _exp: 0
+  _hpmax: 0
+  _hp: 0
   _limitWidth: 32
   _limitFrontBack: 32
-  _attackPos: 1
+  _attackPos: 1.45
   _preemptivePos: 0
   _AttackAreaPrefab: {fileID: 2039571804}
+  _fxHitPrefab:
+  - {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
+  - {fileID: 394095070506994215, guid: ac010ad9363c7134abc30db32de4a5fe, type: 3}
   _isPreemptive: 0
   _hudObjcet: {fileID: 751708458}
 --- !u!1 &711057290755009530

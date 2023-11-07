@@ -25,13 +25,13 @@ public class StatusController : MonoBehaviour
         Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
     }
 
-    public void Init_StatusSetting(MonsterController _mon)
+    public void Init_StatusSetting(MonsterStat _mon)
     {
         this.gameObject.SetActive(true);
-        obj_name.text = _mon._stat.NAME;
-        obj_level.text = "Lv." + _mon._stat.LEVEL;
-        Hp_text.text = _mon._stat.HP + " / " + _mon._stat.MAXHP;
-        float normalizedHP = _mon._stat.HP / (float)_mon._stat.MAXHP;
+        obj_name.text = _mon.NAME;
+        obj_level.text = "Lv." + _mon.LEVEL;
+        Hp_text.text = _mon.HP + " / " + _mon.HPMAX;
+        float normalizedHP = _mon.HP / (float)_mon.HPMAX;
         Hp_bar.value = normalizedHP;
         if (normalizedHP <= 0f)
             Hp_bar.value = 0f;

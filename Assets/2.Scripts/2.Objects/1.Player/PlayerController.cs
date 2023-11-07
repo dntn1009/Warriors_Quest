@@ -18,6 +18,7 @@ public class PlayerController : PlayerStat
     [SerializeField] Transform _buffPos; // Healing(Potion) + Q Buff Skill  Transform
     [SerializeField] SkillData _crossSkill; //E Key
     [SerializeField] SkillData _jumpSkill; //R Key
+    [SerializeField] Transform _ExploPos;
     //참조 변수
     //Animator _animController;
     CharacterController _charController;
@@ -157,6 +158,7 @@ public class PlayerController : PlayerStat
             if(_isEquip && !_isCrossSkill && _isBasic)
             {
                 _isCrossSkill = !_isCrossSkill;
+                _fxHitPrefab[2].SetActive(true);
                 ChangeAniFromType(AnyType.CROSSSKILL);
                 WeaponTrail.enabled = true;
                 CrossSkill(_crossSkill);
@@ -168,6 +170,7 @@ public class PlayerController : PlayerStat
             if (_isEquip && !_isJumpSkill && _isBasic)
             {
                 _isJumpSkill = !_isJumpSkill;
+                _fxHitPrefab[3].SetActive(true);
                 ChangeAniFromType(AnyType.JUMPSKILL);
                 WeaponTrail.enabled = true;
                 JumpSkill(_jumpSkill);
@@ -361,15 +364,11 @@ public class PlayerController : PlayerStat
                 {
                     var effect = Instantiate(_fxHitPrefab[0]);
                     effect.transform.position = dummy.transform.position;
-                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1f);
                 }
                 else if (type == AttackType.Critical)
                 {
                     var effect = Instantiate(_fxHitPrefab[1]);
                     effect.transform.position = dummy.transform.position;
-                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1f);
                 }
             }
         }
@@ -437,6 +436,15 @@ public class PlayerController : PlayerStat
     {
         float damage = 0f;
         var unitList = _AttackAreUnitFind[_areaNum].UnitList;
+
+        if (GetAnimState() == AnyType.JUMPSKILL)
+        {
+            var obj = Instantiate(_jumpSkill._fxSkillPrefab);
+            obj.transform.position = _ExploPos.transform.position;
+            IngameManager.Instance.EffectParent(obj);
+        }
+
+
         for (int i = 0; i < unitList.Count; i++)
         {
             var mon = unitList[i].GetComponent<MonsterController>();
@@ -453,15 +461,11 @@ public class PlayerController : PlayerStat
                 {
                     var effect = Instantiate(_fxHitPrefab[0]);
                     effect.transform.position = dummy.transform.position;
-                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1f);
                 }
                 else if (type == AttackType.Critical)
                 {
                     var effect = Instantiate(_fxHitPrefab[1]);
                     effect.transform.position = dummy.transform.position;
-                    effect.transform.rotation = Quaternion.FromToRotation(effect.transform.forward, (unitList[i].transform.position - transform.position).normalized);
-                    Destroy(effect, 1f);
                 }
             }
         }
@@ -474,6 +478,10 @@ public class PlayerController : PlayerStat
         _skillatt = 0;
         _stat.SKILLATTACK = 0;
         WeaponTrail.enabled = false;
+        if (GetAnimState() == AnyType.CROSSSKILL)
+            _fxHitPrefab[2].SetActive(false);
+        else if (GetAnimState() == AnyType.JUMPSKILL)
+            _fxHitPrefab[3].SetActive(false);
         ChangeAniFromType(AnyType.IDLE);
     } // AttackSkill 애니메이션 종료
 
@@ -486,7 +494,7 @@ public class PlayerController : PlayerStat
     }
     #endregion
 
-    #region Couroutine Methods
+    #region [Couroutine Methods]
     IEnumerator Couroutine_BuffSkill(float buffatk, float cooltime)
     {
         float Initcool = cooltime;
@@ -544,5 +552,6 @@ public class PlayerController : PlayerStat
         _isBuffSkill = !_isBuffSkill;
     } // MPPotion 쿨타임
 
-    #endregion
+    #endregion [Couroutine Methods]
+
 }

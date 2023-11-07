@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DefineHelper;
+using System.Collections;
+using UnityEngine;
 
 public class MonsterController : MonsterStat
 {
@@ -11,6 +10,7 @@ public class MonsterController : MonsterStat
     [SerializeField] float _attackPos = 0.3f; // 공격 범위
     [SerializeField] float _preemptivePos = 1.2f; // 선제 공격 범위
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
+    [SerializeField] GameObject[] _fxHitPrefab;
     [SerializeField] bool _isPreemptive; // 선제 공격하는 몬스터인지 아닌지 체크
     [SerializeField] HudController _hudObjcet;
     //참조 변수
@@ -30,24 +30,38 @@ public class MonsterController : MonsterStat
     PlayerController _player;
     int _monNum;
 
-    public bool _isDeath { get { if (_state == BehaviourState.DEATH)
-                                    return true;
-                                  return false; } }
-
-    public bool _isCriticalHit { get { if (GetAnimState() == AnyType.HIT)
+    public bool _isDeath
+    {
+        get
+        {
+            if (_state == BehaviourState.DEATH)
                 return true;
-            return false;} }
+            return false;
+        }
+    } // Die 애니메이션
+    public bool _isZone
+    {
+        get
+        {
+            if (this.transform.position.x > _genPosition.x + _limitWidth
+                || this.transform.position.x < _genPosition.x - _limitWidth
+                || this.transform.position.z > _genPosition.z + _limitFrontBack
+                || this.transform.position.z < _genPosition.z - _limitFrontBack)
+                return true;
+            return false;
+        }
+    }// 공격 및 패트롤 범위
+    public int _monNumber { get { return _monNum; } set { _monNum = value; } } // 현재 본인의  Monster Number;
 
-    public int _monNumber { get { return _monNum; } set { _monNum = value; } }
 
-    bool _isHit;
-    bool _isAttack;
-    int _isCombo;
+    bool _isIdle;
+    bool _isHit; // Chase - Patrol 기준이 되는 Bool
+    int _isCombo; // 공격 패턴 구분
 
     private void Awake()
     {
+        _isIdle = false;
         _isHit = false;
-        _isAttack = false;
         _isCombo = 0;
         _idleTime = 0f;
         _attackTime = 0f;
@@ -71,7 +85,7 @@ public class MonsterController : MonsterStat
     {
         _state = BehaviourState.IDLE;
         //임시
-        Init_StatSetting();
+        Init_HPSetting();
         // Monster Stat Setting 구현해야함.
 
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
@@ -89,43 +103,57 @@ public class MonsterController : MonsterStat
         switch (_state)
         {
             case BehaviourState.IDLE:
-                SetHitChase();
                 _idleDuration += Time.deltaTime;
                 if (_idleTime <= _idleDuration)
                 {
-                    if (_navAgent.remainingDistance <= 0)
+                    if (_isHit) // 공격 받았으면
                     {
+
+                        SetState(BehaviourState.CHASE);
+                        ChangeAniFromType(AnyType.RUN);
+                        _navAgent.isStopped = false;
+
+                    }
+                    else
+                    {
+                        SetState(BehaviourState.PATROL);
                         ChangeAniFromType(AnyType.WALK);
                         _navAgent.destination = GetRandomPos();
-                        SetState(BehaviourState.PATROL);
+                        _navAgent.isStopped = false;
                     }
                 }
                 break;
             case BehaviourState.PATROL:
-                SetHitChase();
-                if (_navAgent.remainingDistance <= 0)
+                if (_isHit) // 공격 받으면
+                {
+                    SetIdleDuration(0.5f);
+                    return;
+                }
+                else if (_navAgent.remainingDistance <= 0)
                 {
                     SetIdleDuration(1f);
                     ChangeAniFromType(AnyType.IDLE);
                 }
-
                 break;
             case BehaviourState.CHASE:
-                CheckZoneSetIdle();
-
-                if (!_isCriticalHit)
+                if (_isZone)
+                {
+                    _isHit = false;
+                    SetIdleDuration(1f);
+                    ChangeAniFromType(AnyType.IDLE);
+                    return;
+                }
+                else
                 {
                     if (FindTarget(_player.transform, _attackPos))
                     {
-                        _isAttack = true;
                         _navAgent.isStopped = true;
-
-                        if(_isCombo == 0)
+                        if (_isCombo == 0)
                         {
                             SetState(BehaviourState.ATTACK1);
                             ChangeAniFromType(AnyType.ATTACK1);
                         }
-                        else if(_isCombo == 1)
+                        else if (_isCombo == 1)
                         {
                             SetState(BehaviourState.ATTACK2);
                             ChangeAniFromType(AnyType.ATTACK2);
@@ -133,54 +161,20 @@ public class MonsterController : MonsterStat
                     }
                     else
                         _navAgent.destination = _player.transform.position;
+
                 }
                 break;
             case BehaviourState.ATTACK1:
-                if (GetAnimState() == AnyType.HIT)
-                    return;
-
-                if (!_isAttack)
-                {
-                    _attackDuration += Time.deltaTime;
-                    if (_attackTime <= _attackDuration)
-                    {
-                        if (_AttackAreUnitFind.Length <= 1)
-                            _isCombo = 0;
-                        else
-                            _isCombo = 1;
-                        SetState(BehaviourState.CHASE);
-                        ChangeAniFromType(AnyType.RUN);
-                        _navAgent.isStopped = false;
-                    }
-                }
-                else
-                {
-                    _attackForward = _player.transform.position - transform.position;
-                    _attackForward.y = 0f;
-                    transform.forward = _attackForward;
-                }
+                _attackForward = _player.transform.position - transform.position;
+                _attackForward.y = 0f;
+                transform.forward = _attackForward;
                 break;
             case BehaviourState.ATTACK2:
-                if (GetAnimState() == AnyType.HIT)
-                    return;
-
-                if (!_isAttack)
-                {
-                    _attackDuration += Time.deltaTime;
-                    if(_attackTime <= _attackDuration)
-                    {
-                        _isCombo = 0;
-                        SetState(BehaviourState.CHASE);
-                        ChangeAniFromType(AnyType.RUN);
-                        _navAgent.isStopped = false;
-                    }
-                }
-                else
-                {
-                    _attackForward = _player.transform.position - transform.position;
-                    _attackForward.y = 0f;
-                    transform.forward = _attackForward;
-                }
+                _attackForward = _player.transform.position - transform.position;
+                _attackForward.y = 0f;
+                transform.forward = _attackForward;
+                break;
+            case BehaviourState.HIT:
                 break;
             case BehaviourState.DEATH:
                 _isHit = false;
@@ -199,61 +193,13 @@ public class MonsterController : MonsterStat
     #region [Behaviour Methods]
     public void SetIdleDuration(float duration) // IDLE로 있는 Term 발생
     {
+        _navAgent.isStopped = true;
         _idleTime = duration;
         _idleDuration = 0f;
         SetState(BehaviourState.IDLE);
     }
 
-    public void SetAttackDuration(float duration) // IDLE로 있는 Term 발생
-    {
-        _attackTime = duration;
-        _attackDuration = 0f;
-    }
-
-    public void SetHitChase()
-    {
-        if (_isPreemptive) // 선제공격 몬스터일 경우
-        {
-            if (this.transform.position.x > _genPosition.x + _limitWidth
-            || this.transform.position.x < _genPosition.x - _limitWidth
-            || this.transform.position.y > _genPosition.y + _limitFrontBack
-            || this.transform.position.y < _genPosition.y - _limitFrontBack) // 정해진 범위 바깥이라면
-            {
-                _isHit = false;
-                ChangeAniFromType(AnyType.WALK);
-                SetIdleDuration(1f);
-            } // 비선공으로 바꿔주고
-            else if (FindTarget(_player.transform, _preemptivePos)) // 정해진 범위안에 정해진 길이만큼 RayCast가 맞으면
-            {
-                _isHit = true;
-                SetState(BehaviourState.CHASE);
-                ChangeAniFromType(AnyType.RUN);
-            }
-        }
-        else
-        {
-            if (_isHit)
-            {
-                SetState(BehaviourState.CHASE);
-                ChangeAniFromType(AnyType.RUN);
-            }
-        }
-
-    } // Demage를 입으면 _playerpos를 등록하여 쫒아다니도록 함.
-    public void CheckZoneSetIdle()
-    {
-        if (this.transform.position.x > _genPosition.x + _limitWidth
-            || this.transform.position.x < _genPosition.x - _limitWidth
-            || this.transform.position.y > _genPosition.y + _limitFrontBack
-            || this.transform.position.y < _genPosition.y - _limitFrontBack)
-        {
-            _isHit = false;
-            ChangeAniFromType(AnyType.WALK);
-            SetIdleDuration(1f);
-            _hudObjcet.HideHPBar();
-        }
-    } // Chase 과정 중에 구역을 벗어나면 원래자리로 돌아가도록 함.
-    #endregion [Animation Methods]
+    #endregion [Behaviour Methods]
 
     #region [Move Methods]
     Vector3 GetRandomPos()
@@ -275,8 +221,8 @@ public class MonsterController : MonsterStat
         dir.y = 0f;
         RaycastHit hit;
         //+ Vector3.up * 1f
-        Debug.DrawRay(transform.position + Vector3.up * 1f, dir.normalized * distance, Color.red);
-        if (Physics.Raycast(transform.position + Vector3.up * 1f, dir.normalized, out hit, distance, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Player")))
+        Debug.DrawRay(transform.position + Vector3.up * 1.1f, dir.normalized * distance, Color.red);
+        if (Physics.Raycast(transform.position + Vector3.up * 1.1f, dir.normalized, out hit, distance, 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("Player")))
         {
             if (hit.collider.CompareTag("Player"))
                 return true;
@@ -289,24 +235,26 @@ public class MonsterController : MonsterStat
         if (_isDeath) return;
 
         _isHit = true; // 공격시 따라가게 하기위함 (CHASE)
-        _stat.HP -= Mathf.CeilToInt(damage);
-        if (_stat.HP <= 0f)
+        HP -= Mathf.CeilToInt(damage);
+        if (HP <= 0f)
         {
-            _stat.HP = 0;
+            HP = 0;
             ChangeAniFromType(AnyType.DEATH);
             _state = BehaviourState.DEATH;
+            return;
         }
 
-        _hudObjcet.UpdateHPBar(_stat.HP, _stat.MAXHP);
+        _hudObjcet.UpdateHPBar(HP, HPMAX);
 
         if (attackType == AttackType.Dodge) return;
 
-        if(attackType == AttackType.Normal)
+        if (attackType == AttackType.Normal)
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Monster_Hit").transform.position, damage.ToString(), Color.white); //데미지  UI 표시
 
         if (attackType == AttackType.Critical)
         {
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Monster_Hit").transform.position, damage.ToString(), Color.red); //데미지  UI 표시
+            SetState(BehaviourState.HIT);
             ChangeAniFromType(AnyType.HIT);
             _navAgent.isStopped = true;
         }
@@ -317,18 +265,21 @@ public class MonsterController : MonsterStat
 
     public void AnimEvent_Hit()
     {
-        if (_state == BehaviourState.ATTACK1)
-            ChangeAniFromType(AnyType.ATTACK1);
-        else if (_state == BehaviourState.ATTACK2)
-            ChangeAniFromType(AnyType.ATTACK2);
-        else
-        {
-            ChangeAniFromType(AnyType.RUN);
-            _navAgent.isStopped = false;
-        }
+        SetState(BehaviourState.CHASE);
+        ChangeAniFromType(AnyType.RUN);
     }
     public void AnimEvent_Attack(int _areaNum)
     {
+        if (_areaNum == 0)
+        {
+            if (_AttackAreUnitFind.Length <= 1)
+                _isCombo = 0;
+            else
+                _isCombo = 1;
+        }
+        else
+            _isCombo = 0;
+
         float damage = 0f;
         var unitList = _AttackAreUnitFind[_areaNum].UnitList;
         for (int i = 0; i < unitList.Count; i++)
@@ -342,6 +293,16 @@ public class MonsterController : MonsterStat
                 player.SetDemage(type, damage);
                 Debug.Log("몬스터의 공격 : " + damage);
                 if (type == AttackType.Dodge) return;
+                else if (type == AttackType.Normal)
+                {
+                    var effect = Instantiate(_fxHitPrefab[0]);
+                    effect.transform.position = dummy.transform.position;
+                }
+                else if (type == AttackType.Critical)
+                {
+                    var effect = Instantiate(_fxHitPrefab[1]);
+                    effect.transform.position = dummy.transform.position;
+                }
             }
         }
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
@@ -349,13 +310,30 @@ public class MonsterController : MonsterStat
     }
     public void AnimEvent_AttackFinished()
     {
-        _isAttack = false;
-        SetAttackDuration(1.5f);
-        ChangeAniFromType(AnyType.IDLE);
+        SetIdleDuration(1.2f);
     }
     //AnimEvent Methods
 
     #endregion [Attack & Demage Methods]
+
+    #region [Couroutine Methods]
+    IEnumerator Couroutine_IdleDuration(BehaviourState state, float duration)
+    {
+        _navAgent.isStopped = true;
+        ChangeAniFromType(AnyType.IDLE);
+        yield return new WaitForSeconds(duration);
+        SetState(state);
+    }
+
+    #endregion [Couroutine Methods]
+
+    #region [UI & Stat Methods]
+
+    public void Init_StatusSetting(HudController _hud)
+    {
+    }
+
+    #endregion [UI & Stat Methods]
 
     #region [MonsterManager Script Methods]
 
@@ -363,7 +341,7 @@ public class MonsterController : MonsterStat
     {
         //HP ReSetting
         _hudObjcet.InitHPBar();
-        _hudObjcet.InitName(this);
+        _hudObjcet.InitName(NAME);
         //Monster Spawn 지역
         _monNum = _genTransform._MONNUM;
         transform.position = _genTransform.transform.position;

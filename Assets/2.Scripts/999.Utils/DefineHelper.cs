@@ -60,6 +60,7 @@ namespace DefineHelper
         ATTACK2,
         DEMAGED,
         DEATH,
+        HIT,
         Max
     }
 

@@ -40,9 +40,9 @@ public class HudController : MonoBehaviour
         _hpRateBar.fillAmount = 1f;
     }
 
-    public void InitName(MonsterController _mon)
+    public void InitName(string _name)
     {
-        _nameText.text = _mon._stat.NAME;
+        _nameText.text = _name;
     }
 
     public void UpdateHPBar(float _current, float _max)

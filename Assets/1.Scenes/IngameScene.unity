@@ -5025,7 +5025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectTofollow: {fileID: 0}
   _realCamera: {fileID: 1182316676}
-  followSpeed: 12
+  followSpeed: 15
   sensitivity: 200
   clampAngle: 70
   minDistance: 7.5

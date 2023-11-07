@@ -90,6 +90,11 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         Destroy(obj, 1f);
     }
 
+    public void EffectParent(GameObject obj)
+    {
+        obj.transform.SetParent(DamageManager);
+    }
+
     #endregion [Damage UI Methods]
 
     #region [Inventory UI Methods]

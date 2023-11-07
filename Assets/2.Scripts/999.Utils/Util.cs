@@ -43,10 +43,10 @@ public class Util
     {
         AttackType type = AttackType.Dodge;
         damage = 0f;
-        if (AttackDecision(player._stat.HITRATE, mon._stat.DODGERATE))
+        if (AttackDecision(player._stat.HITRATE, mon.DODGERATE))
         {
             type = AttackType.Normal;
-            damage = NormalDamage(player._stat.ATTACK, mon._stat.DEFENCE, player._stat.SKILLATTACK); // Skilldata를 이용하여 버프받으면 데미지 증가하기 위한 형식을 구현해야함. 일단 =0으로 막아놈.
+            damage = NormalDamage(player._stat.ATTACK, mon.DEFENCE, player._stat.SKILLATTACK); // Skilldata를 이용하여 버프받으면 데미지 증가하기 위한 형식을 구현해야함. 일단 =0으로 막아놈.
             if (CriticalDecision(player._stat.CRIRATE))
             {
                 type = AttackType.Critical;
@@ -60,14 +60,14 @@ public class Util
     {
         AttackType type = AttackType.Dodge;
         damage = 0f;
-        if (AttackDecision(mon._stat.HITRATE, player._stat.DODGERATE))
+        if (AttackDecision(mon.HITRATE, player._stat.DODGERATE))
         {
             type = AttackType.Normal;
-            damage = NormalDamage(mon._stat.ATTACK, player._stat.DEFENCE, mon._stat.SKILLATTACK); // Skilldata를 이용하여 버프받으면 데미지 증가하기 위한 형식을 구현해야함. 일단 =0으로 막아놈.
-            if (CriticalDecision(mon._stat.CRIRATE))
+            damage = NormalDamage(mon.ATTACK, player._stat.DEFENCE, mon.SKILLATTACK); // Skilldata를 이용하여 버프받으면 데미지 증가하기 위한 형식을 구현해야함. 일단 =0으로 막아놈.
+            if (CriticalDecision(mon.CRIRATE))
             {
                 type = AttackType.Critical;
-                damage = CriticalDamage(damage, mon._stat.CRIATTACK);
+                damage = CriticalDamage(damage, mon.CRIATTACK);
             }
         }
         return type;

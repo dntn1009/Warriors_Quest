@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58a024b861898454fbc6343c2921b82d, type: 3}
   m_Name: jumpSkill
   m_EditorClassIdentifier: 
-  _fxSkillPrefab: {fileID: 0}
+  _fxSkillPrefab: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
   _demage: 0.5
   _coolTime: 12
