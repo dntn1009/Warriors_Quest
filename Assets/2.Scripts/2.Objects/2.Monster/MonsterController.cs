@@ -239,8 +239,8 @@ public class MonsterController : MonsterStat
         if (HP <= 0f)
         {
             HP = 0;
+            SetState(BehaviourState.DEATH);
             ChangeAniFromType(AnyType.DEATH);
-            _state = BehaviourState.DEATH;
             return;
         }
 
@@ -265,8 +265,8 @@ public class MonsterController : MonsterStat
 
     public void AnimEvent_Hit()
     {
-        SetState(BehaviourState.CHASE);
-        ChangeAniFromType(AnyType.RUN);
+        SetIdleDuration(0.5f);
+        ChangeAniFromType(AnyType.IDLE);
     }
     public void AnimEvent_Attack(int _areaNum)
     {
@@ -315,17 +315,6 @@ public class MonsterController : MonsterStat
     //AnimEvent Methods
 
     #endregion [Attack & Demage Methods]
-
-    #region [Couroutine Methods]
-    IEnumerator Couroutine_IdleDuration(BehaviourState state, float duration)
-    {
-        _navAgent.isStopped = true;
-        ChangeAniFromType(AnyType.IDLE);
-        yield return new WaitForSeconds(duration);
-        SetState(state);
-    }
-
-    #endregion [Couroutine Methods]
 
     #region [UI & Stat Methods]
 

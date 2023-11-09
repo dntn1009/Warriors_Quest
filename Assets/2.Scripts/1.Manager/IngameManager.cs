@@ -13,6 +13,10 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
     [Header("Inventory")]
     [SerializeField] GameObject Inventory;
+    [SerializeField] GameObject MapWindow;
+    [SerializeField] GameObject StatWindow;
+    [SerializeField] GameObject SkillWindow;
+    [SerializeField] GameObject MenuWindow;
 
     [Header("Skill & Hot Bar")]
     [SerializeField] Image Skillbar_Q;
@@ -39,11 +43,27 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     {
         MapState();
 
-        if(Input.GetKeyDown(KeyCode.I))
+        if(Input.GetKeyDown(KeyCode.I))//인벤토리 버튼
         {
             InventoryOpen();   
         }
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.P))//스텟 버튼
+        {
+            StatOpen();
+        }
+        if (Input.GetKeyDown(KeyCode.K))//스킬 버튼
+        {
+            SkillOpen();
+        }
+        if (Input.GetKeyDown(KeyCode.U))//메뉴 버튼
+        {
+            MenuOpen();
+        }
+        if(Input.GetKeyDown(KeyCode.M)) // 지도 버튼
+        {
+            MapOpen();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
@@ -97,7 +117,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
     #endregion [Damage UI Methods]
 
-    #region [Inventory UI Methods]
+    #region [Window UI Methods]
     public void InventoryOpen()
     {
         if (Inventory.activeSelf)
@@ -113,9 +133,67 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
             Cursor.visible = true;
         }
     }
-
-
-    #endregion [Inventory UI Methods]
+    public void MapOpen()
+    {
+        if (MapWindow.activeSelf)
+        {
+            MapWindow.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            MapWindow.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+    public void StatOpen()
+    {
+        if (StatWindow.activeSelf)
+        {
+            StatWindow.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            StatWindow.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+    public void SkillOpen()
+    {
+        if (SkillWindow.activeSelf)
+        {
+            SkillWindow.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            SkillWindow.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+    public void MenuOpen()
+    {
+        if (MenuWindow.activeSelf)
+        {
+            MenuWindow.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            MenuWindow.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+    #endregion [Window UI Methods]
 
     #region [Skill & Hot bar key Methods]
 
