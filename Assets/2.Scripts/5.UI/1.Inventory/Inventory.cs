@@ -1,4 +1,5 @@
 using DefineHelper;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class Inventory : MonoBehaviour
     public static Inventory Singleton;
     public static InventoryItem carriedItem;
 
+    [Header("Item Slots & Gold")]
     [SerializeField] InventorySlot[] inventorySlots;
     [SerializeField] InventorySlot[] hotbarSlots;
     // 0=Head, 1=Chest, 2=Legs, 3=Feet
@@ -15,7 +17,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] Transform draggablesTransform;
     [SerializeField] InventoryItem itemPrefab;
-
+    [SerializeField] TextMeshProUGUI goldText;
     [Header("Item List")]
     [SerializeField] Item[] items;
 
@@ -33,6 +35,7 @@ public class Inventory : MonoBehaviour
         Singleton = this;
         giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 100); });
         _closeBtn.onClick.AddListener(delegate { Close_Inventory(); });
+        SetGoldInfo();
     }
 
     void Update()
@@ -140,6 +143,11 @@ public class Inventory : MonoBehaviour
     {
         obj.SetActive(!obj.activeSelf);
         // 장비 효과 player에 주기
+    }
+
+    public void SetGoldInfo()
+    {
+       goldText.text = _playerEquipemntInfo._player._stat.GOLD.ToString();
     }
 
     public void SpawnInventoryItem(Item item, int _number = 1)
