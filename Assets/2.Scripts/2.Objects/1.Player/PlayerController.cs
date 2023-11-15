@@ -186,10 +186,8 @@ public class PlayerController : PlayerStat
     {
         //임시
         _stat = new Stat("수레야", 600, 600, 300, 300, 5, 50, 0, 100, 15, 25, 10, 60, 0, 9999);
-        StatWindow.Singleton.SetStatInfo(_stat); // 이부분에 NULL이뜨는데 이유를 모르겟네;
         // Player Stat Setting 구현해야함.
         _statusbar.Init_StatusSetting(this);
-
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
         {

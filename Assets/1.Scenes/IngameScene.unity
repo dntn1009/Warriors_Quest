@@ -1693,7 +1693,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1644951252}
         m_TargetAssemblyTypeName: IngameManager, Assembly-CSharp
-        m_MethodName: InventoryOpen
+        m_MethodName: MapOpen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3221,7 +3221,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1644951252}
         m_TargetAssemblyTypeName: IngameManager, Assembly-CSharp
-        m_MethodName: InventoryOpen
+        m_MethodName: MenuOpen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5279,7 +5279,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 45c280844ff907f4b89e740dea44bd78, type: 2}
   - {fileID: 11400000, guid: bff057e996a2f8747a2db82bff44f6b8, type: 2}
   - {fileID: 11400000, guid: 85c0c758fb45fc140869e2a2e6cd8d25, type: 2}
-  _closeBtn: {fileID: 1670226885}
   giveItemBtn: {fileID: 1207768424}
   _playerEquipemntInfo: {fileID: 1548511572}
 --- !u!1 &524808679
@@ -7446,7 +7445,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666644068}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -7454,8 +7453,8 @@ RectTransform:
   - {fileID: 507763462}
   - {fileID: 668779810}
   - {fileID: 1207768423}
-  m_Father: {fileID: 1877765855}
-  m_RootOrder: 2
+  m_Father: {fileID: 949015126}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9960,6 +9959,42 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &949015125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 949015126}
+  m_Layer: 0
+  m_Name: UI_Window
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &949015126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949015125}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 666644072}
+  - {fileID: 1524831647}
+  - {fileID: 1104141070}
+  - {fileID: 1766646768}
+  - {fileID: 965066241}
+  m_Father: {fileID: 1877765855}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952019238
 GameObject:
   m_ObjectHideFlags: 0
@@ -10434,14 +10469,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965066237}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 641677744}
-  m_Father: {fileID: 1877765855}
-  m_RootOrder: 6
+  m_Father: {fileID: 949015126}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11051,14 +11086,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104141069}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 105283325}
-  m_Father: {fileID: 1877765855}
-  m_RootOrder: 4
+  m_Father: {fileID: 949015126}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -14872,8 +14907,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1617308426}
-  m_Father: {fileID: 1877765855}
-  m_RootOrder: 3
+  m_Father: {fileID: 949015126}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -15834,11 +15869,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DamageManager: {fileID: 1851272028}
   DamageObject: {fileID: 8773038621342015770, guid: 356bf2827206eef4385705b138024779, type: 3}
-  Inventory: {fileID: 666644068}
-  MapWindow: {fileID: 965066237}
-  StatWindow: {fileID: 1524831643}
-  SkillWindow: {fileID: 1104141069}
-  MenuWindow: {fileID: 1766646764}
+  _Inventory: {fileID: 666644068}
+  _inventoryBtn: {fileID: 0}
+  _MapWindow: {fileID: 965066237}
+  _StatWindow: {fileID: 1524831643}
+  _SkillWindow: {fileID: 1104141069}
+  _MenuWindow: {fileID: 1766646764}
   Skillbar_Q: {fileID: 313800681}
   SkillText_Q: {fileID: 2091375407}
   Skillbar_E: {fileID: 157572713}
@@ -16839,14 +16875,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1766646764}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1322653071}
-  m_Father: {fileID: 1877765855}
-  m_RootOrder: 5
+  m_Father: {fileID: 949015126}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -17924,12 +17960,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1984620197}
+  - {fileID: 949015126}
   - {fileID: 2091639043}
-  - {fileID: 666644072}
-  - {fileID: 1524831647}
-  - {fileID: 1104141070}
-  - {fileID: 1766646768}
-  - {fileID: 965066241}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19304,7 +19336,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1644951252}
         m_TargetAssemblyTypeName: IngameManager, Assembly-CSharp
-        m_MethodName: InventoryOpen
+        m_MethodName: SkillOpen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19966,7 +19998,7 @@ RectTransform:
   m_Children:
   - {fileID: 1601270279}
   m_Father: {fileID: 1877765855}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

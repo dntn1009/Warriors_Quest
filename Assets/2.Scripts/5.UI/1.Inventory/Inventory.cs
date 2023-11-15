@@ -21,9 +21,6 @@ public class Inventory : MonoBehaviour
     [Header("Item List")]
     [SerializeField] Item[] items;
 
-    [Header("Btn")]
-    [SerializeField] Button _closeBtn;
-
     [Header("Debug")]
     [SerializeField] Button giveItemBtn;
 
@@ -34,7 +31,6 @@ public class Inventory : MonoBehaviour
     {
         Singleton = this;
         giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 100); });
-        _closeBtn.onClick.AddListener(delegate { Close_Inventory(); });
         SetGoldInfo();
     }
 
@@ -225,11 +221,4 @@ public class Inventory : MonoBehaviour
         return items[random];
     }
 
-    void Close_Inventory()
-    {
-        SetItemInfoNull();
-        transform.parent.gameObject.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
 }
