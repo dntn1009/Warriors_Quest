@@ -12,7 +12,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
 
-    [Header("Inventory")]
+    [Header("WindowUI")]
     [SerializeField] GameObject _Inventory;
     [SerializeField] Button _inventoryBtn;
     [SerializeField] GameObject _MapWindow;
@@ -151,6 +151,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         else
         {
             _MapWindow.SetActive(true);
+            _MapWindow.GetComponent<MapWindow>().SetPosXYInfo();
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
@@ -164,6 +165,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         else
         {
             _StatWindow.SetActive(true);
+            _StatWindow.GetComponent<StatWindow>().SetStatInfo();
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }

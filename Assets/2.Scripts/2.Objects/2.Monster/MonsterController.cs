@@ -8,10 +8,8 @@ public class MonsterController : MonsterStat
     [SerializeField] float _limitWidth = 8;
     [SerializeField] float _limitFrontBack = 8;
     [SerializeField] float _attackPos = 0.3f; // 공격 범위
-    [SerializeField] float _preemptivePos = 1.2f; // 선제 공격 범위
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
     [SerializeField] GameObject[] _fxHitPrefab;
-    [SerializeField] bool _isPreemptive; // 선제 공격하는 몬스터인지 아닌지 체크
     [SerializeField] HudController _hudObjcet;
     //참조 변수
     // _navAgent - MonsterAnimController Protected
@@ -23,9 +21,6 @@ public class MonsterController : MonsterStat
     Vector3 _attackForward;
     float _idleDuration;
     float _idleTime;
-
-    float _attackDuration;
-    float _attackTime;
 
     PlayerController _player;
     int _monNum;
@@ -54,17 +49,14 @@ public class MonsterController : MonsterStat
     public int _monNumber { get { return _monNum; } set { _monNum = value; } } // 현재 본인의  Monster Number;
 
 
-    bool _isIdle;
     bool _isHit; // Chase - Patrol 기준이 되는 Bool
     int _isCombo; // 공격 패턴 구분
 
     private void Awake()
     {
-        _isIdle = false;
         _isHit = false;
         _isCombo = 0;
         _idleTime = 0f;
-        _attackTime = 0f;
         AnimatorResetting();
         _genPosition = transform.position;
     }

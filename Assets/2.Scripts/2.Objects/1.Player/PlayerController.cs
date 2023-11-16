@@ -178,6 +178,14 @@ public class PlayerController : PlayerStat
             }
         }
         //공격메서드 추가
+        _charController.Move(mv * Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        if (Cursor.visible)
+            return;
+
         Move();
     }
 
@@ -228,7 +236,6 @@ public class PlayerController : PlayerStat
         }
         if (_charController.isGrounded)
             mv.y = 0f;
-        _charController.Move(mv * Time.deltaTime);
     }
     public Vector3 Player_cameraMove(Vector3 dv)
     {

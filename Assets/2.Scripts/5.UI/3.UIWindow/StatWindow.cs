@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class StatWindow : MonoBehaviour
 {
-    public static StatWindow Singleton;
-
+    [Header("Player")]
+    [SerializeField] PlayerController _player;
+ 
     [Header("Stat Value")]
     [SerializeField] TextMeshProUGUI _attValue;
     [SerializeField] TextMeshProUGUI _criAttValue;
@@ -15,21 +16,14 @@ public class StatWindow : MonoBehaviour
     [SerializeField] TextMeshProUGUI _dodgeValue;
     [SerializeField] TextMeshProUGUI _hitRateValue;
 
-    // Start is called before the first frame update
-    void Awake()
+    public void SetStatInfo()
     {
-        Singleton = this;
-    }
-
-
-    public void SetStatInfo(Stat stat)
-    {
-        _attValue.text = stat.ATTACK.ToString();
-        _criAttValue.text = stat.CRIATTACK.ToString();
-        _criRateValue.text = stat.CRIRATE.ToString();
-        _defenceValue.text = stat.DEFENCE.ToString();
-        _dodgeValue.text = stat.DODGERATE.ToString();
-        _hitRateValue.text = stat.HITRATE.ToString();
+        _attValue.text = _player._stat.ATTACK.ToString();
+        _criAttValue.text = _player._stat.CRIATTACK.ToString();
+        _criRateValue.text = _player._stat.CRIRATE.ToString();
+        _defenceValue.text = _player._stat.DEFENCE.ToString();
+        _dodgeValue.text = _player._stat.DODGERATE.ToString();
+        _hitRateValue.text = _player._stat.HITRATE.ToString();
     }
 
 }
