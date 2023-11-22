@@ -241,4 +241,58 @@
        Ui를 구현하였습니다.
   4. Inventory창에 들어가거나 Cursor가 보일 경우 조종 중인 Player의 Animation이 IDLE로 변경 및 Player 조종 불가 상태로 구현하였습니다.
   5. EQuip slot에서 Weapon 착용 시에 Player의 Animation 변경 및 다른 세세한 부분을 구현하였습니다.
-      
+
+~2023-10-21
+1. Monster 관련 부분 수정 및 구현
+ - Monster Stat부분에 관련하여 Player와 동일하게 쓰고있었지만 MStat.Script으로 몬스터 스텟 추가 구현.
+   Monster HUD에 HP가 0이여도 피가 조금 남아보이는 현상 수정
+   Monster의 AI가 이상하여 공격을 하지 않는 행위, Idle상태로 죽기, 움직이지 않는 행위 등이 있어 Controller에서 BehaviourState를 다시 코딩하여 어색하지 않게 구현
+   Monster가 플레이어와 부딪히면 플레이어가 밀리는 현상이 발생하여 Monster의 NavAgent가 Player의 Nav보다 단계를 낮추어 피해다니도록 구현하였습니다. 공격 시에는 피하지 않습니다.
+   Monster의 UI부분이나 스텟 적용이 잘 안되는 상황이 있었지만 능력치는 Awake에서 받도록 했지만 함수로 몬스터를 생성하는 경우에 설정하여 에러가 뜨는 것으로 수정완료하였습니다.
+2. Player가 공격후에 제자리로 돌아오는 어색한 부분을 수정하였습니다.
+   - 공격 하는 부분에 부자연 스러운 부분을 개선하였습니다. 싸우는 과정에서 보이는 Hit Effect를 수정하였습니다.
+3. 다 완성된 Map 주변에 Player가 떨어지면 안되는 구역들을 연결하여 콜라이더 벽을 만들었습니다.
+  - WallColliderGenerator라는 script 오픈소스를 이용하여 떨어지면 안되는 부분들의 콜라이더 벽을 만들었습니다.
+    출처 : https://www.youtube.com/watch?v=5yMvoA2Gp-Q
+4. NPC와 구조물들 생성 및 구현
+  - NPC와 구조물들의 Asset을 Unity Asset Store에서 찾아와 맵을 꾸며주었습니다.
+5. Top & Bottom UI 구현
+  - 보기 안좋은 UI를 개선하기 위해 Top & Bottom 별로 구현하였습니다. Top에는 몬스터와 전투 시에 보이는 정보들과 인벤토리, 스텟, 스킬, 메뉴, 퀘스트 창 등 그리고 MAP을 표시하도록 정해두었습니다.
+    Bottom에는 Player의 체력 및 MP, Exp와 인벤토리의 Hot Key Slot에 등록한걸 보여줄 수 있는 칸들과 스킬 Slot 칸들을 구현해 놓았습니다.
+    
+~2023-10-31
+1. MiniMap과 Map을 구현
+ - 구현하기 위해 RenderTexture를 이용하였습니다. 그래서 위에서 맵 전체를 찍고 있는 Camera와 Player를 따라다니는 Camera를 생성하였습니다.
+ - 그리고 MiniMap과 Map의 카메라에는 Ground만 보이도록 설정하였습니다.
+2. 퀘스트 NPC, 상정 NPC, 대화 NPC, Player를 Map에 원으로 간편하게 보일 수 있도록 구현
+   - Player와 NPC에 MapMaking이라는 동그란 원형의 Object를 만들어 자식오브젝트로 넣었습니다. 각각 Minimap과 Map의 Makgin Object입니다.\
+   - 각 Tag&Layer의 이름이나 역할에 따라 색깔을 구분지었습니다. 그리고 MainCamera에는 Layer인 MiniMap, Map부분을 보지 않도록 설정하였으며,
+   -  맵과 미니맵의 RenderTexture를 보여주고 있는 Camera들에는 Minimap과 Map의 마킹을 보이도록 구현하였습니다.
+3. Skill 구현하기
+ - BuffSKill 1개와 공격스킬 2개를 구현하도록 하였습니다.
+ - 장판Effect, Demage, cooltime을 가지고있는 스크립터블 오브젝트 skilldata를 playercontroller안에 변수로 넣어두었습니다.
+ - 또한 플레이어의 스킬과정중에 필요한 Animation를 찾아 넣어두었고 해당 스킬 키를 누르면 애니메이션이 작동하도록 구현하였습니다.
+ - 코루틴을 이용하여 해당 스킬을 사용하면 그 시간동안 스킬을 사용하지 못하도록 하였습니다.
+ - 그리고 Animation중에 몬스터가 피격하면 데미지가 닳도록 AnimEvent_AttackSkill 메서드를 구현하였습니다. JumpAttackSkill은 이과정에서 터지는 장판 효과를 생성합니다.
+4. 검기(웨펀트레일) & 공격 Skill 사용시 무기에 Effect 효과 적용 및 구현
+   - 플레이어가 공격할때 무기에 검기가 생성되도록 구현하기 위해 Trail Renderer라는 Component를 이용하였습니다.
+   - 처음에는 웨펀 트레일 렌더러라는 간편한 기능이 구현되어있는지 몰라서 많이 헤매는 과정에서 시간이 오래 걸렸습니다.
+   - 기존에 받아두었던 Particle을 이용한 Effect효과들 중에서 마음에드는 부분을 골라 편집하여 스킬을 사용할때 무기주변에서 빛나거나 붙타도록 구현하였습니다.
+
+~2023-11-13
+1.WindowUI창 구현
+-WindowUI Canvas를 구현하기 전에 따로 InventoryWindow, StatWindow, SkillWindow 등 각자 Canvas를 만들었으나 매우 불편하여
+ WindowUI Canvas안에 넣어 쓰도록 변경하였습니다. 이 과정에 따라 그동안 구현하였던 부분에 불필요한 부분이나 IngameManager(SIngleTon)에 SerializedField를 다시 넣어 두었습니다.
+ 각 Window.Script에 Player의 정보가 필요하다면 Serialized Field로 적용하여 구현하였습니다.
+ 또한 Window창을 움직이게 하기위해 WindowMove.Script를 생성하였습니다. Header라는 Object(Button)이 Window의 상단에 있도록 두었고 Close_Button또한 Header의 오른쪽에 있도록 구현하였습니다.
+ WindowMoove 스크립트에는 부모Obj의 RectTransform과 클릭Down시 본인의 첫 위치를 아는 메서드가 있습니다. 그리고 OnDragHandler를 이용하여 인터페이스 안에 첫 클릭한 부분에서 움직이는 부분대로 본체가 움직이도록 구현하였습니다.
+ EventTrigger를 이용하여 버튼을 누른 경우에 위치를 알도록 구현하였습니다.
+2.Fixed Update이용
+-물리 엔진을 사용해야 할때 활성화 되는 점과 update는 불규칙한 호출이라는 점을 알게되어 캐릭터의 움직임이나 움직임 관련 부분들은 FixedUpdate 부근으로 변경하였습니다.
+3. Mouse Cursor문제 해결
+- Mouse를 이용하는 게임이기 때문에 Window창을 볼때를 제외하고는 Mouse 커서가 잠궈져있고 보이지 않는 상태여야 합니다. 그리고 플레이어는 마우스 커서가 보이면 움직이지 않도록 해야합니다.
+  이 과정에서 많이 부자연스러웠던 부분들을 다시 찾아 해결하였습니다. 그리고 이과정에서 마우스 커서로 인벤토리, 스텟, 스킬, 메뉴 버튼을 누르면 Window창이 켜지는게 아니라 그대로 안보이도록 구현되어있는것을 발견하였고
+  GetMouseButtonDown(0)으로 눌렀을 때 RayCastHit을 쏘는 과정에서 EventSystem.current.IsPointerOverGameObject()메서드를 이용하여 False인 경우에만 잠그도록 구현하였습니다.
+  IsPointerOverGameObject()는 UI에 쏘아지면 True인 특성을 가지고 있는 메서드 입니다.
+ 
+ 
