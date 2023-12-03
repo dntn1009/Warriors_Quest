@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Monster
   - FollowCamera
+  - FxTemporaire
+  - NPC
+  - NPCTalk
   layers:
   - Default
   - TransparentFX
@@ -19,7 +22,7 @@ TagManager:
   - Monster
   - MiniMapMark
   - MapMark
-  - 
+  - NPC
   - 
   - 
   - 

@@ -18,8 +18,13 @@ MonoBehaviour:
   explane: "\uAC15\uCCA0\uB85C\uB9CC\uB4E0 \uC2E0\uBC1C"
   MaxNumber: 1
   money: 1000
-  equipmentStr: SteelAmor_Boots
-  Att: 0
-  Def: 7
+  equipstat:
+    _attack: 0
+    _criattack: 0
+    _crirate: 0
+    _defence: 5
+    _dodgerate: 2
+    _hitrate: 0
+  equipCode: 204
   hp: 0
   mp: 0

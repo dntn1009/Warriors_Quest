@@ -18,8 +18,13 @@ MonoBehaviour:
   explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uBB34\uAE30."
   MaxNumber: 1
   money: 100
-  equipmentStr: Steel_Master_Sword
-  Att: 30
-  Def: 0
+  equipstat:
+    _attack: 30
+    _criattack: 10
+    _crirate: 5
+    _defence: 0
+    _dodgerate: 0
+    _hitrate: 0
+  equipCode: 300
   hp: 0
   mp: 0

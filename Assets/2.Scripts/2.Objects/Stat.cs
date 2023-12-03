@@ -27,14 +27,16 @@ public class Stat
     //position
     Vector3 _genpos;
     // 정보 변수 (Data)
-    public Stat(string name, int maxhp, int hp, int maxmp, int mp, int level, float attack, float skillattack, float criattack, float crirate, float defence, float dodgerate, float hitrate, int exp, int gold)
+
+    public Stat() { }
+    public Stat(string name, int level, int maxhp, int hp, int maxmp, int mp, float attack, float skillattack, float criattack, float crirate, float defence, float dodgerate, float hitrate, int exp, int gold)
     {
         this._name = name;
+        this._level = level;
         this._maxhp = maxhp;
         this._hp = hp;
         this._maxmp = maxmp;
         this._mp = mp;
-        this._level = level;
         this._attack = attack;
         this._skillattack = skillattack;
         this._criattack = criattack;
@@ -45,7 +47,6 @@ public class Stat
         this._exp = exp;
         this._gold = gold;
     }
-
 
     #region [Property]
     public string NAME { get { return _name; } set { _name = value; } }

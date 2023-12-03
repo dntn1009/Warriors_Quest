@@ -6,8 +6,18 @@ using UnityEngine.EventSystems;
 public class WindowMove : MonoBehaviour, IDragHandler
 {
     [SerializeField] RectTransform _rectTransform;
+    Vector2 _initPos;
+
+    public void InitSetPos()
+    {
+        _initPos = Input.mousePosition;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.position = eventData.position;
+        Vector2 mousePos = eventData.position;
+        Vector2 move = mousePos - _initPos;
+        _rectTransform.anchoredPosition += move;
+        _initPos = mousePos;
     }
 }

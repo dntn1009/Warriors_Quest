@@ -18,8 +18,13 @@ MonoBehaviour:
   explane: "\uAC15\uCCA0\uB85C \uB9CC\uB4E0 \uD5EC\uBA67"
   MaxNumber: 1
   money: 1000
-  equipmentStr: SteelAmor_Helmet
-  Att: 0
-  Def: 10
+  equipstat:
+    _attack: 0
+    _criattack: 0
+    _crirate: 0
+    _defence: 6
+    _dodgerate: 2
+    _hitrate: 0
+  equipCode: 201
   hp: 0
   mp: 0

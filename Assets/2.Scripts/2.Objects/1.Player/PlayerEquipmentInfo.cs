@@ -1,11 +1,17 @@
-using System.Collections;
+using DefineHelper;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerEquipmentInfo : MonoBehaviour
 {
-    [Header("Underwear")]
-    [SerializeField] GameObject underwear;
+    [Header("Body & Underwear")]
+    [SerializeField] GameObject Hair;
+    [SerializeField] GameObject Chest;
+    [SerializeField] GameObject Arms;
+    [SerializeField] GameObject Hands;
+    [SerializeField] GameObject Legs;
+    [SerializeField] GameObject Feet;
+    [SerializeField] GameObject Underwear;
 
     [Header("Starter")]
     [SerializeField] GameObject Starter_Chest;
@@ -25,44 +31,85 @@ public class PlayerEquipmentInfo : MonoBehaviour
     [SerializeField] GameObject Steel_Sword;
     [SerializeField] GameObject Steel_Master_Sword;
 
-    [Header("PlayerController")]
-    [SerializeField] public PlayerController _player;
+    Dictionary<int, GameObject> EquipMentDic;
 
-    public Dictionary<string, GameObject> _amorObjectDic;
-
+    PlayerController _player;
     private void Start()
     {
-        _amorObjectDic = new Dictionary<string, GameObject>();
-        _amorObjectDic.Add("Starter_Chest", Starter_Chest);
-        _amorObjectDic.Add("Starter_Pants", Starter_Pants);
-        _amorObjectDic.Add("Starter_Boots", Starter_Boots);
-        _amorObjectDic.Add("SteelAmor_Helmet", SteelAmor_Helmet);
-        _amorObjectDic.Add("SteelAmor_Chest", SteelAmor_Chest);
-        _amorObjectDic.Add("SteelAmor_Pants", SteelAmor_Pants);
-        _amorObjectDic.Add("SteelAmor_Boots", SteelAmor_Boots);
-        _amorObjectDic.Add("SteelAmor_Gloves", SteelAmor_Gloves);
-        _amorObjectDic.Add("SteelAmor_Shoulders", SteelAmor_Shoulders);
-        _amorObjectDic.Add("Wooden_Stick", Wooden_Stick);
-        _amorObjectDic.Add("Steel_Sword", Steel_Sword);
-        _amorObjectDic.Add("Steel_Master_Sword", Steel_Master_Sword);
+        _player = this.GetComponent<PlayerController>();
+
+        EquipMentDic = new Dictionary<int, GameObject>();
+        EquipMentDic.Add(102, Starter_Chest);
+        EquipMentDic.Add(103, Starter_Pants);
+        EquipMentDic.Add(104, Starter_Boots);
+        EquipMentDic.Add(201, SteelAmor_Helmet);
+        EquipMentDic.Add(202, SteelAmor_Chest);
+        EquipMentDic.Add(203, SteelAmor_Pants);
+        EquipMentDic.Add(204, SteelAmor_Boots);
+        EquipMentDic.Add(205, SteelAmor_Gloves);
+        EquipMentDic.Add(206, SteelAmor_Shoulders);
+        EquipMentDic.Add(100, Wooden_Stick);
+        EquipMentDic.Add(200, Steel_Sword);
+        EquipMentDic.Add(300, Steel_Master_Sword);
     }
 
-    public void UnderwearSetActive(bool set)
-    {
-        underwear.SetActive(set);
-    }
+    #region [Amors Methods]
 
-    public void EquipStatData(InventoryItem item, bool _EquipCheck)
+    public void equipEquipment(InventoryItem item, bool nullCheck)
     {
-        if(!_EquipCheck)
-        {
-            _player._stat.ATTACK += item.myItem.Att;
-            _player._stat.DEFENCE += item.myItem.Def;
-        }
+        var obj = EquipMentDic[item.myItem.equipCode];
+        if (item.myItem.itemTag == SlotTag.Weapon)
+            _player.EquipmentWeapon(obj, nullCheck);
         else
         {
-            _player._stat.ATTACK -= item.myItem.Att;
-            _player._stat.DEFENCE -= item.myItem.Def;
+            obj.SetActive(true);
+            if (nullCheck)
+                BodySetActive(item.myItem, !nullCheck);
+        }
+
+    }
+    //장비 및 무기 장착 과정
+
+    public void unequipEquipment(InventoryItem item, bool nullCheck)
+    {
+        var obj = EquipMentDic[item.myItem.equipCode];
+        if (item.myItem.itemTag == SlotTag.Weapon)
+            _player.unEquipmentWeapon(obj, nullCheck);
+        else
+        {
+            obj.SetActive(false);
+            if (nullCheck)
+                BodySetActive(item.myItem, nullCheck);
         }
     }
+    //장비 및 무기 해제 과정
+
+    #endregion [Amors Methods]
+
+    #region [Body & Underwear SetActive Methods]
+    void BodySetActive(Item item, bool set)
+    {
+        switch (item.itemTag)
+        {
+            case SlotTag.Head:
+                Hair.SetActive(set);
+                break;
+            case SlotTag.Chest:
+                Chest.SetActive(set);
+                Arms.SetActive(set);
+                break;
+            case SlotTag.Legs:
+                Underwear.SetActive(set);
+                Legs.SetActive(set);
+                break;
+            case SlotTag.Feet:
+                Feet.SetActive(set);
+                break;
+            case SlotTag.Gloves:
+                Hands.SetActive(set);
+                break;
+        }
+    }
+    #endregion [Body & Underwear SetActive Methods]
+
 }

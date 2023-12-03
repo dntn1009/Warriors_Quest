@@ -6,5 +6,4 @@ public class PlayerStat : PlayerAnimController
 {
     [Header("Stat Edit Param")]
     public Stat _stat;
-
 }

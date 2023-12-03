@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : PlayerStat
 {
-    [Header("Edit Param")]
+    [Header("BASIC Edit Param")]
     [SerializeField] float _movSpeed;
     [SerializeField] Transform WeaponPos; // 무기 장착 위치
     [SerializeField] GameObject equipWeapon; // 장착한 무기
@@ -13,7 +13,7 @@ public class PlayerController : PlayerStat
     [SerializeField] GameObject[] _fxHitPrefab;
     [SerializeField] StatusController _statusbar; // PlayerStatus
     [SerializeField] StatusController _monstatusbar; // 가운데 상단 몬스터 hp 표시
-    [Header("Edit Param")]
+    [Header("SkILL Edit Param")]
     [SerializeField] SkillData _buffSkill; //Q Key
     [SerializeField] Transform _buffPos; // Healing(Potion) + Q Buff Skill  Transform
     [SerializeField] SkillData _crossSkill; //E Key
@@ -25,6 +25,9 @@ public class PlayerController : PlayerStat
     Transform _mainCamera;
     AttackAreUnitFind[] _AttackAreUnitFind;
     TrailRenderer WeaponTrail;
+
+    GameObject _npcObj;
+
     //정보 변수
     Vector3 mv; // Player Object Vector3
     bool _isJump; // 점프
@@ -60,9 +63,9 @@ public class PlayerController : PlayerStat
     }
     bool _isBasic
     {
-        get 
+        get
         {
-            if(GetAnimState() == AnyType.IDLE || GetAnimState() == AnyType.RUN )
+            if (GetAnimState() == AnyType.IDLE || GetAnimState() == AnyType.RUN)
                 return true;
             return false;
         }
@@ -104,8 +107,18 @@ public class PlayerController : PlayerStat
                 ChangeAniFromType(AnyType.IDLE);
             return;
         }
-
         if (_isSkill)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (_npcObj != null)
+            {
+                IngameManager.Instance.TalkOpen();
+            }
+        } // NPC 대화
+
+        if (IngameManager.Instance.TalkActiveSelf())
             return;
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -115,11 +128,11 @@ public class PlayerController : PlayerStat
                 _isJump = true;
                 ChangeAniFromType(AnyType.JUMP);
             }
-        }
+        } // Jump
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             EquipWeapon(!_isEquip);
-        }
+        } // 무기 장착/미장착
         if (Input.GetMouseButtonDown(0))
         {
             if (_isBasic && _isEquip)
@@ -137,11 +150,11 @@ public class PlayerController : PlayerStat
             }
 
             _isPressAttack = true;
-        }
+        } // 일반 공격
         if (Input.GetMouseButtonUp(0))
         {
             _isPressAttack = false;
-        }
+        } // 일반 공격
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (_isEquip && !_isBuffSkill && _isBasic)
@@ -152,10 +165,10 @@ public class PlayerController : PlayerStat
                 BuffSkill(_buffSkill, _buffPos);
                 return;
             }
-        }
+        } // 스킬
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if(_isEquip && !_isCrossSkill && _isBasic)
+            if (_isEquip && !_isCrossSkill && _isBasic)
             {
                 _isCrossSkill = !_isCrossSkill;
                 _fxHitPrefab[2].SetActive(true);
@@ -164,7 +177,7 @@ public class PlayerController : PlayerStat
                 CrossSkill(_crossSkill);
                 return;
             }
-        } 
+        } // 스킬
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (_isEquip && !_isJumpSkill && _isBasic)
@@ -176,24 +189,42 @@ public class PlayerController : PlayerStat
                 JumpSkill(_jumpSkill);
                 return;
             }
-        }
+        } // 스킬
+
         //공격메서드 추가
         _charController.Move(mv * Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        if (Cursor.visible)
+        if (Cursor.visible || IngameManager.Instance.TalkActiveSelf())
+        {
+            mv = Vector3.zero;
+            ChangeAniFromType(AnyType.IDLE);
             return;
+        }
 
         Move();
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "NPCTalk")
+            _npcObj = other.gameObject;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "NPCTalk")
+            _npcObj = null;
     }
 
     #region [Character Setting Methods]
     public void InitializeSet()
     {
         //임시
-        _stat = new Stat("수레야", 600, 600, 300, 300, 5, 50, 0, 100, 15, 25, 10, 60, 0, 9999);
+        _stat = new Stat("수레야", 5, 600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60, 0, 9999);
         // Player Stat Setting 구현해야함.
         _statusbar.Init_StatusSetting(this);
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
@@ -268,7 +299,7 @@ public class PlayerController : PlayerStat
     #region WeaponMethods
     public void EquipWeapon(bool equip = true)
     {
-        /*//type에 따른 프리팹 가져와 손에 쥐어주기
+        /*type에 따른 프리팹 가져와 손에 쥐어주기
         switch (type)
         {
             case WeaponType.OneHandSword:
@@ -291,28 +322,30 @@ public class PlayerController : PlayerStat
 
     }
 
-    public void WeaponEquip(GameObject obj)
+    public void EquipmentWeapon(GameObject obj, bool nullCheck)
     {
-        if(equipWeapon != null)
-            equipWeapon.SetActive(false);
+        equipWeapon = obj;
+        WeaponTrail = obj.transform.GetChild(0).GetComponent<TrailRenderer>();
+        if (!nullCheck)
+            ChangeEquipWeaponMotion(0);
+    }
+    // 무기 장착 외형 및 equipWeapon 무기 쥐어주기
 
-        if (obj == null)
+    public void unEquipmentWeapon(GameObject obj, bool nullCheck)
+    {
+        if (nullCheck)
         {
-            equipWeapon = null;
+            obj.SetActive(false);
             ChangeEquipWeaponMotion(0);
             WeaponTrail = null;
-            _isEquip = false;
+            equipWeapon = null;
+
         }
         else
-        {
-            equipWeapon = obj;
-            WeaponTrail = obj.transform.GetChild(0).GetComponent<TrailRenderer>();
-            if (_isEquip)
-                equipWeapon.SetActive(true);
-            else
-                equipWeapon.SetActive(false);
-        }
+            obj.SetActive(false);
     }
+    // 무기 해제 및 equipWeaopn null 및 교체 과정
+
 
     #endregion WeaponMethopds & AnimationTypeMethods
 
@@ -423,7 +456,7 @@ public class PlayerController : PlayerStat
         _stat.ATTACK += skilldata._demage;
         StartCoroutine(Couroutine_BuffSkill(skilldata._demage, skilldata._coolTime));
     }
-    
+
     public void CrossSkill(SkillData skilldata)
     {
         _skillatt = skilldata._demage;
@@ -499,6 +532,15 @@ public class PlayerController : PlayerStat
         _keyBuffer.Clear();
     }
     #endregion
+
+    #region [NPC & Quest Methods]
+
+    public GameObject npcObjSet()
+    {
+        return _npcObj;
+    }
+
+    #endregion [NPC & Quest Methods]
 
     #region [Couroutine Methods]
     IEnumerator Couroutine_BuffSkill(float buffatk, float cooltime)

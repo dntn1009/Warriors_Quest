@@ -18,8 +18,13 @@ MonoBehaviour:
   explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uBB34\uAE30."
   MaxNumber: 1
   money: 100
-  equipmentStr: Wooden_Stick
-  Att: 10
-  Def: 0
+  equipstat:
+    _attack: 10
+    _criattack: 0
+    _crirate: 0
+    _defence: 0
+    _dodgerate: 0
+    _hitrate: 0
+  equipCode: 100
   hp: 0
   mp: 0

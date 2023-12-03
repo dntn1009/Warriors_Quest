@@ -8,17 +8,20 @@ using UnityEngine.EventSystems;
 
 public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
+    [Header("Manager")]
+    [SerializeField] TalkManager talkManager;
+
     [Header("Demage")]
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
 
     [Header("WindowUI")]
     [SerializeField] GameObject _Inventory;
-    [SerializeField] Button _inventoryBtn;
     [SerializeField] GameObject _MapWindow;
     [SerializeField] GameObject _StatWindow;
     [SerializeField] GameObject _SkillWindow;
     [SerializeField] GameObject _MenuWindow;
+    [SerializeField] GameObject _TalkWindow;
 
     [Header("Skill & Hot Bar")]
     [SerializeField] Image Skillbar_Q;
@@ -195,6 +198,30 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
+    }
+
+    public void TalkOpen()
+    {
+        if (!_TalkWindow.activeSelf)
+            _TalkWindow.SetActive(true);
+
+        _TalkWindow.GetComponent<NPCTalk>().TalkAction();
+    }
+
+    public void equipMentStatInfo()
+    {
+        if(_StatWindow.activeSelf)
+            _StatWindow.GetComponent<StatWindow>().SetStatInfo();
+    }
+
+    public bool TalkActiveSelf()
+    {
+        return _TalkWindow.activeSelf;
+    }
+
+    public string GetTalk(int id, int talkIndex )
+    {
+        return talkManager.GetTalk(id, talkIndex);
     }
 
     #endregion [Window UI Methods]

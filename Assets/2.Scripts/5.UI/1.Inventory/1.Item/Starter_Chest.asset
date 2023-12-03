@@ -18,8 +18,13 @@ MonoBehaviour:
   explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uAC11\uC637."
   MaxNumber: 1
   money: 100
-  equipmentStr: Starter_Chest
-  Att: 0
-  Def: 7
+  equipstat:
+    _attack: 0
+    _criattack: 0
+    _crirate: 0
+    _defence: 5
+    _dodgerate: 2
+    _hitrate: 0
+  equipCode: 102
   hp: 0
   mp: 0

@@ -14,9 +14,8 @@ public class Item : ScriptableObject
     public int money;
 
     [Header("If the item can be equipped")]
-    public string equipmentStr;
-    public int Att;
-    public int Def;
+    public EquipStat equipstat;
+    public int equipCode; // 00(set)/00(part) ex) 0101 => starter/head
 
     [Header("If the item can be healing")]
     public int hp;

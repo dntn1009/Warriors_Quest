@@ -24,13 +24,17 @@ public class Inventory : MonoBehaviour
     [Header("Debug")]
     [SerializeField] Button giveItemBtn;
 
-    [Header("PlayerEquipmentInfo")]
+    [Header("PlayerEquip & EquipStat")]
+    [SerializeField] EquipStat _equipStat;
     [SerializeField] PlayerEquipmentInfo _playerEquipemntInfo;
+
+    public EquipStat EQUIPSTAT { get { return _equipStat; } set { _equipStat = value; } }
 
     void Awake()
     {
         Singleton = this;
         giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 100); });
+        _equipStat = new EquipStat();
         SetGoldInfo();
     }
 
@@ -41,109 +45,67 @@ public class Inventory : MonoBehaviour
         carriedItem.transform.position = Input.mousePosition;
     }
 
+
+    #region [Item Carried Methods]
     public void SetCarriedItem(InventoryItem item) //아이템 옮기기
     {
+        bool nullCheck = true; // 누른 장비 슬롯이 NULL인지 아닌지 확인하는 bool
+
         if (carriedItem != null)
         {
             if (item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != carriedItem.myItem.itemTag) return;
-            item.activeSlot.SetItem(carriedItem); // 여기가 아이템 장착 장소
-        }
-        else if (carriedItem == null && item != null && item.activeSlot.myTag == SlotTag.Weapon)
-        {
-            unEquipWeapon();
+            nullCheck = false;
+            item.activeSlot.SetItem(carriedItem, nullCheck);// (장착과정) 2.마우스로 템을 들고 있는 경우
         }
 
+        if (item.activeSlot.myTag != SlotTag.None)
+            unequipEquipment(item, nullCheck); // (장착과정) 3. 장착한 장비 슬롯을 눌렀을 경우 해제 carrid에 옮김
         carriedItem = item;
         carriedItem.canvasGroup.blocksRaycasts = false;
         item.transform.SetParent(draggablesTransform);
 
-        if (carriedItem != null && item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != SlotTag.Potion)
-        {
-            EquipEquipment(carriedItem.activeSlot.myTag, carriedItem, true);
-        } // 여기가 아이템 해제 장소
     }
 
+    #endregion [Item Carried Methods]
+
+    #region [Item EquipMent Methods]
+    public void equipEquipMent(InventoryItem item, bool nullCheck)
+    {
+        _playerEquipemntInfo.equipEquipment(item, nullCheck);
+        _equipStat += item.myItem.equipstat;
+        IngameManager.Instance.equipMentStatInfo();
+    }
+
+    public void unequipEquipment(InventoryItem item, bool nullCheck)
+    {
+        _playerEquipemntInfo.unequipEquipment(item, nullCheck);
+        _equipStat -= item.myItem.equipstat;
+        IngameManager.Instance.equipMentStatInfo();
+    }
+
+    #endregion [Item EquipMent Methods]
+
+    #region [Item Info Methods]
     public void SetItemInfo(InventoryItem item)
     {
         if (carriedItem != null)
             return;
 
-        if (item.myItem.itemTag == SlotTag.None || item.myItem.itemTag == SlotTag.Potion)
-            inventoryInfo.Item_InfoSetting(item.myItem.sprite, item.myItem.itemname, item.myItem.itemTag, string.Empty, item.myItem.explane);
-        else if (item.myItem.itemTag == SlotTag.Weapon)
-            inventoryInfo.Item_InfoSetting(item.myItem.sprite, item.myItem.itemname, item.myItem.itemTag, item.myItem.Att.ToString(), item.myItem.explane);
-        else
-            inventoryInfo.Item_InfoSetting(item.myItem.sprite, item.myItem.itemname, item.myItem.itemTag, item.myItem.Def.ToString(), item.myItem.explane);
+        inventoryInfo.Item_InfoSetting(item.myItem.sprite, item.myItem.itemname, item.myItem.itemTag, item.myItem.explane, item.myItem.equipstat);
     }
+
     public void SetItemInfoNull()
     {
         inventoryInfo.Item_InfoNull();
     }
 
-    public void EquipEquipment(SlotTag tag, InventoryItem item, bool _EquipCheck = false)
-    {
-        switch (tag)
-        {
-            case SlotTag.Head:
-                EquipAmor(item, _EquipCheck);
-                break;
-            case SlotTag.Chest:
-                EquipAmor(item, _EquipCheck);
-                break;
-            case SlotTag.Legs:
-                EquipAmor(item, _EquipCheck);
-                break;
-            case SlotTag.Feet:
-                EquipAmor(item, _EquipCheck);
-                break;
-            case SlotTag.Gloves:
-                EquipAmor(item, _EquipCheck);
-                break;
-            case SlotTag.Shoulders:
-                EquipAmor(item, _EquipCheck);
-                break;
-            case SlotTag.Weapon:
-                EquipWeapon(item, _EquipCheck);
-                break;
-        }
-    }
+    #endregion [Item Info Methods]
 
-    public void EquipAmor(InventoryItem item, bool _EquipCheck)
-    {
-        var obj = _playerEquipemntInfo._amorObjectDic[item.myItem.equipmentStr];
-        SetEquipment(obj);
 
-        _playerEquipemntInfo.EquipStatData(item, _EquipCheck);
-
-        if (item.activeSlot.myTag == SlotTag.Legs)//바지 속옷
-            _playerEquipemntInfo.UnderwearSetActive(!obj.activeSelf);
-    }
-
-    public void EquipWeapon(InventoryItem item, bool _EquipCheck)
-    {
-        if (!_EquipCheck)
-        {
-            var obj = _playerEquipemntInfo._amorObjectDic[item.myItem.equipmentStr];
-            _playerEquipemntInfo._player.WeaponEquip(obj);
-        }
-
-        _playerEquipemntInfo.EquipStatData(item, _EquipCheck);
-    }
-
-    public void unEquipWeapon()
-    {
-        _playerEquipemntInfo._player.WeaponEquip(null);
-    }
-
-    public void SetEquipment(GameObject obj)
-    {
-        obj.SetActive(!obj.activeSelf);
-        // 장비 효과 player에 주기
-    }
 
     public void SetGoldInfo()
     {
-       goldText.text = _playerEquipemntInfo._player._stat.GOLD.ToString();
+       goldText.text = _playerEquipemntInfo.GetComponent<PlayerController>()._stat.GOLD.ToString();
     }
 
     public void SpawnInventoryItem(Item item, int _number = 1)
