@@ -301,5 +301,6 @@
   3. NPC Talk Area 구현
   4. NPC Talk 구현
   5. NPC Quest 구현 중
+  6. Stat을 Equip Stat 재구현
  
  
