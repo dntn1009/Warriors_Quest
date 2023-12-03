@@ -294,5 +294,12 @@
   이 과정에서 많이 부자연스러웠던 부분들을 다시 찾아 해결하였습니다. 그리고 이과정에서 마우스 커서로 인벤토리, 스텟, 스킬, 메뉴 버튼을 누르면 Window창이 켜지는게 아니라 그대로 안보이도록 구현되어있는것을 발견하였고
   GetMouseButtonDown(0)으로 눌렀을 때 RayCastHit을 쏘는 과정에서 EventSystem.current.IsPointerOverGameObject()메서드를 이용하여 False인 경우에만 잠그도록 구현하였습니다.
   IsPointerOverGameObject()는 UI에 쏘아지면 True인 특성을 가지고 있는 메서드 입니다.
+
+  ~2023-12-03
+  1. Player Fbx 수정
+  2. Player EquipInfo 수정
+  3. NPC Talk Area 구현
+  4. NPC Talk 구현
+  5. NPC Quest 구현 중
  
  
