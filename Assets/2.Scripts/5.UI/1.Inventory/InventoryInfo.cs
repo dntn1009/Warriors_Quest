@@ -15,38 +15,51 @@ public class InventoryInfo : MonoBehaviour
 
     [Header("More Info")]
     [SerializeField] Button abilityBtn;
+    [SerializeField] Button useBtn;
     [SerializeField] GameObject moreInfo;
     [SerializeField] TextMeshProUGUI More_InfoAbility;
 
+    [SerializeField] InventoryItem inventoryItem;
+
     #region [Info Setting Methods]
-    public void Item_InfoSetting(Sprite icon, string name, SlotTag tag, string explane, EquipStat equipStat)
+    public void Item_InfoSetting(InventoryItem _invenitem)
     {
-        Item_Icon.sprite = icon;
-        Item_Name.text = name;
+        Item_Icon.sprite = _invenitem.myItem.sprite;
+        Item_Name.text = _invenitem.myItem.itemname;
+        inventoryItem = _invenitem;
 
         MoreInfoSetActiveFalse();
-        if (tag == SlotTag.None || tag == SlotTag.Potion)
+        if (_invenitem.myItem.itemTag == SlotTag.None)
         {
             abilityBtn.gameObject.SetActive(false);
-            Item_ability.text = "[" + tag.ToString() + "]";
+            useBtn.gameObject.SetActive(false);
+            Item_ability.text = "[" + _invenitem.myItem.itemTag + "]";
+        }
+        else if(_invenitem.myItem.itemTag == SlotTag.Potion)
+        {
+            abilityBtn.gameObject.SetActive(false);
+            Item_ability.text = "[" + _invenitem.myItem.itemTag + "]";
+            useBtn.gameObject.SetActive(true);
         }
         else
         {
-            Item_ability.text = "[" + tag.ToString() + "]";
+            useBtn.gameObject.SetActive(false);
+            Item_ability.text = "[" + _invenitem.myItem.itemTag + "]";
             abilityBtn.gameObject.SetActive(true);
-            SetMoreInfoText(equipStat);
+            SetMoreInfoText(_invenitem.myItem.equipstat);
         }
-        Item_Explane.text = explane;
+        Item_Explane.text = _invenitem.myItem.explane;
         gameObject.SetActive(true);
     }
 
     public void Item_InfoNull()
     {
-        Item_Icon = null;
+        inventoryItem = null;
         Item_Name.text = string.Empty;
         Item_ability.text = string.Empty;
         Item_Explane.text = string.Empty;
         abilityBtn.gameObject.SetActive(false);
+        useBtn.gameObject.SetActive(false);
         MoreInfoSetActiveFalse();
         gameObject.SetActive(false);
     }
@@ -81,4 +94,12 @@ public class InventoryInfo : MonoBehaviour
         More_InfoAbility.text = string.Empty;
     }
     #endregion [More Info Methods]
+
+    #region [Potion Use Methods]
+    public void UsePotionItem()
+    {
+        inventoryItem.usePotionItem();
+    }
+
+    #endregion [Potion Use Methods]
 }

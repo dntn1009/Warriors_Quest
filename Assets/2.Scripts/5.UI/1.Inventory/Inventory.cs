@@ -59,7 +59,13 @@ public class Inventory : MonoBehaviour
         }
 
         if (item.activeSlot.myTag != SlotTag.None)
-            unequipEquipment(item, nullCheck); // (장착과정) 3. 장착한 장비 슬롯을 눌렀을 경우 해제 carrid에 옮김
+        {
+            if (item.activeSlot.myTag == SlotTag.Potion)
+                item.transform.parent.GetComponent<InventorySlot>().HotbarActiveFalse();
+            else
+                unequipEquipment(item, nullCheck); // (장착과정) 3. 장착한 장비 슬롯을 눌렀을 경우 해제 carrid에 옮김
+
+        }
         carriedItem = item;
         carriedItem.canvasGroup.blocksRaycasts = false;
         item.transform.SetParent(draggablesTransform);
@@ -91,7 +97,7 @@ public class Inventory : MonoBehaviour
         if (carriedItem != null)
             return;
 
-        inventoryInfo.Item_InfoSetting(item.myItem.sprite, item.myItem.itemname, item.myItem.itemTag, item.myItem.explane, item.myItem.equipstat);
+        inventoryInfo.Item_InfoSetting(item);
     }
 
     public void SetItemInfoNull()
@@ -101,12 +107,28 @@ public class Inventory : MonoBehaviour
 
     #endregion [Item Info Methods]
 
+    #region [Item Healing Potion]
 
+    public void UsePotionItemEffect(InventoryItem item)
+    {
+        var _player = _playerEquipemntInfo.gameObject.GetComponent<PlayerController>();
+        _player.UsePotionItem(item);
+    }
 
+    public void keyUsePotion(int index)
+    {
+        UsePotionItemEffect(hotbarSlots[index].myItem);
+        hotbarSlots[index].HotborSlotSettingHotbar();
+    }
+
+    #endregion [Item Healing Potion]
+
+    #region [Gold Methods]
     public void SetGoldInfo()
     {
-       goldText.text = _playerEquipemntInfo.GetComponent<PlayerController>()._stat.GOLD.ToString();
+        goldText.text = _playerEquipemntInfo.GetComponent<PlayerController>()._stat.GOLD.ToString();
     }
+    #endregion [Gold Methods]
 
     public void SpawnInventoryItem(Item item, int _number = 1)
     {
@@ -115,57 +137,47 @@ public class Inventory : MonoBehaviour
         if (_item == null)
         { _item = PickRandomItem(); }
 
-        if (_item.itemTag != SlotTag.None && _item.itemTag != SlotTag.Potion)
-            _number = 1;
-
 
         if (_item.itemTag == SlotTag.None || _item.itemTag == SlotTag.Potion)
         {
+            bool SlotCheck = false;
+            int EmptySlot = -1;
             for (int i = 0; i < inventorySlots.Length; i++)
             {
-                if (inventorySlots[i].myItem != null
-                     && _item == inventorySlots[i].myItem.myItem)
+                if (inventorySlots[i].myItem == null && EmptySlot == -1)
+                    EmptySlot = i;
+
+                if (inventorySlots[i].myItem != null && _item == inventorySlots[i].myItem.myItem)
                 {
-                    if (inventorySlots[i].myItem.currentCount == inventorySlots[i].myItem.myItem.MaxNumber)
-                        continue;
-                    else if (inventorySlots[i].myItem.currentCount + _number > inventorySlots[i].myItem.myItem.MaxNumber)
-                    {
-                        _number += inventorySlots[i].myItem.currentCount;
-                        _number -= inventorySlots[i].myItem.myItem.MaxNumber;
-                        inventorySlots[i].myItem.increaseMax();
-                    }
-                    else
-                    {
-                        inventorySlots[i].myItem.increaseCount(_number);
-                        _number = 0;
-                        break;
-                    }
+                    inventorySlots[i].myItem.increaseCount(_number);
+                    SlotCheck = true;
+                    break;
                 }
             }
-            if (_number > 0)
+
+            if (SlotCheck)
+                return;
+            else
             {
-                for (int i = 0; i < inventorySlots.Length; i++)
+                bool CreateCheck = true;
+                for (int i = 0; i < hotbarSlots.Length; i++)
                 {
-                    if (inventorySlots[i].myItem == null)
+                    if (hotbarSlots[i].myItem != null && _item == hotbarSlots[i].myItem.myItem)
                     {
-                        if (_number > _item.MaxNumber)
-                        {
-                            Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i], _item.MaxNumber);
-                            _number -= _item.MaxNumber;
-                        }
-                        else
-                        {
-                            Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i], _number);
-                            _number = 0;
-                        }
-                    }
-                    if (_number <= 0)
+                        hotbarSlots[i].myItem.increaseCount(_number);
+                        hotbarSlots[i].HotborSlotSettingHotbar();
+                        CreateCheck = false;
                         break;
+                    }
                 }
+                //Hotbar에도 등록되어 있는지 확인해야한다.
+                if (CreateCheck)
+                    Instantiate(itemPrefab, inventorySlots[EmptySlot].transform).Initialize(_item, inventorySlots[EmptySlot], _number);
             }
         }
         else
         {
+            _number = 1;
             for (int i = 0; i < inventorySlots.Length; i++)
             {
                 if (inventorySlots[i].myItem == null)

@@ -11,6 +11,7 @@ public class PlayerController : PlayerStat
     [SerializeField] GameObject equipWeapon; // 장착한 무기
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
     [SerializeField] GameObject[] _fxHitPrefab;
+    [SerializeField] GameObject[] _fxHealPrefab;
     [SerializeField] StatusController _statusbar; // PlayerStatus
     [SerializeField] StatusController _monstatusbar; // 가운데 상단 몬스터 hp 표시
     [Header("SkILL Edit Param")]
@@ -32,10 +33,14 @@ public class PlayerController : PlayerStat
     Vector3 mv; // Player Object Vector3
     bool _isJump; // 점프
     bool _isEquip; // 장비 착용
-    bool _isPressAttack;
-    bool _isBuffSkill;
-    bool _isCrossSkill;
-    bool _isJumpSkill;
+    bool _isPressAttack; // Attack
+
+    bool _isBuffSkill; // skill coltime
+    bool _isCrossSkill; // skill coltime
+    bool _isJumpSkill; // skill coltime
+
+    bool _isHPPotion;
+    bool _isMPPotion;
 
     int _comboIndex; // 0~3 까지 Comoblist에잇는 anytype을 실행하기 위한 int
     float _skillatt;
@@ -92,6 +97,8 @@ public class PlayerController : PlayerStat
         _isBuffSkill = false;
         _isCrossSkill = false;
         _isJumpSkill = false;
+        _isHPPotion = false;
+        _isMPPotion = false;
     }
 
     private void Start()
@@ -205,19 +212,24 @@ public class PlayerController : PlayerStat
         }
 
         Move();
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "NPCTalk")
+        {
             _npcObj = other.gameObject;
+            _npcObj.transform.GetChild(0).GetComponent<SetNPCUI>().TalkObjSetActive(true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "NPCTalk")
+        {
+            _npcObj.transform.GetChild(0).GetComponent<SetNPCUI>().TalkObjSetActive(false);
             _npcObj = null;
+        }
     }
 
     #region [Character Setting Methods]
@@ -542,6 +554,55 @@ public class PlayerController : PlayerStat
 
     #endregion [NPC & Quest Methods]
 
+    #region [PotionItem Use Methods]
+
+    public void PotionItemEffect(GameObject fxPrefab, Transform _pos)
+    {
+        var obj = Instantiate(fxPrefab, _pos);
+    }
+
+    public void UsePotionItem(InventoryItem item)
+    {
+        if (item.myItem.hp > 0)
+        {
+            if (_isHPPotion || _stat.HP >= _stat.MAXHP)
+                return;
+
+            _isHPPotion = true;
+            PotionItemEffect(_fxHealPrefab[0], _buffPos);
+            if (_stat.HP + item.myItem.hp >= _stat.MAXHP)
+                _stat.HP = _stat.MAXHP;
+            else
+                _stat.HP += item.myItem.hp;
+            _statusbar.SetHP(this);
+            StartCoroutine(Couroutine_HPPotion(5));
+        }
+        else if (item.myItem.mp > 0)
+        {
+            if (_isMPPotion || _stat.MP >= _stat.MAXMP)
+                return;
+
+            _isMPPotion = true;
+            PotionItemEffect(_fxHealPrefab[1], _buffPos);
+            if (_stat.MP + item.myItem.mp >= _stat.MAXMP)
+                _stat.MP = _stat.MAXMP;
+            else
+                _stat.MP += item.myItem.mp;
+            _statusbar.SetMP(this);
+            StartCoroutine(Couroutine_MPPotion(5));
+        }
+
+        if (item.currentCount == 1)
+        {
+            Destroy(item.gameObject);
+            Inventory.Singleton.SetItemInfoNull();
+        }
+        else
+            item.decreaseCount(1);
+    }
+
+    #endregion [PotionItem Use Methods]
+
     #region [Couroutine Methods]
     IEnumerator Couroutine_BuffSkill(float buffatk, float cooltime)
     {
@@ -588,6 +649,7 @@ public class PlayerController : PlayerStat
             //image.fillAmount = (1.0f / cool);
             yield return new WaitForFixedUpdate();
         }
+        _isHPPotion = !_isHPPotion;
     } // HPPotion 쿨타임
     IEnumerator Couroutine_MPPotion(float cooltime)
     {
@@ -597,7 +659,7 @@ public class PlayerController : PlayerStat
             //image.fillAmount = (1.0f / cool);
             yield return new WaitForFixedUpdate();
         }
-        _isBuffSkill = !_isBuffSkill;
+        _isMPPotion = !_isMPPotion;
     } // MPPotion 쿨타임
 
     #endregion [Couroutine Methods]

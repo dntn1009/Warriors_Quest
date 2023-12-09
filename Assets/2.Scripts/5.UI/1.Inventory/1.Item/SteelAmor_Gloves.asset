@@ -16,7 +16,6 @@ MonoBehaviour:
   itemTag: 6
   itemname: "\uAC15\uCCA0\uC7A5\uAC11"
   explane: "\uAC15\uCCA0\uB85C \uB9CC\uB4E0 \uC7A5\uAC11"
-  MaxNumber: 1
   money: 1000
   equipstat:
     _attack: 0

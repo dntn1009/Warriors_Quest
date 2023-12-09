@@ -9,7 +9,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     public InventoryItem myItem { get; set; }
 
     public SlotTag myTag;
-    public string equipmentStr;
+
+    [SerializeField] HotbarSlot HotbarSlot;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -36,8 +37,31 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         myItem.transform.SetParent(transform);
         myItem.canvasGroup.blocksRaycasts = true;
 
-        if(myTag != SlotTag.None)
-            Inventory.Singleton.equipEquipMent(item, nullCheck); // 여기가 장착 장소임. 장비 슬롯에 아이템의 유무에 따라 다르게 작동함.
+        if (myTag != SlotTag.None)
+        {
+            if (myTag == SlotTag.Potion)
+                HotbarSlot.SettingHotbar(item.myItem.sprite, item.CountStr);
+            else
+                Inventory.Singleton.equipEquipMent(item, nullCheck); // 여기가 장착 장소임. 장비 슬롯에 아이템의 유무에 따라 다르게 작동함.
+        }
     }
 
+    public void UsePotionItem()
+    {
+        if (myItem != null)
+        {
+            Inventory.Singleton.UsePotionItemEffect(myItem);
+            HotbarSlot.SettingHotbar(myItem.myItem.sprite, myItem.CountStr);
+        }
+    }
+
+    public void HotborSlotSettingHotbar()
+    {
+        HotbarSlot.SettingHotbar(myItem.myItem.sprite, myItem.CountStr);
+    }
+
+    public void HotbarActiveFalse()
+    {
+        HotbarSlot.SettingFalse();
+    }
 }

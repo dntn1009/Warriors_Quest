@@ -3145,6 +3145,9 @@ MonoBehaviour:
   - {fileID: 394095070506994215, guid: ac010ad9363c7134abc30db32de4a5fe, type: 3}
   - {fileID: 8985087629510636339}
   - {fileID: 1155908444032573925}
+  _fxHealPrefab:
+  - {fileID: 2034380629378157175, guid: bf942a2d205977d4d8ac06b614d5f9f8, type: 3}
+  - {fileID: 6466740978719639002, guid: d271df08f88afc142986d12e1d77f9f4, type: 3}
   _statusbar: {fileID: 0}
   _monstatusbar: {fileID: 0}
   _buffSkill: {fileID: 11400000, guid: 053b419c73720914e99c007ecb5bbc45, type: 2}

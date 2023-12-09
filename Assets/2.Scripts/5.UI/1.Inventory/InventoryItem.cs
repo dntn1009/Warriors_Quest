@@ -16,6 +16,8 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
     public Item myItem { get; set; }
     public InventorySlot activeSlot { get; set; }
 
+    public string CountStr { get { return _countText.text; } }
+
     void Awake()
     {
         _countText = transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
@@ -39,12 +41,6 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         setCount();
     }
 
-    public void increaseMax()
-    {
-        currentCount = myItem.MaxNumber;
-        setCount();
-    }
-
     public void decreaseCount(int num)
     {
         currentCount -= num;
@@ -60,7 +56,10 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         }
         else if(currentCount > 1)
         {
-            _countText.text = currentCount.ToString();
+            if (currentCount <= 999)
+                _countText.text = currentCount.ToString();
+            else
+                _countText.text = "999+";
             _countText.gameObject.SetActive(true);
         }
     }
@@ -69,11 +68,17 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
+            Inventory.Singleton.SetItemInfoNull();
             Inventory.Singleton.SetCarriedItem(this);
         }
         if(eventData.button == PointerEventData.InputButton.Right)
         {
             Inventory.Singleton.SetItemInfo(this);
         }
+    }
+
+    public void usePotionItem()
+    {
+        this.transform.parent.GetComponent<InventorySlot>().UsePotionItem();
     }
 }

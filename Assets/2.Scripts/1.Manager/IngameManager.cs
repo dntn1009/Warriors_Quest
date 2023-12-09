@@ -87,6 +87,38 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
                 }
             }
         }
+
+
+        //Potion
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Inventory.Singleton.keyUsePotion(0);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Inventory.Singleton.keyUsePotion(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Inventory.Singleton.keyUsePotion(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Inventory.Singleton.keyUsePotion(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Inventory.Singleton.keyUsePotion(4);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Inventory.Singleton.keyUsePotion(5);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            Inventory.Singleton.keyUsePotion(6);
+        }
     }
 
     #region [Map & Spawn Methods]

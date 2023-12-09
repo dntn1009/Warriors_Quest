@@ -10,7 +10,6 @@ public class Item : ScriptableObject
     public SlotTag itemTag;
     public string itemname;
     public string explane;
-    public int MaxNumber;
     public int money;
 
     [Header("If the item can be equipped")]
