@@ -30,10 +30,14 @@ public class Inventory : MonoBehaviour
 
     public EquipStat EQUIPSTAT { get { return _equipStat; } set { _equipStat = value; } }
 
+    public bool hideCheck = false;
+    public Vector2 truePos = new Vector2(0, 0);
+    public Vector2 falsePos = new Vector2(2000, 0);
+
     void Awake()
     {
         Singleton = this;
-        giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 100); });
+        giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 10); });
         _equipStat = new EquipStat();
         SetGoldInfo();
     }
@@ -130,13 +134,14 @@ public class Inventory : MonoBehaviour
     }
     #endregion [Gold Methods]
 
+    #region [Spawn Item Methods]
+
     public void SpawnInventoryItem(Item item, int _number = 1)
     {
         Item _item = item;
 
         if (_item == null)
         { _item = PickRandomItem(); }
-
 
         if (_item.itemTag == SlotTag.None || _item.itemTag == SlotTag.Potion)
         {
@@ -150,6 +155,7 @@ public class Inventory : MonoBehaviour
                 if (inventorySlots[i].myItem != null && _item == inventorySlots[i].myItem.myItem)
                 {
                     inventorySlots[i].myItem.increaseCount(_number);
+                    QuestCountSetting(inventorySlots[i]);
                     SlotCheck = true;
                     break;
                 }
@@ -166,13 +172,17 @@ public class Inventory : MonoBehaviour
                     {
                         hotbarSlots[i].myItem.increaseCount(_number);
                         hotbarSlots[i].HotborSlotSettingHotbar();
+                        QuestCountSetting(hotbarSlots[i]);
                         CreateCheck = false;
                         break;
                     }
                 }
                 //Hotbar¿¡µµ µî·ÏµÇ¾î ÀÖ´ÂÁö È®ÀÎÇØ¾ßÇÑ´Ù.
-                if (CreateCheck)
+                if (CreateCheck && EmptySlot != -1)
+                {
                     Instantiate(itemPrefab, inventorySlots[EmptySlot].transform).Initialize(_item, inventorySlots[EmptySlot], _number);
+                    QuestCountSetting(inventorySlots[EmptySlot]);
+                }
             }
         }
         else
@@ -183,6 +193,7 @@ public class Inventory : MonoBehaviour
                 if (inventorySlots[i].myItem == null)
                 {
                     Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i], _number);
+                    QuestCountSetting(inventorySlots[i]);
                     break;
                 }
             }
@@ -195,4 +206,71 @@ public class Inventory : MonoBehaviour
         return items[random];
     }
 
+    public void GetRewardItem(Item item, int number = 1)
+    {
+        IngameManager.Instance.SetGetInfoText(item.itemname + "À»(¸¦) È¹µæ");
+        SpawnInventoryItem(item, number);
+    }
+
+    public void GetDropItem(int num, int number = 1)
+    {
+        IngameManager.Instance.SetGetInfoText(items[num].itemname + "À»(¸¦) È¹µæ");
+        SpawnInventoryItem(items[num], number);
+    }
+    public void GetRandomDropItem(int num, int rand)
+    {
+        int random = Random.Range(0, 100);
+
+        if (random <= num)
+        {
+            IngameManager.Instance.SetGetInfoText(items[num].itemname + "À»(¸¦) È¹µæÇÏ¼Ì½À´Ï´Ù.");
+            SpawnInventoryItem(items[num]);
+        }
+
+    }
+    public void InitQuestCheck(PlayerController _player)
+    {
+        if (_player._quest.questGoal.questType == QuestType.Gathering)
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if (inventorySlots[i].myItem != null && inventorySlots[i].myItem.myItem.itemCode == _player._quest.questGoal.itemCode)
+                {
+                    _player._quest.questGoal.currentAmount = inventorySlots[i].myItem.currentCount;
+                    break;
+                }
+            }
+    }
+    public void QuestCountSetting(InventorySlot slot)
+    {
+        PlayerController _player = _playerEquipemntInfo.GetComponent<PlayerController>();
+        if (_player._quest.isActive)
+        {
+            if (_player._quest.questGoal.questType == QuestType.Gathering && slot.myItem.myItem.itemCode == _player._quest.questGoal.itemCode)
+            {
+                _player._quest.questGoal.currentAmount = slot.myItem.currentCount;
+                IngameManager.Instance.QuestRefresh();
+            }
+        }
+
+    }
+
+    public void QuestDeliver(QuestData quest)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].myItem != null && inventorySlots[i].myItem.myItem.itemCode == quest.questGoal.itemCode)
+            {
+                if (inventorySlots[i].myItem.currentCount > quest.questGoal.requiredAmount)
+                {
+                    inventorySlots[i].myItem.decreaseCount(quest.questGoal.requiredAmount);
+                }
+                else
+                {
+                    inventorySlots[i].myItem = null;
+                }
+            }
+        }
+
+    }
+    #endregion [Spawn Item Methods]
 }

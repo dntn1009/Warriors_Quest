@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9661307fe24276f40a6bec423706d06a, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
+  _monCode: 101
   _name: "\uC2AC\uB77C\uC784"
   _hp: 300
   _level: 3
   _attack: 45
-  _buffattack: 0
+  _skillattack: 0
   _criattack: 70
   _crirate: 7
   _denfence: 15
   _dodgerate: 10
   _hitrate: 55
   _exp: 45
+  _gold: 10

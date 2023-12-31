@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e17c24be7447df48ad1f12dd6180fe4, type: 3}
+  m_Name: Starter_Boots
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -306061869, guid: a58ee72581ff5024cb49d7954261833e, type: 3}
+  itemTag: 5
+  itemCode: 10104
+  itemname: "\uBAA9\uC7AC\uC2E0\uBC1C"
+  explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uC2E0\uBC1C."
+  money: 100
+  equipstat:
+    _attack: 0
+    _criattack: 0
+    _crirate: 0
+    _defence: 4
+    _dodgerate: 1
+    _hitrate: 0
+  equipCode: 104
+  hp: 0
+  mp: 0

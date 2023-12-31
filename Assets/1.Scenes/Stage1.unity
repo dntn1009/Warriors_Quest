@@ -8904,6 +8904,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1991915124}
     m_Modifications:
+    - target: {fileID: 901330241, guid: 3697ac57c76e33445b930807485b4e07, type: 3}
+      propertyPath: m_text
+      value: '?'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1729322915, guid: 3697ac57c76e33445b930807485b4e07, type: 3}
+      propertyPath: m_fontSize
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1729322915, guid: 3697ac57c76e33445b930807485b4e07, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 1393056756969964134, guid: 3697ac57c76e33445b930807485b4e07, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -9132,6 +9144,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1991915124}
     m_Modifications:
+    - target: {fileID: 681842632, guid: 0772220fbded3be4b8b2ba131e951d54, type: 3}
+      propertyPath: m_text
+      value: '?'
+      objectReference: {fileID: 0}
     - target: {fileID: 4559821556852862151, guid: 0772220fbded3be4b8b2ba131e951d54, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -9194,6 +9210,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1991915124}
     m_Modifications:
+    - target: {fileID: 2003606913, guid: dc27a5345e95ef344ac2ab76b496cd19, type: 3}
+      propertyPath: m_text
+      value: '?'
+      objectReference: {fileID: 0}
     - target: {fileID: 1479933033786561785, guid: dc27a5345e95ef344ac2ab76b496cd19, type: 3}
       propertyPath: m_Name
       value: MushroomKill_NPC

@@ -20,6 +20,11 @@ public class PlayerController : PlayerStat
     [SerializeField] SkillData _crossSkill; //E Key
     [SerializeField] SkillData _jumpSkill; //R Key
     [SerializeField] Transform _ExploPos;
+
+    [Header("Talk & Quest")]
+    public QuestData _quest;
+    [SerializeField] GameObject _npcObj;
+
     //참조 변수
     //Animator _animController;
     CharacterController _charController;
@@ -27,7 +32,7 @@ public class PlayerController : PlayerStat
     AttackAreUnitFind[] _AttackAreUnitFind;
     TrailRenderer WeaponTrail;
 
-    GameObject _npcObj;
+    
 
     //정보 변수
     Vector3 mv; // Player Object Vector3
@@ -108,15 +113,6 @@ public class PlayerController : PlayerStat
 
     void Update()
     {
-        if (Cursor.visible)
-        {
-            if (GetAnimState() != AnyType.IDLE)
-                ChangeAniFromType(AnyType.IDLE);
-            return;
-        }
-        if (_isSkill)
-            return;
-
         if (Input.GetKeyDown(KeyCode.G))
         {
             if (_npcObj != null)
@@ -125,7 +121,16 @@ public class PlayerController : PlayerStat
             }
         } // NPC 대화
 
-        if (IngameManager.Instance.TalkActiveSelf())
+        if (Cursor.visible)
+        {
+            if (GetAnimState() != AnyType.IDLE)
+                ChangeAniFromType(AnyType.IDLE);
+            return;
+        } // cursor 잠금시 움직이도록
+        if (_isSkill)    // 스킬 발동 시
+            return;
+
+        if (IngameManager.Instance.TalkActiveSelf()) // NPC 대화 창이 열렸을 시
             return;
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -229,6 +234,7 @@ public class PlayerController : PlayerStat
         {
             _npcObj.transform.GetChild(0).GetComponent<SetNPCUI>().TalkObjSetActive(false);
             _npcObj = null;
+            IngameManager.Instance.QuestExit();
         }
     }
 
@@ -236,7 +242,7 @@ public class PlayerController : PlayerStat
     public void InitializeSet()
     {
         //임시
-        _stat = new Stat("수레야", 5, 600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60, 0, 9999);
+        _stat = new Stat("수레야", 5, 600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60, 0, 100);
         // Player Stat Setting 구현해야함.
         _statusbar.Init_StatusSetting(this);
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
@@ -544,6 +550,24 @@ public class PlayerController : PlayerStat
         _keyBuffer.Clear();
     }
     #endregion
+
+    #region [Quest Methods]
+
+    public void QuestTypeKill(MonsterController mon)
+    {
+        if (_quest.isActive)
+        {
+           _quest.questGoal.EnemyKilled(mon);
+        }
+    }
+
+    public void QuestComplete()
+    {
+            _quest.Complete(this);
+            _quest = new QuestData();
+    }
+
+    #endregion [Quest Methods]
 
     #region [NPC & Quest Methods]
 

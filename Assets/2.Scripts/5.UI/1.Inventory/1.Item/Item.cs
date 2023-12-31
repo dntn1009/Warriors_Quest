@@ -8,9 +8,11 @@ public class Item : ScriptableObject
 {
     public Sprite sprite;
     public SlotTag itemTag;
+    public int itemCode;
     public string itemname;
     public string explane;
     public int money;
+
 
     [Header("If the item can be equipped")]
     public EquipStat equipstat;

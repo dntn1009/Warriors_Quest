@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Monster Data", menuName = "1.Scriptable Object/Data/Monster Data", order = int.MaxValue)]
 public class MonsterData : ScriptableObject
 {
+    public int _monCode;
     public string _name;
     public int _hp;
     public int _level;
@@ -16,4 +17,5 @@ public class MonsterData : ScriptableObject
     public float _dodgerate;
     public float _hitrate;
     public int _exp;
+    public int _gold;
 }

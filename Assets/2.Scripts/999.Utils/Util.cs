@@ -53,6 +53,9 @@ public class Util
                 damage = CriticalDamage(damage, player._stat.CRIATTACK + Inventory.Singleton.EQUIPSTAT.CRIATTACK );
             }
         }
+        if (damage < 0)
+            damage = 1f;
+
         return type;
     }
 
@@ -70,6 +73,9 @@ public class Util
                 damage = CriticalDamage(damage, mon.CRIATTACK);
             }
         }
+        if (damage < 0)
+            damage = 1f;
+
         return type;
     }
     #endregion

@@ -201,8 +201,8 @@ MonoBehaviour:
   NameText: {fileID: 542279725}
   TalkText: {fileID: 920792570}
   TalkObj: {fileID: 730532468}
-  Name: "\uB9C8\uC744 \uC8FC\uBBFC2"
-  Talk: "\uB300\uD654\uD558\uAE30"
+  Name: "\uC7A5\uBE44 \uC0C1\uC778"
+  Talk: "\uB458\uB7EC\uBCF4\uAE30"
 --- !u!1 &542279723
 GameObject:
   m_ObjectHideFlags: 0
@@ -863,9 +863,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444bb542674f2b44c9eee0c901b8094d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NAME: 
-  ID: 0
-  isNPC: 0
+  NAME: "\uC7A5\uBE44 \uC0C1\uC778"
+  ID: 102
+  isNPC: 1
 --- !u!1 &4386527238295622864
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,18 +10,25 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
     [Header("Manager")]
     [SerializeField] TalkManager talkManager;
+    [SerializeField] QuestManager questManager;
 
     [Header("Demage")]
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
 
     [Header("WindowUI")]
-    [SerializeField] GameObject _Inventory;
+    [SerializeField] Inventory _Inventory;
     [SerializeField] GameObject _MapWindow;
     [SerializeField] GameObject _StatWindow;
     [SerializeField] GameObject _SkillWindow;
+    [SerializeField] GameObject _QuestWindow;
     [SerializeField] GameObject _MenuWindow;
     [SerializeField] GameObject _TalkWindow;
+    [SerializeField] GameObject _RequestWindow;
+    [SerializeField] MiniquestWindow _miniQuestWindow;
+
+    [Header("GetInfoText")]
+    [SerializeField] GetInfo _GetInfo;
 
     [Header("Skill & Hot Bar")]
     [SerializeField] Image Skillbar_Q;
@@ -49,7 +56,6 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     private void Update()
     {
         MapState();
-
         if(Input.GetKeyDown(KeyCode.I))//인벤토리 버튼
         {
             InventoryOpen();
@@ -61,6 +67,10 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         if (Input.GetKeyDown(KeyCode.K))//스킬 버튼
         {
             SkillOpen();
+        }
+        if(Input.GetKeyDown(KeyCode.J))
+        {
+            QuestOpen();
         }
         if (Input.GetKeyDown(KeyCode.U))//메뉴 버튼
         {
@@ -166,15 +176,18 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     #region [Window UI Methods]
     public void InventoryOpen()
     {
-        if (_Inventory.activeSelf)
+        if (!_Inventory.hideCheck)
         {
-            _Inventory.SetActive(false);
+            _Inventory.hideCheck = true;
+            _Inventory.transform.localPosition = _Inventory.GetComponent<Inventory>().truePos;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
         else
         {
-            _Inventory.SetActive(true);
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            _Inventory.hideCheck = false;
+            _Inventory.truePos = _Inventory.gameObject.GetComponent<RectTransform>().localPosition;
+            _Inventory.transform.localPosition = _Inventory.GetComponent<Inventory>().falsePos;            
         }
     }
     public void MapOpen()
@@ -218,6 +231,21 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
             Cursor.visible = true;
         }
     }
+
+    public void QuestOpen()
+    {
+        if (_QuestWindow.activeSelf)
+        {
+            _QuestWindow.SetActive(false);
+        }
+        else
+        {
+            _QuestWindow.SetActive(true);
+            _QuestWindow.GetComponent<QuestWindow>().QuestSetting();
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
     public void MenuOpen()
     {
         if (_MenuWindow.activeSelf)
@@ -232,6 +260,34 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         }
     }
 
+    public void miniQuestOpen()
+    {
+        _miniQuestWindow.miniQuestSetting();
+    }
+
+    public void miniQuestComplete()
+    {
+        _miniQuestWindow.completeSetting();
+    }
+
+    public void QuestRefresh()
+    {
+        _QuestWindow.GetComponent<QuestWindow>().amountSetting();
+        _miniQuestWindow.currentAmountChange();
+    }
+    #endregion [Window UI Methods]
+
+    #region [GetInfo Methods]
+    public void SetGetInfoText(string text)
+    {
+        _GetInfo.setQueText(text);
+    }
+
+    #endregion [GetInfo Methods]
+
+    #region [Manager Methods]
+
+    //Talk Manager
     public void TalkOpen()
     {
         if (!_TalkWindow.activeSelf)
@@ -242,7 +298,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
     public void equipMentStatInfo()
     {
-        if(_StatWindow.activeSelf)
+        if (_StatWindow.activeSelf)
             _StatWindow.GetComponent<StatWindow>().SetStatInfo();
     }
 
@@ -251,12 +307,36 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         return _TalkWindow.activeSelf;
     }
 
-    public string GetTalk(int id, int talkIndex )
+    public string GetTalk(int id, int talkIndex)
     {
         return talkManager.GetTalk(id, talkIndex);
     }
+    //Talk Manager
 
-    #endregion [Window UI Methods]
+    //Quest Manager
+    public void RequestOpen(string title, string description, QuestType type)
+    {
+        _RequestWindow.SetActive(true);
+        _RequestWindow.GetComponent<RequestWindow>().requestSetting(title, description, type);
+    }
+
+    public void npcQuestSetting(NPCData npc)
+    {
+        questManager.npcQuest(npc);
+    }
+
+    public bool QuestBtnSetActvie(int id, int talkIndex)
+    {
+        return talkManager.QuestBtnSetActvie(id, talkIndex);
+    }
+    //Quest Manager
+
+    //Talk + Quest
+    public void QuestExit()
+    {
+        _RequestWindow.SetActive(false); 
+    }
+    #endregion [Manager Methods]
 
     #region [Skill & Hot bar key Methods]
 

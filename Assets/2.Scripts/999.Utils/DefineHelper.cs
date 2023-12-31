@@ -46,7 +46,14 @@ namespace DefineHelper
         Feet,
         Gloves,
         Shoulders,
-        Weapon }
+        Weapon 
+    }
+
+    public enum QuestType
+    {
+        Kill                        = 0,
+        Gathering
+    }
 
     #endregion [캐릭터용]
 

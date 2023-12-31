@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9661307fe24276f40a6bec423706d06a, type: 3}
   m_Name: MushRoom
   m_EditorClassIdentifier: 
+  _monCode: 100
   _name: "\uBA38\uC26C\uB8F8"
   _hp: 200
   _level: 1
   _attack: 38
-  _buffattack: 0
+  _skillattack: 0
   _criattack: 80
   _crirate: 7
   _denfence: 15
   _dodgerate: 10
   _hitrate: 55
   _exp: 25
+  _gold: 5

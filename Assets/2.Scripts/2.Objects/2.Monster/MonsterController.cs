@@ -233,6 +233,7 @@ public class MonsterController : MonsterStat
             HP = 0;
             SetState(BehaviourState.DEATH);
             ChangeAniFromType(AnyType.DEATH);
+            monsterReward(_player);
             return;
         }
 
@@ -250,6 +251,17 @@ public class MonsterController : MonsterStat
             ChangeAniFromType(AnyType.HIT);
             _navAgent.isStopped = true;
         }
+    }
+
+    public void monsterReward(PlayerController _player)
+    {
+        _player._stat.EXP += EXP;
+        _player._stat.GOLD += GOLD;
+        _player.QuestTypeKill(this);
+
+        ItemDrop();
+        IngameManager.Instance.SetGetInfoText("Exp + " + EXP);
+        IngameManager.Instance.SetGetInfoText("GOLD + " + GOLD);
     }
     //Attack Methods
 
@@ -308,13 +320,20 @@ public class MonsterController : MonsterStat
 
     #endregion [Attack & Demage Methods]
 
-    #region [UI & Stat Methods]
+    #region [Inventory Item Methods]
 
-    public void Init_StatusSetting(HudController _hud)
+    public void ItemDrop()
     {
+        if (CODE == 100)
+            Inventory.Singleton.GetDropItem(0);
+        else if(CODE == 101)
+            Inventory.Singleton.GetDropItem(1);
+
+        Inventory.Singleton.GetRandomDropItem(2, 5);
+        Inventory.Singleton.GetRandomDropItem(3, 5);
     }
 
-    #endregion [UI & Stat Methods]
+    #endregion [Inventory Item Methods]
 
     #region [MonsterManager Script Methods]
 

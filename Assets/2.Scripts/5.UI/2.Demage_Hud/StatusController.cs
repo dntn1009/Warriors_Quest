@@ -16,6 +16,10 @@ public class StatusController : MonoBehaviour
     [SerializeField] TextMeshProUGUI Hp_text;
     [SerializeField] TextMeshProUGUI Mp_text;
 
+    [Header("EXP Bar")]
+    [SerializeField] Slider Exp_bar;
+    [SerializeField] TextMeshProUGUI Exp_text;
+
     #region [Init Setting Methods]
     public void Init_StatusSetting(PlayerController _player)
     {
@@ -23,6 +27,7 @@ public class StatusController : MonoBehaviour
         obj_level.text = "Lv." + _player._stat.LEVEL;
         Hp_text.text = _player._stat.HP + " / " + _player._stat.MAXHP;
         Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
+        //Exp_text.text = _player._stat.EXP + " / " + _player._stat.MAXEXP;
     }
 
     public void Init_StatusSetting(MonsterStat _mon)
