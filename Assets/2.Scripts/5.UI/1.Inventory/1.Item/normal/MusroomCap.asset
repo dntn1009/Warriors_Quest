@@ -17,7 +17,7 @@ MonoBehaviour:
   itemCode: 0
   itemname: "\uBA38\uC26C\uB8F8\uC758 \uAC13"
   explane: "\uBA38\uC26C\uB8F8\uC758 \uAC13\uC774\uB2E4."
-  money: 5
+  gold: 50
   equipstat:
     _attack: 0
     _criattack: 0

@@ -15,6 +15,9 @@ public class NPCData : MonoBehaviour
     public int ID;
     public bool isNPC;
 
+    [Header("Shop Item")]
+    public Item[] shopItem;
+
     private void Start()
     {
         if (questIndex != -1)

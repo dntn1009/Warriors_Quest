@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DefineHelper;
+using System.Collections;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class IngameManager : SingletonMonobehaviour<IngameManager>
 {
@@ -26,6 +25,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     [SerializeField] GameObject _TalkWindow;
     [SerializeField] GameObject _RequestWindow;
     [SerializeField] MiniquestWindow _miniQuestWindow;
+    [SerializeField] ShopWindow _ShopWindow;
 
     [Header("GetInfoText")]
     [SerializeField] GetInfo _GetInfo;
@@ -56,7 +56,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     private void Update()
     {
         MapState();
-        if(Input.GetKeyDown(KeyCode.I))//인벤토리 버튼
+        if (Input.GetKeyDown(KeyCode.I))//인벤토리 버튼
         {
             InventoryOpen();
         }
@@ -68,7 +68,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         {
             SkillOpen();
         }
-        if(Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J))
         {
             QuestOpen();
         }
@@ -76,7 +76,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         {
             MenuOpen();
         }
-        if(Input.GetKeyDown(KeyCode.M)) // 지도 버튼
+        if (Input.GetKeyDown(KeyCode.M)) // 지도 버튼
         {
             MapOpen();
         }
@@ -85,12 +85,12 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit))
             {
-                if(!EventSystem.current.IsPointerOverGameObject())
+                if (!EventSystem.current.IsPointerOverGameObject())
                 {
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
@@ -100,7 +100,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
 
         //Potion
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Inventory.Singleton.keyUsePotion(0);
 
@@ -174,12 +174,46 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     #endregion [Damage UI Methods]
 
     #region [Window UI Methods]
+    public void ShopOpen(NPCData npc)
+    {
+        if (!_ShopWindow.hideCheck)
+        {
+            _ShopWindow.hideCheck = true;
+            _ShopWindow.transform.localPosition = _ShopWindow.truePos;
+            _ShopWindow.BuyActiveTrue();
+            _ShopWindow.buySlotSetting(npc);
+            _ShopWindow.sellSlotSetting(_Inventory);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+    }
+
+    public void ShopClose()
+    {
+        if (_ShopWindow.hideCheck)
+        {
+            _ShopWindow.hideCheck = false;
+            _ShopWindow.buySlotNull();
+            _ShopWindow.sellSlotNull();
+            _ShopWindow.truePos = _ShopWindow.gameObject.GetComponent<RectTransform>().localPosition;
+            _ShopWindow.transform.localPosition = _ShopWindow.falsePos;
+        }
+    }
+
+    public bool ShopCheck()
+    {
+        return _ShopWindow.hideCheck;
+    }
     public void InventoryOpen()
     {
         if (!_Inventory.hideCheck)
         {
+            if (_ShopWindow.hideCheck)
+                return;
+
             _Inventory.hideCheck = true;
-            _Inventory.transform.localPosition = _Inventory.GetComponent<Inventory>().truePos;
+            _Inventory.transform.localPosition = _Inventory.truePos;
+            _Inventory.SetGoldInfo();
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }
@@ -187,7 +221,8 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         {
             _Inventory.hideCheck = false;
             _Inventory.truePos = _Inventory.gameObject.GetComponent<RectTransform>().localPosition;
-            _Inventory.transform.localPosition = _Inventory.GetComponent<Inventory>().falsePos;            
+            _Inventory.transform.localPosition = _Inventory.falsePos;
+            _ShopWindow.buySlotNull();
         }
     }
     public void MapOpen()
@@ -334,7 +369,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     //Talk + Quest
     public void QuestExit()
     {
-        _RequestWindow.SetActive(false); 
+        _RequestWindow.SetActive(false);
     }
     #endregion [Manager Methods]
 
@@ -390,9 +425,9 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     IEnumerator MonsterReSpwan()
     {
         int _positionNum = 0;
-        for(int i = 0; i < MonsterManager.Instance._genCheck.Length; i++)
+        for (int i = 0; i < MonsterManager.Instance._genCheck.Length; i++)
         {
-            if(!MonsterManager.Instance._genCheck[i])
+            if (!MonsterManager.Instance._genCheck[i])
             {
                 _positionNum = i;
                 break;

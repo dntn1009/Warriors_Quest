@@ -863,9 +863,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 444bb542674f2b44c9eee0c901b8094d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questIndex: -1
+  _quest:
+    isActive: 0
+    title: 
+    description: 
+    item: []
+    experienceReward: 0
+    goldReward: 0
+    questGoal:
+      questType: 0
+      progressName: 
+      monsterCode: 0
+      itemCode: 0
+      requiredAmount: 0
+      currentAmount: 0
+  QuestNotifyObj: {fileID: 0}
   NAME: "\uD6C8\uB828 \uC870\uAD50"
   ID: 101
-  isNPC: 1
+  isNPC: 0
+  shopItem: []
 --- !u!1 &4350618129032444496
 GameObject:
   m_ObjectHideFlags: 0

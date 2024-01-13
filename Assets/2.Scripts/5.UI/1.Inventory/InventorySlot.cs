@@ -64,4 +64,12 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         HotbarSlot.SettingFalse();
     }
+
+    public void SellitemDestroy()
+    {
+        myItem.canvasGroup.blocksRaycasts = false;
+        Destroy(myItem.gameObject);
+        myItem = null;
+        
+    }
 }

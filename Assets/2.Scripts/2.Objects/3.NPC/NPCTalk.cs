@@ -54,7 +54,9 @@ public class NPCTalk : MonoBehaviour
 
         if (!_questTalkCheck)
         {
-            if (npcdata._quest.CompleteCheck())
+            if(!npcdata.isNPC)
+                npcID = npcdata.ID;
+            else if (npcdata._quest.CompleteCheck())
                 npcID = npcdata.ID + 2;
             else
                 npcID = npcdata.ID;
@@ -65,6 +67,14 @@ public class NPCTalk : MonoBehaviour
         string talkValue = IngameManager.Instance.GetTalk(npcID, talkIndex);
         if (talkValue == null)
         {
+            if(!npcdata.isNPC)
+            {
+                IngameManager.Instance.ShopOpen(npcdata);
+                _isAction = false;
+                talkIndex = 0;
+                return;
+            }
+
             if (_questTalkCheck)
             {
                 _questTalkCheck = false;

@@ -17,7 +17,7 @@ MonoBehaviour:
   itemCode: 10300
   itemname: "\uB9C8\uC774\uC2A4\uD130\uAC15\uCCA0\uAC80"
   explane: "\uCD08\uC2EC\uC790\uB97C \uC704\uD55C \uBB34\uAE30."
-  money: 100
+  gold: 3000
   equipstat:
     _attack: 30
     _criattack: 10

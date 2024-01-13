@@ -8886,6 +8886,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3043814242985059546, guid: cbb1b949a08768840bef75a0963c5c44, type: 3}
+      propertyPath: ID
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043814242985059546, guid: cbb1b949a08768840bef75a0963c5c44, type: 3}
+      propertyPath: shopItem.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043814242985059546, guid: cbb1b949a08768840bef75a0963c5c44, type: 3}
+      propertyPath: shopItem.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b2759c613d4414f418fde0ae894e7c92, type: 2}
+    - target: {fileID: 3043814242985059546, guid: cbb1b949a08768840bef75a0963c5c44, type: 3}
+      propertyPath: shopItem.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: c99f229c8eac81a4d83769d41bbdc970, type: 2}
     - target: {fileID: 3043893452264422461, guid: cbb1b949a08768840bef75a0963c5c44, type: 3}
       propertyPath: m_Name
       value: Alchemist_NPC
@@ -9030,6 +9046,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1712612681}
     m_Modifications:
+    - target: {fileID: 4351413375927233315, guid: f0ddeb0ecda923747a9e491ab5a5133d, type: 3}
+      propertyPath: ID
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4352416004625034662, guid: f0ddeb0ecda923747a9e491ab5a5133d, type: 3}
       propertyPath: m_Name
       value: Skill_HeadMan_NPC
@@ -9087,6 +9107,54 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1712612681}
     m_Modifications:
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: ID
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: cca1dd27dc81f5b4a9b98c9842e5de9b, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 18f444849bcac7f40a52df85658b8d38, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1366e4d2e2b61e342afc776cfd56370b, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9a5ae6afd17d7324c8e81718bd5f8ba9, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 45c280844ff907f4b89e740dea44bd78, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3229682f4177bf04382c822384bc5b68, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 821f8de02029c4a45a61d73420769c34, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f9f3c6ba2ec54d45b246be710dd238c, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: e6e4c69f4751e2d4e82ed7cb6fddba59, type: 2}
+    - target: {fileID: 4387526719122894782, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
+      propertyPath: shopItem.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: bff057e996a2f8747a2db82bff44f6b8, type: 2}
     - target: {fileID: 4388304585285054196, guid: 59030d64e29bf1b479960bcfc475c898, type: 3}
       propertyPath: m_Name
       value: BlackSmith_NPC

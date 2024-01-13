@@ -17,7 +17,7 @@ MonoBehaviour:
   itemCode: 20000
   itemname: "HP\uD68C\uBCF5\uD3EC\uC158 100"
   explane: "HP \uC804\uC6A9 \uD68C\uBCF5 \uD3EC\uC158\uC785\uB2C8\uB2E4. HP +100"
-  money: 15
+  gold: 75
   equipstat:
     _attack: 0
     _criattack: 0

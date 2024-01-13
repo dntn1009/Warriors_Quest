@@ -18,12 +18,12 @@ public class StatWindow : MonoBehaviour
 
     public void SetStatInfo()
     {
-        _attValue.text = _player._stat.ATTACK.ToString() + +Inventory.Singleton.EQUIPSTAT.ATTACK;
-        _criAttValue.text = _player._stat.CRIATTACK.ToString() + Inventory.Singleton.EQUIPSTAT.CRIATTACK;
-        _criRateValue.text = _player._stat.CRIRATE.ToString() + Inventory.Singleton.EQUIPSTAT.CRIRATE;
-        _defenceValue.text = _player._stat.DEFENCE.ToString() + Inventory.Singleton.EQUIPSTAT.DEFENCE;
-        _dodgeValue.text = _player._stat.DODGERATE.ToString() + Inventory.Singleton.EQUIPSTAT.DODGERATE;
-        _hitRateValue.text = _player._stat.HITRATE.ToString() + Inventory.Singleton.EQUIPSTAT.HITRATE;
+        _attValue.text = (_player._stat.ATTACK + Inventory.Singleton.EQUIPSTAT.ATTACK).ToString();
+        _criAttValue.text = (_player._stat.CRIATTACK + Inventory.Singleton.EQUIPSTAT.CRIATTACK).ToString();
+        _criRateValue.text = (_player._stat.CRIRATE + Inventory.Singleton.EQUIPSTAT.CRIRATE).ToString();
+        _defenceValue.text = (_player._stat.DEFENCE + Inventory.Singleton.EQUIPSTAT.DEFENCE).ToString();
+        _dodgeValue.text = (_player._stat.DODGERATE + Inventory.Singleton.EQUIPSTAT.DODGERATE).ToString();
+        _hitRateValue.text = (_player._stat.HITRATE + Inventory.Singleton.EQUIPSTAT.HITRATE).ToString();
     }
 
 }

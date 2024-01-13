@@ -117,7 +117,7 @@ public class PlayerController : PlayerStat
         {
             if (_npcObj != null)
             {
-                IngameManager.Instance.TalkOpen();
+              IngameManager.Instance.TalkOpen();
             }
         } // NPC 대화
 
@@ -242,7 +242,7 @@ public class PlayerController : PlayerStat
     public void InitializeSet()
     {
         //임시
-        _stat = new Stat("수레야", 5, 600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60, 0, 100);
+        _stat = new Stat("수레야", 5, 600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60, 0, 5000);
         // Player Stat Setting 구현해야함.
         _statusbar.Init_StatusSetting(this);
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();

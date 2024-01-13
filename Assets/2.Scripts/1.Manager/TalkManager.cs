@@ -16,6 +16,10 @@ public class TalkManager : MonoBehaviour
     {
         //1000 = Normal 2000 = Quest 3000 = Shop
 
+        //Shop Talk
+        talkData.Add(100, new string[] { "환영하오. 초보 모험가", "둘러볼 스킬이 있는가?" });
+        talkData.Add(200, new string[] { "안녕하세요. 모험가님 제가 만든 장비를 보고가세요." });
+        talkData.Add(300, new string[] { "안녕하세요.. 모험가님.. 제가 만든 물약좀 보고가세요.." });
         //normal Talk
         talkData.Add(1001, new string[] { "요즘 머쉬룸이 많아져서 큰일이야..", "마을 밖을 돌아 다닐수가 없어." });
         talkData.Add(1002, new string[] { "모험가 양반 그거 알고 있나?", "호수 건너편에 보이는 절벽 근처에 슬라임이 살고 있다네" });

@@ -11,7 +11,7 @@ public class Item : ScriptableObject
     public int itemCode;
     public string itemname;
     public string explane;
-    public int money;
+    public int gold;
 
 
     [Header("If the item can be equipped")]

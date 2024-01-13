@@ -39,7 +39,6 @@ public class Inventory : MonoBehaviour
         Singleton = this;
         giveItemBtn.onClick.AddListener(delegate { SpawnInventoryItem(null, 10); });
         _equipStat = new EquipStat();
-        SetGoldInfo();
     }
 
     void Update()
@@ -253,7 +252,6 @@ public class Inventory : MonoBehaviour
         }
 
     }
-
     public void QuestDeliver(QuestData quest)
     {
         for (int i = 0; i < inventorySlots.Length; i++)
@@ -271,6 +269,16 @@ public class Inventory : MonoBehaviour
             }
         }
 
+    }
+
+    public InventoryItem SlotInvenItem(int number)
+    {
+        return inventorySlots[number].myItem;
+    }
+
+    public InventorySlot SlotInven(int number)
+    {
+        return inventorySlots[number];
     }
     #endregion [Spawn Item Methods]
 }
