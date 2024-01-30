@@ -2766,7 +2766,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3571114629238499497}
   m_LocalRotation: {x: 0.00000002468004, y: -0.00000007450578, z: -0.00000007636842, w: 1}
-  m_LocalPosition: {x: 133.47333, y: 165.78392, z: -85.13901}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3093,7 +3093,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3759645060261902385}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 0
@@ -3136,6 +3136,7 @@ MonoBehaviour:
     _hitrate: 0
     _exp: 0
     _gold: 0
+  _camera: {fileID: 0}
   _movSpeed: 15
   WeaponPos: {fileID: 4885743769969969582}
   equipWeapon: {fileID: 0}
@@ -3150,11 +3151,27 @@ MonoBehaviour:
   - {fileID: 6466740978719639002, guid: d271df08f88afc142986d12e1d77f9f4, type: 3}
   _statusbar: {fileID: 0}
   _monstatusbar: {fileID: 0}
+  _navAgent: {fileID: 644246248814377300}
   _buffSkill: {fileID: 11400000, guid: 053b419c73720914e99c007ecb5bbc45, type: 2}
   _buffPos: {fileID: 1666357272}
   _crossSkill: {fileID: 11400000, guid: 3a58ede906a92534c86a4a405f1d0ab8, type: 2}
   _jumpSkill: {fileID: 11400000, guid: 3cce3870025cf754a8b68d04668bc9ff, type: 2}
   _ExploPos: {fileID: 448816616}
+  _quest:
+    isActive: 0
+    title: 
+    description: 
+    item: []
+    experienceReward: 0
+    goldReward: 0
+    questGoal:
+      questType: 0
+      progressName: 
+      monsterCode: 0
+      itemCode: 0
+      requiredAmount: 0
+      currentAmount: 0
+  _npcObj: {fileID: 0}
 --- !u!114 &644246248814377303
 MonoBehaviour:
   m_ObjectHideFlags: 0

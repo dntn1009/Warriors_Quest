@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class IngameManager : SingletonMonobehaviour<IngameManager>
@@ -10,7 +11,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     [Header("Manager")]
     [SerializeField] TalkManager talkManager;
     [SerializeField] QuestManager questManager;
-
+ 
     [Header("Demage")]
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
@@ -43,13 +44,14 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     int _spawnMAX; // 최대 소환할 수 있는 몬스터들 수
     public int _spawnNum;
     Coroutine _runningCoroutine;
+
     RaycastHit hit;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        ChangeMapFromMapType(MapType.Stage1); // 임시로 Stage1로 설정
+       InitMap(MapType.Stage1); // 임시로 Stage1로 설정
         //플레이어를 불러올때 위치를 보고 스테이지를 불러올 거임.
     }
 
@@ -144,11 +146,27 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         }
     }
 
+    public void InitMap(MapType _type)
+    {
+        _currentMap = _type;
+        SceneManager.LoadScene(_currentMap.ToString(), LoadSceneMode.Additive);
+        Invoke("SetActiveScene", 0.1f);
+    }
+
     public void ChangeMapFromMapType(MapType _type)
     {
         //맵이 변경되도록 구현 addtive.
-        _spawnMAX = _spawnNum = MonsterManager.Instance._genPosition.Length;
+        SceneManager.UnloadSceneAsync(_currentMap.ToString());
         _currentMap = _type;
+        SceneManager.LoadScene(_currentMap.ToString(), LoadSceneMode.Additive);
+        Invoke("SetActiveScene", 0.1f);
+    }
+
+    public void SetActiveScene()
+    {
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentMap.ToString()));
+        _spawnMAX = _spawnNum = MonsterManager.Instance._genPosition.Length;
+
     }
 
     #endregion [Map & Spawn Methods]

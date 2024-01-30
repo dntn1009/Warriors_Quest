@@ -24,7 +24,6 @@ public class CameraMovement : MonoBehaviour
 
     void Awake()
     {
-        _objectTofollow = GameObject.FindWithTag("Player").transform.Find("FollowCam");
         this.transform.position = _objectTofollow.position;
     }
 
@@ -65,5 +64,10 @@ public class CameraMovement : MonoBehaviour
             finalDistance = maxDistance;
         }
         _realCamera.localPosition = Vector3.Lerp(_realCamera.localPosition, _dirNormalized * finalDistance, Time.deltaTime * smoothness);
+    }
+
+    public void NextMapCameraPosition()
+    {
+        this.transform.position = _objectTofollow.position;
     }
 }

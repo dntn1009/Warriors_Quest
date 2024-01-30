@@ -1128,16 +1128,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 4
   _runSpeed: 5
+  RunTypeCheck: 1
   _data: {fileID: 11400000, guid: 3c9bc1a6e93067c4b9f9f07148f0f655, type: 2}
   _hpmax: 0
   _hp: 0
   _limitWidth: 32
   _limitFrontBack: 32
   _attackPos: 1.55
-  _preemptivePos: 0
   _AttackAreaPrefab: {fileID: 2128405920}
   _fxHitPrefab:
   - {fileID: 100000, guid: f06e78284f831ae469c74624ab5d513b, type: 3}
   - {fileID: 394095070506994215, guid: ac010ad9363c7134abc30db32de4a5fe, type: 3}
-  _isPreemptive: 0
   _hudObjcet: {fileID: 1959130557}

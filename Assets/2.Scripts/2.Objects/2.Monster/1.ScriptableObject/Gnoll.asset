@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9661307fe24276f40a6bec423706d06a, type: 3}
+  m_Name: Gnoll
+  m_EditorClassIdentifier: 
+  _monCode: 102
+  _name: "\uB180"
+  _hp: 800
+  _level: 6
+  _attack: 90
+  _skillattack: 0
+  _criattack: 100
+  _crirate: 12
+  _denfence: 30
+  _dodgerate: 15
+  _hitrate: 60
+  _exp: 150
+  _gold: 300

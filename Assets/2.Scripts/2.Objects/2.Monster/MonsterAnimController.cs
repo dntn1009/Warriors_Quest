@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using DefineHelper;
 using System.Text;
 using UnityEngine;
-using DefineHelper;
 using UnityEngine.AI;
 
 public class MonsterAnimController : AnimationController
@@ -10,6 +8,7 @@ public class MonsterAnimController : AnimationController
     [Header("Animation Edit Param")]
     [SerializeField] float _walkSpeed = 1;
     [SerializeField] float _runSpeed = 2.5f;
+    [SerializeField] bool RunTypeCheck;
 
     protected NavMeshAgent _navAgent;
     StringBuilder m_sb = new StringBuilder();
@@ -41,4 +40,31 @@ public class MonsterAnimController : AnimationController
         Play(m_sb.ToString(), isBlend);
         m_sb.Clear();
     } //2. 모션을 얻은걸 여기에 넣는다.
+
+    public void ChangeAniFromType(AnyType motion, float _setFloat, bool isBlend = true)
+    {
+        switch (motion)
+        {
+            case AnyType.WALK:
+                motion = AnyType.RUN;
+                _navAgent.speed = _walkSpeed;
+                break;
+            case AnyType.RUN:
+                _navAgent.speed = _runSpeed;
+                break;
+        }
+
+        if(RunTypeCheck)
+            _animController.SetFloat("RunKind", _setFloat);
+
+        m_sb.Append(motion);
+        _currentAnyType = motion;
+        Play(m_sb.ToString(), isBlend);
+        m_sb.Clear();
+    } //2. 모션을 얻은걸 여기에 넣는다.
+
+    public void AnimationTypeOfRun(int _num)
+    {
+        
+    }
 }

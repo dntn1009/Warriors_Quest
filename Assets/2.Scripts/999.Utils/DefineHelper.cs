@@ -19,6 +19,7 @@ namespace DefineHelper
         BUFFSKILL,         // 버프
         CROSSSKILL,         // 크로스
         JUMPSKILL,         // 점프
+        OVERDRIVE,
         DEATH                       = 99
     }
 
@@ -68,6 +69,7 @@ namespace DefineHelper
         DEMAGED,
         DEATH,
         HIT,
+        OVERDRIVE,
         Max
     }
 

@@ -7,22 +7,22 @@ public class MonsterController : MonsterStat
     [Header("Edit Param")]
     [SerializeField] float _limitWidth = 8;
     [SerializeField] float _limitFrontBack = 8;
-    [SerializeField] float _attackPos = 0.3f; // 공격 범위
+    [SerializeField] protected float _attackPos = 0.3f; // 공격 범위
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
-    [SerializeField] GameObject[] _fxHitPrefab;
-    [SerializeField] HudController _hudObjcet;
+    [SerializeField] protected GameObject[] _fxHitPrefab;
+    [SerializeField] protected HudController _hudObjcet;
     //참조 변수
     // _navAgent - MonsterAnimController Protected
-    BehaviourState _state; // 현재 상태
-    AttackAreUnitFind[] _AttackAreUnitFind; // AttackAreUnitFinds;
+    protected BehaviourState _state; // 현재 상태
+    protected AttackAreUnitFind[] _AttackAreUnitFind; // AttackAreUnitFinds;
 
     //정보 변수
-    Vector3 _genPosition;
-    Vector3 _attackForward;
-    float _idleDuration;
-    float _idleTime;
+    protected Vector3 _genPosition;
+    protected Vector3 _attackForward;
+    protected float _idleDuration;
+    protected float _idleTime;
 
-    PlayerController _player;
+    protected PlayerController _player;
     int _monNum;
 
     public bool _isDeath
@@ -49,8 +49,8 @@ public class MonsterController : MonsterStat
     public int _monNumber { get { return _monNum; } set { _monNum = value; } } // 현재 본인의  Monster Number;
 
 
-    bool _isHit; // Chase - Patrol 기준이 되는 Bool
-    int _isCombo; // 공격 패턴 구분
+    protected bool _isHit; // Chase - Patrol 기준이 되는 Bool
+    protected int _isCombo; // 공격 패턴 구분
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class MonsterController : MonsterStat
     private void Start()
     {
         InitializeSet();
-        ChangeAniFromType(AnyType.RUN);
+        ChangeAniFromType(AnyType.IDLE); // 왜 RUN으로 해놨지?';;
         _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
@@ -88,7 +88,7 @@ public class MonsterController : MonsterStat
         }
     }
 
-    public void BehaviourProcess()
+    public virtual void BehaviourProcess()
     {
         // _isHit True => Chase, _isHit false => Patrol
 
@@ -102,14 +102,14 @@ public class MonsterController : MonsterStat
                     {
 
                         SetState(BehaviourState.CHASE);
-                        ChangeAniFromType(AnyType.RUN);
+                        ChangeAniFromType(AnyType.RUN, 1f);
                         _navAgent.isStopped = false;
 
                     }
                     else
                     {
                         SetState(BehaviourState.PATROL);
-                        ChangeAniFromType(AnyType.WALK);
+                        ChangeAniFromType(AnyType.WALK, 0f);
                         _navAgent.destination = GetRandomPos();
                         _navAgent.isStopped = false;
                     }
@@ -175,7 +175,7 @@ public class MonsterController : MonsterStat
                 break;
         }
     }
-    void SetState(BehaviourState state)
+    protected void SetState(BehaviourState state)
     {
         _state = state;
     }
@@ -194,7 +194,7 @@ public class MonsterController : MonsterStat
     #endregion [Behaviour Methods]
 
     #region [Move Methods]
-    Vector3 GetRandomPos()
+    protected Vector3 GetRandomPos()
     {
         float px = Random.Range(-_limitWidth, _limitWidth);
         float pz = Random.Range(-_limitFrontBack, _limitFrontBack);
@@ -207,7 +207,7 @@ public class MonsterController : MonsterStat
     #region [Attack & Demage Methods]
 
     //Attack Method
-    bool FindTarget(Transform target, float distance)
+    protected bool FindTarget(Transform target, float distance)
     {
         var dir = target.position - transform.position;
         dir.y = 0f;
@@ -222,7 +222,7 @@ public class MonsterController : MonsterStat
         return false;
     }
 
-    public void SetDemage(AttackType attackType, float damage)
+    virtual public void SetDemage(AttackType attackType, float damage)
     {
         if (_isDeath) return;
 
@@ -272,7 +272,7 @@ public class MonsterController : MonsterStat
         SetIdleDuration(0.5f);
         ChangeAniFromType(AnyType.IDLE);
     }
-    public void AnimEvent_Attack(int _areaNum)
+    virtual public void AnimEvent_Attack(int _areaNum)
     {
         if (_areaNum == 0)
         {

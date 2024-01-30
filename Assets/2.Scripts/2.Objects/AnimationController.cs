@@ -6,7 +6,7 @@ using DefineHelper;
 public class AnimationController : MonoBehaviour
 {
     //이거 다형성임 부모 자식간
-    Animator _animController;
+    protected Animator _animController;
     Dictionary<string, float> m_dicComboInputTime = new Dictionary<string, float>();
     string m_prevMotion;
 

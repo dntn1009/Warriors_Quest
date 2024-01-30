@@ -2,10 +2,12 @@ using DefineHelper;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : PlayerStat
 {
     [Header("BASIC Edit Param")]
+    [SerializeField] CameraMovement _camera;
     [SerializeField] float _movSpeed;
     [SerializeField] Transform WeaponPos; // 무기 장착 위치
     [SerializeField] GameObject equipWeapon; // 장착한 무기
@@ -31,8 +33,8 @@ public class PlayerController : PlayerStat
     Transform _mainCamera;
     AttackAreUnitFind[] _AttackAreUnitFind;
     TrailRenderer WeaponTrail;
+    NavMeshAgent _navAgent;
 
-    
 
     //정보 변수
     Vector3 mv; // Player Object Vector3
@@ -96,6 +98,8 @@ public class PlayerController : PlayerStat
         AnimatorResetting();
         _mainCamera = Camera.main.transform;
         _charController = GetComponent<CharacterController>();
+        _navAgent = GetComponent<NavMeshAgent>();
+        _navAgent.enabled = false;
         _isEquip = false;
         _isJump = false;
         _isPressAttack = false;
@@ -117,7 +121,7 @@ public class PlayerController : PlayerStat
         {
             if (_npcObj != null)
             {
-              IngameManager.Instance.TalkOpen();
+                IngameManager.Instance.TalkOpen();
             }
         } // NPC 대화
 
@@ -250,7 +254,30 @@ public class PlayerController : PlayerStat
         {
             _AttackAreUnitFind[i].Initialize(this);
         }
+
+        secondsHealing();
+        Invoke("navAgentenableTrue", 0.1f);
     }
+
+    void secondsHealing()
+    {
+        StartCoroutine(Couroutine_secondHP());
+        StartCoroutine(Couroutine_secondMP());
+    }
+
+    public void navAgentenableTrue()
+    {
+        _navAgent.enabled = true;
+    }
+
+    public void NextMapPosition(Vector3 _start)
+    {
+        _charController.enabled = false;
+        transform.position = _start;
+        _camera.NextMapCameraPosition();
+        _charController.enabled = true;
+    }
+
     #endregion [Character Setting Methods]
 
     #region [Character Move & Jump Methods]
@@ -468,8 +495,24 @@ public class PlayerController : PlayerStat
     #endregion [Attack & Attack Animation Methods]
 
     #region [Skill Methods]
+    bool mpCheck(SkillData skilldata)
+    {
+        if (_stat.MP >= skilldata._mp)
+        {
+            _stat.MP -= skilldata._mp;
+            _statusbar.SetMP(this);
+            return true;
+        }
+        else
+            return false;
+
+    }
     public void BuffSkill(SkillData skilldata, Transform _pos)
     {
+        bool check = mpCheck(skilldata);
+        if (!check)
+            return;
+
         var obj = Instantiate(skilldata._fxSkillPrefab, _pos);
         _stat.ATTACK += skilldata._demage;
         StartCoroutine(Couroutine_BuffSkill(skilldata._demage, skilldata._coolTime));
@@ -477,6 +520,11 @@ public class PlayerController : PlayerStat
 
     public void CrossSkill(SkillData skilldata)
     {
+        bool check = mpCheck(skilldata);
+        if (!check)
+            return;
+
+        _stat.MP -= skilldata._mp;
         _skillatt = skilldata._demage;
         _stat.SKILLATTACK = _skillatt;
         StartCoroutine(Couroutine_CrossSkill(skilldata._coolTime));
@@ -484,6 +532,11 @@ public class PlayerController : PlayerStat
 
     public void JumpSkill(SkillData skilldata)
     {
+        bool check = mpCheck(skilldata);
+        if (!check)
+            return;
+
+        _stat.MP -= skilldata._mp;
         _skillatt = skilldata._demage;
         _stat.SKILLATTACK = _skillatt;
         StartCoroutine(Couroutine_JumpSkill(skilldata._coolTime));
@@ -557,14 +610,14 @@ public class PlayerController : PlayerStat
     {
         if (_quest.isActive)
         {
-           _quest.questGoal.EnemyKilled(mon);
+            _quest.questGoal.EnemyKilled(mon);
         }
     }
 
     public void QuestComplete()
     {
-            _quest.Complete(this);
-            _quest = new QuestData();
+        _quest.Complete(this);
+        _quest = new QuestData();
     }
 
     #endregion [Quest Methods]
@@ -628,6 +681,41 @@ public class PlayerController : PlayerStat
     #endregion [PotionItem Use Methods]
 
     #region [Couroutine Methods]
+    IEnumerator Couroutine_secondHP()
+    {
+        int hp = 10;
+        while (true)
+        {
+            if (_stat.MAXHP > _stat.HP)
+            {
+                _stat.HP += hp;
+                if (_stat.HP >= _stat.MAXHP)
+                    _stat.HP = _stat.MAXHP;
+                _statusbar.SetHP(this);
+            }
+
+            yield return new WaitForSeconds(5f);
+
+        }
+    }
+
+    IEnumerator Couroutine_secondMP()
+    {
+        int mp = 5;
+        while (true)
+        {
+            if (_stat.MAXMP > _stat.MP)
+            {
+                _stat.MP += mp;
+                if (_stat.MP >= _stat.MAXMP)
+                    _stat.MP = _stat.MAXMP;
+                _statusbar.SetMP(this);
+            }
+
+            yield return new WaitForSeconds(5f);
+        }
+    }
+
     IEnumerator Couroutine_BuffSkill(float buffatk, float cooltime)
     {
         float Initcool = cooltime;

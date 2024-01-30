@@ -7,5 +7,6 @@ public class SkillData : ScriptableObject
 {
     public GameObject _fxSkillPrefab; // Skill Effect
     public float _demage; // Demage
+    public int _mp;
     public float _coolTime; // Seconds
 }
