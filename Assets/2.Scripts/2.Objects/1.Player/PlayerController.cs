@@ -114,6 +114,7 @@ public class PlayerController : PlayerStat
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.G))
         {
             if (_npcObj != null)
@@ -128,7 +129,7 @@ public class PlayerController : PlayerStat
                 ChangeAniFromType(AnyType.IDLE);
             return;
         } // cursor 잠금시 움직이도록
-        if (_isSkill)    // 스킬 발동 시
+        if (_isSkill || _isJump)    // 스킬 발동 시
             return;
 
         if (IngameManager.Instance.TalkActiveSelf()) // NPC 대화 창이 열렸을 시
@@ -199,6 +200,9 @@ public class PlayerController : PlayerStat
 
     private void FixedUpdate()
     {
+        if (_isSkill || _isJump)
+            return;
+
         if (Cursor.visible || IngameManager.Instance.TalkActiveSelf())
         {
             mv = Vector3.zero;
@@ -655,6 +659,9 @@ public class PlayerController : PlayerStat
 
     public void UsePotionItem(InventoryItem item)
     {
+        if (item = null)
+            return;
+
         if (item.myItem.hp > 0)
         {
             if (_isHPPotion || _stat.HP >= _stat.MAXHP)
@@ -710,7 +717,7 @@ public class PlayerController : PlayerStat
             DataManager.Instance.PlayerDataSave(_stat, Inventory.Singleton, IngameManager.Instance.currentMapState(), transform.position);
             IngameManager.Instance.SetGetInfoText("레벨업! 자동저장..");
         }
-        _statusbar.SetExp(this);
+        _statusbar.Init_StatusSetting(this);
     }
     #endregion [EXP & LEVELUP Methods]
 

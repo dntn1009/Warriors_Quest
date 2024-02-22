@@ -1,27 +1,27 @@
 {
-    "date": "2024-02-22",
+    "date": "2024-02-23",
     "stat": {
         "_name": "정수현",
-        "_level": 1,
-        "_maxhp": 300,
-        "_hp": 300,
-        "_maxmp": 50,
-        "_mp": 50,
-        "_attack": 50.0,
+        "_level": 3,
+        "_maxhp": 400,
+        "_hp": 350,
+        "_maxmp": 150,
+        "_mp": 85,
+        "_attack": 24.0,
         "_skillattack": 0.0,
-        "_criattack": 100.0,
-        "_crirate": 15.0,
-        "_defence": 25.0,
-        "_dodgerate": 10.0,
-        "_hitrate": 60.0,
-        "_maxexp": 100,
-        "_exp": 0,
-        "_gold": 500
+        "_criattack": 104.0,
+        "_crirate": 16.0,
+        "_defence": 28.0,
+        "_dodgerate": 12.0,
+        "_hitrate": 64.0,
+        "_maxexp": 450,
+        "_exp": 15,
+        "_gold": 510
     },
     "invenSlot": [
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 20000,
+            "Count": 10
         },
         {
             "itemCode": 0,
@@ -36,8 +36,20 @@
             "Count": 0
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10202,
+            "Count": 1
+        },
+        {
+            "itemCode": 2,
+            "Count": 20
+        },
+        {
+            "itemCode": 1,
+            "Count": 10
+        },
+        {
+            "itemCode": 20001,
+            "Count": 20
         },
         {
             "itemCode": 0,
@@ -48,24 +60,12 @@
             "Count": 0
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10203,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
-        },
-        {
-            "itemCode": 0,
-            "Count": 0
-        },
-        {
-            "itemCode": 0,
-            "Count": 0
-        },
-        {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10102,
+            "Count": 1
         },
         {
             "itemCode": 0,
@@ -172,8 +172,20 @@
     ],
     "equipSlot": [
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10200,
+            "Count": 1
+        },
+        {
+            "itemCode": 10201,
+            "Count": 1
+        },
+        {
+            "itemCode": 10202,
+            "Count": 1
+        },
+        {
+            "itemCode": 10203,
+            "Count": 1
         },
         {
             "itemCode": 0,
@@ -184,26 +196,14 @@
             "Count": 0
         },
         {
-            "itemCode": 0,
-            "Count": 0
-        },
-        {
-            "itemCode": 0,
-            "Count": 0
-        },
-        {
-            "itemCode": 0,
-            "Count": 0
-        },
-        {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10205,
+            "Count": 1
         }
     ],
     "map": 0,
     "position": {
-        "x": -380.0,
-        "y": 10.0,
-        "z": -490.0
+        "x": -126.49916076660156,
+        "y": 10.038168907165528,
+        "z": -317.13836669921877
     }
 }

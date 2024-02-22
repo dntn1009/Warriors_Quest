@@ -51,10 +51,11 @@ public class NPCTalk : MonoBehaviour
     {
         //대화내용 가져오는 부분
         int npcID = 0;
-
         if (!_questTalkCheck)
         {
-            if(!npcdata.isNPC)
+            if (!npcdata.isNPC)
+                npcID = npcdata.ID;
+            else if (npcdata.questIndex == -1)
                 npcID = npcdata.ID;
             else if (npcdata._quest.CompleteCheck())
                 npcID = npcdata.ID + 2;
@@ -70,6 +71,13 @@ public class NPCTalk : MonoBehaviour
             if(!npcdata.isNPC)
             {
                 IngameManager.Instance.ShopOpen(npcdata);
+                _isAction = false;
+                talkIndex = 0;
+                return;
+            }
+
+            if(npcdata.questIndex == -1)
+            {
                 _isAction = false;
                 talkIndex = 0;
                 return;

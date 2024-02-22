@@ -25,9 +25,12 @@ public class StatusController : MonoBehaviour
     {
         obj_name.text = _player._stat.NAME;
         obj_level.text = "Lv." + _player._stat.LEVEL;
-        Hp_text.text = _player._stat.HP + " / " + _player._stat.MAXHP;
+        SetHP(_player);
+        SetMP(_player);
+        SetExp(_player);
+      /*  Hp_text.text = _player._stat.HP + " / " + _player._stat.MAXHP;
         Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
-        Exp_text.text = _player._stat.EXP + " / " + _player._stat.MAXEXP;
+        Exp_text.text = _player._stat.EXP + " / " + _player._stat.MAXEXP;*/
     }
 
     public void Init_StatusSetting(MonsterStat _mon)
