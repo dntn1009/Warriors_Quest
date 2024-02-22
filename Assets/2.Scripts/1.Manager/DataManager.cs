@@ -7,6 +7,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DataManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class DataManager : MonoBehaviour
 
     [Header("Loading Manager")]
     public LoadingManager _loadingmanager;
+
 
     private void Awake()
     {

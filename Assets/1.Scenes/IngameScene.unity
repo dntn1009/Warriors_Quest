@@ -4064,6 +4064,10 @@ PrefabInstance:
       propertyPath: HotbarSlot
       value: 
       objectReference: {fileID: 783470003}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
+      value: 
+      objectReference: {fileID: 783470003}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
 --- !u!224 &205357309 stripped
@@ -5153,6 +5157,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
       propertyPath: HotbarSlot
+      value: 
+      objectReference: {fileID: 83252149}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
       value: 
       objectReference: {fileID: 83252149}
     m_RemovedComponents: []
@@ -9908,6 +9916,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
       propertyPath: HotbarSlot
+      value: 
+      objectReference: {fileID: 296911344}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
       value: 
       objectReference: {fileID: 296911344}
     m_RemovedComponents: []
@@ -31618,6 +31630,10 @@ PrefabInstance:
       propertyPath: HotbarSlot
       value: 
       objectReference: {fileID: 952019243}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
+      value: 
+      objectReference: {fileID: 952019243}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
 --- !u!224 &1446399779 stripped
@@ -43752,6 +43768,10 @@ PrefabInstance:
       propertyPath: HotbarSlot
       value: 
       objectReference: {fileID: 1246959823}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
+      value: 
+      objectReference: {fileID: 1246959823}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
 --- !u!224 &1963214123 stripped
@@ -46611,6 +46631,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
       propertyPath: HotbarSlot
+      value: 
+      objectReference: {fileID: 306629901}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
       value: 
       objectReference: {fileID: 306629901}
     m_RemovedComponents: []
@@ -53944,6 +53968,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
       propertyPath: HotbarSlot
+      value: 
+      objectReference: {fileID: 1986126490184436342}
+    - target: {fileID: 2574808962424781471, guid: c84056f70c4cb5d41adf34f2cb79ab0b, type: 3}
+      propertyPath: hotbarSlot
       value: 
       objectReference: {fileID: 1986126490184436342}
     m_RemovedComponents: []
