@@ -57,6 +57,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.12224937
+        functionName: AnimEvent_Sound
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       - time: 0.4402174
         functionName: AnimEvent_Attack
         data: 

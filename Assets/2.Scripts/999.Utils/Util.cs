@@ -63,7 +63,7 @@ public class Util
     {
         AttackType type = AttackType.Dodge;
         damage = 0f;
-        if (AttackDecision(mon.HITRATE, player._stat.DODGERATE + +Inventory.Singleton.EQUIPSTAT.DODGERATE))
+        if (AttackDecision(mon.HITRATE, player._stat.DODGERATE +Inventory.Singleton.EQUIPSTAT.DODGERATE))
         {
             type = AttackType.Normal;
             damage = NormalDamage(mon.ATTACK, player._stat.DEFENCE + Inventory.Singleton.EQUIPSTAT.DEFENCE, mon.SKILLATTACK); // Skilldata를 이용하여 버프받으면 데미지 증가하기 위한 형식을 구현해야함. 일단 =0으로 막아놈.

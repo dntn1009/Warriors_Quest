@@ -258,7 +258,7 @@ public class MonsterController : MonsterStat
         _player._stat.EXP += EXP;
         _player._stat.GOLD += GOLD;
         _player.QuestTypeKill(this);
-
+        _player.LevelUP();
         ItemDrop();
         IngameManager.Instance.SetGetInfoText("Exp + " + EXP);
         IngameManager.Instance.SetGetInfoText("GOLD + " + GOLD);
@@ -316,6 +316,27 @@ public class MonsterController : MonsterStat
     {
         SetIdleDuration(1.2f);
     }
+
+    public void AnimEvent_attackSounds(int _num)
+    {
+        if (_num == 0)
+            AudioManager.Instance.monsterPlay(AudioManager.Instance.mush_slimeAttack);
+        else
+            AudioManager.Instance.monsterPlay(AudioManager.Instance.GnollAttack);
+    }
+
+    public void AnimEvent_deadSounds(int _num)
+    {
+        if(_num == 0)
+            AudioManager.Instance.monsterPlay(AudioManager.Instance.mush_slimedead);
+        else
+            AudioManager.Instance.monsterPlay(AudioManager.Instance.Gnoalldead);
+    }
+
+    public void AnimEvent_growling()
+    {
+        AudioManager.Instance.monsterPlay(AudioManager.Instance.Growling);
+    }
     //AnimEvent Methods
 
     #endregion [Attack & Demage Methods]
@@ -328,9 +349,11 @@ public class MonsterController : MonsterStat
             Inventory.Singleton.GetDropItem(0);
         else if(CODE == 101)
             Inventory.Singleton.GetDropItem(1);
+        else if(CODE == 102)
+            Inventory.Singleton.GetRandomDropItem(15, 5);
 
-        Inventory.Singleton.GetRandomDropItem(2, 5);
-        Inventory.Singleton.GetRandomDropItem(3, 5);
+        Inventory.Singleton.GetRandomDropItem(2, 10);
+        Inventory.Singleton.GetRandomDropItem(3, 10);
     }
 
     #endregion [Inventory Item Methods]

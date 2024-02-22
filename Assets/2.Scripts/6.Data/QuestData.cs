@@ -49,10 +49,9 @@ public class QuestData
                     Inventory.Singleton.GetRewardItem(item[i]);
             }
         }
-
         IngameManager.Instance.SetGetInfoText("Exp + " + experienceReward);
         IngameManager.Instance.SetGetInfoText("GOLD + " + goldReward);
-
+        player.LevelUP();
         IngameManager.Instance.miniQuestComplete();
     }
 

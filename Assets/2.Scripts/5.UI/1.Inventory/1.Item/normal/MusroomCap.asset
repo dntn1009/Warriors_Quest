@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: -1734054678, guid: a58ee72581ff5024cb49d7954261833e, type: 3}
   itemTag: 0
-  itemCode: 0
+  itemCode: 1
   itemname: "\uBA38\uC26C\uB8F8\uC758 \uAC13"
   explane: "\uBA38\uC26C\uB8F8\uC758 \uAC13\uC774\uB2E4."
   gold: 50

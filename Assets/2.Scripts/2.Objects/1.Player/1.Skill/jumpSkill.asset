@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: jumpSkill
   m_EditorClassIdentifier: 
   _fxSkillPrefab: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
-  _demage: 0.5
+  _demage: 65
   _mp: 45
   _coolTime: 12

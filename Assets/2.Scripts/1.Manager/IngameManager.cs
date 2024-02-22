@@ -15,6 +15,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     [Header("Demage")]
     [SerializeField] Transform DamageManager;
     [SerializeField] GameObject DamageObject;
+    [SerializeField] PlayerController _player;
 
     [Header("WindowUI")]
     [SerializeField] Inventory _Inventory;
@@ -25,8 +26,10 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     [SerializeField] GameObject _MenuWindow;
     [SerializeField] GameObject _TalkWindow;
     [SerializeField] GameObject _RequestWindow;
+    [SerializeField] GameObject _deadWindow;
     [SerializeField] MiniquestWindow _miniQuestWindow;
     [SerializeField] ShopWindow _ShopWindow;
+    
 
     [Header("GetInfoText")]
     [SerializeField] GetInfo _GetInfo;
@@ -39,6 +42,8 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     [SerializeField] Image Skillbar_R;
     [SerializeField] TextMeshProUGUI SkillText_R;
 
+    [Header("Map")]
+    [SerializeField] Camera mapCamera;
     //정보 변수
     MapType _currentMap;
     int _spawnMAX; // 최대 소환할 수 있는 몬스터들 수
@@ -51,13 +56,17 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-       InitMap(MapType.Stage1); // 임시로 Stage1로 설정
-        //플레이어를 불러올때 위치를 보고 스테이지를 불러올 거임.
+
+        StartCoroutine(LoadPlayerData());
     }
 
     private void Update()
     {
         MapState();
+
+        if (_player._isDeath)
+            return;
+
         if (Input.GetKeyDown(KeyCode.I))//인벤토리 버튼
         {
             InventoryOpen();
@@ -150,7 +159,6 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     {
         _currentMap = _type;
         SceneManager.LoadScene(_currentMap.ToString(), LoadSceneMode.Additive);
-        Invoke("SetActiveScene", 0.1f);
     }
 
     public void ChangeMapFromMapType(MapType _type)
@@ -159,14 +167,23 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
         SceneManager.UnloadSceneAsync(_currentMap.ToString());
         _currentMap = _type;
         SceneManager.LoadScene(_currentMap.ToString(), LoadSceneMode.Additive);
-        Invoke("SetActiveScene", 0.1f);
+        Invoke("SetActiveScene", 0.2f);
     }
 
     public void SetActiveScene()
     {
+        if (_currentMap == MapType.Stage1)
+            mapCamera.transform.position = new Vector3(0, 250, 0);
+        else if (_currentMap == MapType.Stage2)
+            mapCamera.transform.position = new Vector3(0, 250, 500);
+
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(_currentMap.ToString()));
         _spawnMAX = _spawnNum = MonsterManager.Instance._genPosition.Length;
+    }
 
+    public MapType currentMapState()
+    {
+        return _currentMap;
     }
 
     #endregion [Map & Spawn Methods]
@@ -224,6 +241,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     }
     public void InventoryOpen()
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.BtnClick);
         if (!_Inventory.hideCheck)
         {
             if (_ShopWindow.hideCheck)
@@ -245,6 +263,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     }
     public void MapOpen()
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.BtnClick);
         if (_MapWindow.activeSelf)
         {
             _MapWindow.SetActive(false);
@@ -259,6 +278,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     }
     public void StatOpen()
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.BtnClick);
         if (_StatWindow.activeSelf)
         {
             _StatWindow.SetActive(false);
@@ -271,8 +291,14 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
             Cursor.visible = true;
         }
     }
+
+    public void DeadOpen()
+    {
+        _deadWindow.SetActive(true);
+    }
     public void SkillOpen()
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.BtnClick);
         if (_SkillWindow.activeSelf)
         {
             _SkillWindow.SetActive(false);
@@ -287,6 +313,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
 
     public void QuestOpen()
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.BtnClick);
         if (_QuestWindow.activeSelf)
         {
             _QuestWindow.SetActive(false);
@@ -301,6 +328,7 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     }
     public void MenuOpen()
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.BtnClick);
         if (_MenuWindow.activeSelf)
         {
             _MenuWindow.SetActive(false);
@@ -440,6 +468,19 @@ public class IngameManager : SingletonMonobehaviour<IngameManager>
     #endregion [Skill & Hot bar key Methods]
 
     #region Couroutine Methods
+    private IEnumerator LoadPlayerData()
+    {
+        PlayerData playerdata = DataManager.Instance.PlayerDataLoad();
+        InitMap(playerdata.map);
+        yield return new WaitForSeconds(0.1f);
+        SetActiveScene();
+        Inventory.Singleton.LoadItemData(playerdata.invenSlot, Inventory.Singleton.inventorySlots);
+        Inventory.Singleton.LoadItemData(playerdata.hotbarSlot, Inventory.Singleton.hotbarSlots);
+        Inventory.Singleton.LoadItemData(playerdata.equipSlot, Inventory.Singleton.equipmentSlots);
+        GameObject.FindWithTag("Player").GetComponent<PlayerController>().InitializeSet(playerdata);
+       
+    }//처음 데이터 로딩할때 필요한 코루틴
+
     IEnumerator MonsterReSpwan()
     {
         int _positionNum = 0;

@@ -75,7 +75,20 @@ namespace DefineHelper
 
     #endregion
 
-    #region [MAP¿ë]
+    #region [SCENE & MAP¿ë]
+
+    public enum SceneType
+    {
+        LobbyScene      = 0,
+        IngameScene
+    }
+
+    public enum DataType
+    {
+        StatData         = 0,
+        TalkData,
+
+    }
 
     public enum MapType
     {
@@ -85,4 +98,5 @@ namespace DefineHelper
     }
 
     #endregion
+
 }

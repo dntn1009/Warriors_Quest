@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 1726009659, guid: a58ee72581ff5024cb49d7954261833e, type: 3}
   itemTag: 0
-  itemCode: 1
+  itemCode: 2
   itemname: "\uC2AC\uB77C\uC784\uC758 \uC815\uC218"
   explane: "\uC2AC\uB77C\uC784\uC774 \uAC00\uC9C0\uACE0 \uC788\uB294 \uD798\uC758
     \uC6D0\uCC9C\uC774\uB2E4."

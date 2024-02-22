@@ -61,7 +61,7 @@ ModelImporter:
         functionName: FirstJumpOffsetPlus
         data: 
         objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0.5
+        floatParameter: 4
         intParameter: 0
         messageOptions: 0
       - time: 0.35570586

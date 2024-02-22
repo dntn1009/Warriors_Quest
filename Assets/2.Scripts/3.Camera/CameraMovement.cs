@@ -24,6 +24,8 @@ public class CameraMovement : MonoBehaviour
 
     void Awake()
     {
+        sensitivity = PlayerPrefs.GetFloat("Sensitivity");
+        maxDistance = PlayerPrefs.GetFloat("distanceMax");
         this.transform.position = _objectTofollow.position;
     }
 
@@ -69,5 +71,15 @@ public class CameraMovement : MonoBehaviour
     public void NextMapCameraPosition()
     {
         this.transform.position = _objectTofollow.position;
+    }
+
+    public void SetSensitivity(float value)
+    {
+        sensitivity = value;
+    }
+
+    public void SetDistanceMax(float value)
+    {
+        maxDistance = value;
     }
 }

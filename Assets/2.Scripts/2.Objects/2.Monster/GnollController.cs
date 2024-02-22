@@ -129,6 +129,7 @@ public class GnollController : MonsterController
             _overDrive = false;
             SetState(BehaviourState.DEATH);
             ChangeAniFromType(AnyType.DEATH);
+            AnimEvent_deadSounds(1);
             monsterReward(_player);
             return;
         }
@@ -158,6 +159,7 @@ public class GnollController : MonsterController
 
     override public void AnimEvent_Attack(int _areaNum)
     {
+        AnimEvent_Attack(1);
         if (_areaNum == 0)
         {
             if (_AttackAreUnitFind.Length <= 1)
@@ -202,5 +204,6 @@ public class GnollController : MonsterController
     {
         SetIdleDuration(0.5f);
         ChangeAniFromType(AnyType.IDLE);
+        AudioManager.Instance.monsterPlay(AudioManager.Instance.Growling);
     }
 }

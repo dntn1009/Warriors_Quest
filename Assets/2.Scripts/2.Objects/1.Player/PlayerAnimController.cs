@@ -26,4 +26,21 @@ public class PlayerAnimController : AnimationController
         m_sb.Clear();
     } //2. 모션을 얻은걸 여기에 넣는다.
 
+
+    public void playerSfx()
+    {
+        switch (_currentAnyType)
+        {
+            case AnyType.ATTACK1:
+                AudioManager.Instance.SfxPlay(AudioManager.Instance.Attack1);
+                break;
+            case AnyType.ATTACK2:
+                AudioManager.Instance.SfxPlay(AudioManager.Instance.Attack2);
+                break;
+            case AnyType.ATTACK3:
+                AudioManager.Instance.SfxPlay(AudioManager.Instance.Attack1);
+                break;
+        }
+    }
+
 }

@@ -27,7 +27,7 @@ public class StatusController : MonoBehaviour
         obj_level.text = "Lv." + _player._stat.LEVEL;
         Hp_text.text = _player._stat.HP + " / " + _player._stat.MAXHP;
         Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
-        //Exp_text.text = _player._stat.EXP + " / " + _player._stat.MAXEXP;
+        Exp_text.text = _player._stat.EXP + " / " + _player._stat.MAXEXP;
     }
 
     public void Init_StatusSetting(MonsterStat _mon)
@@ -57,11 +57,20 @@ public class StatusController : MonoBehaviour
     public void SetMP(PlayerController _player)
     {
         float normalizedMP = _player._stat.MP / (float)_player._stat.MAXMP;
-        Hp_bar.value = normalizedMP;
+        Mp_bar.value = normalizedMP;
         if (normalizedMP <= 0f)
             Mp_bar.value = 0f;
         Mp_text.text = _player._stat.MP + " / " + _player._stat.MAXMP;
         //HPBAR VALUE º¯°æ
+    }
+
+    public void SetExp(PlayerController _player)
+    {
+        float normalizedEXP = _player._stat.EXP / (float)_player._stat.MAXEXP;
+        Exp_bar.value = normalizedEXP;
+        if (normalizedEXP <= 0f)
+            Exp_bar.value = 0f;
+        Exp_text.text = _player._stat.EXP + " / " + _player._stat.MAXEXP;
     }
 
     public void MonsterSetHP(MonsterController mon)

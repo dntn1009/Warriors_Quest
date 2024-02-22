@@ -14,6 +14,7 @@ public class PlayerController : PlayerStat
     [SerializeField] GameObject _AttackAreaPrefab; // 공격 판정시 필요한 Collider 집합 Object
     [SerializeField] GameObject[] _fxHitPrefab;
     [SerializeField] GameObject[] _fxHealPrefab;
+    [SerializeField] GameObject _LevelUpPrefab;
     [SerializeField] StatusController _statusbar; // PlayerStatus
     [SerializeField] StatusController _monstatusbar; // 가운데 상단 몬스터 hp 표시
     [Header("SkILL Edit Param")]
@@ -110,10 +111,6 @@ public class PlayerController : PlayerStat
         _isMPPotion = false;
     }
 
-    private void Start()
-    {
-        InitializeSet();
-    }
 
     void Update()
     {
@@ -175,9 +172,6 @@ public class PlayerController : PlayerStat
         {
             if (_isEquip && !_isBuffSkill && _isBasic)
             {
-                _isBuffSkill = !_isBuffSkill;
-                ChangeAniFromType(AnyType.BUFFSKILL);
-                WeaponTrail.enabled = true;
                 BuffSkill(_buffSkill, _buffPos);
                 return;
             }
@@ -186,10 +180,6 @@ public class PlayerController : PlayerStat
         {
             if (_isEquip && !_isCrossSkill && _isBasic)
             {
-                _isCrossSkill = !_isCrossSkill;
-                _fxHitPrefab[2].SetActive(true);
-                ChangeAniFromType(AnyType.CROSSSKILL);
-                WeaponTrail.enabled = true;
                 CrossSkill(_crossSkill);
                 return;
             }
@@ -198,10 +188,6 @@ public class PlayerController : PlayerStat
         {
             if (_isEquip && !_isJumpSkill && _isBasic)
             {
-                _isJumpSkill = !_isJumpSkill;
-                _fxHitPrefab[3].SetActive(true);
-                ChangeAniFromType(AnyType.JUMPSKILL);
-                WeaponTrail.enabled = true;
                 JumpSkill(_jumpSkill);
                 return;
             }
@@ -243,18 +229,16 @@ public class PlayerController : PlayerStat
     }
 
     #region [Character Setting Methods]
-    public void InitializeSet()
+    public void InitializeSet(PlayerData playerdata)
     {
-        //임시
-        _stat = new Stat("수레야", 5, 600, 600, 300, 300, 50, 0, 100, 15, 25, 10, 60, 0, 5000);
-        // Player Stat Setting 구현해야함.
+        _stat = new Stat(playerdata);
         _statusbar.Init_StatusSetting(this);
         _AttackAreUnitFind = _AttackAreaPrefab.GetComponentsInChildren<AttackAreUnitFind>();
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
         {
             _AttackAreUnitFind[i].Initialize(this);
         }
-
+        NextMapPosition(playerdata.position);
         secondsHealing();
         Invoke("navAgentenableTrue", 0.1f);
     }
@@ -413,6 +397,7 @@ public class PlayerController : PlayerStat
         {
             _stat.HP = 0;
             ChangeAniFromType(AnyType.DEATH);
+            IngameManager.Instance.DeadOpen();
         }
 
         _statusbar.SetHP(this);
@@ -423,7 +408,7 @@ public class PlayerController : PlayerStat
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Player_Hit").transform.position, damage.ToString(), Color.gray); //데미지  UI 표시
         if (attackType == AttackType.Critical)
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Player_Hit").transform.position, damage.ToString(), Color.yellow); //데미지  UI 표시
-
+        AudioManager.Instance.HitPlay(AudioManager.Instance.Hit);
     }
     //Attack Methods
 
@@ -454,6 +439,7 @@ public class PlayerController : PlayerStat
                     var effect = Instantiate(_fxHitPrefab[1]);
                     effect.transform.position = dummy.transform.position;
                 }
+                AudioManager.Instance.monsterHitPlay(AudioManager.Instance.Hit);
             }
         }
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
@@ -495,51 +481,58 @@ public class PlayerController : PlayerStat
     #endregion [Attack & Attack Animation Methods]
 
     #region [Skill Methods]
-    bool mpCheck(SkillData skilldata)
-    {
-        if (_stat.MP >= skilldata._mp)
-        {
-            _stat.MP -= skilldata._mp;
-            _statusbar.SetMP(this);
-            return true;
-        }
-        else
-            return false;
-
-    }
+    
     public void BuffSkill(SkillData skilldata, Transform _pos)
     {
-        bool check = mpCheck(skilldata);
-        if (!check)
+        if (_stat.MP < skilldata._mp)
             return;
-
-        var obj = Instantiate(skilldata._fxSkillPrefab, _pos);
-        _stat.ATTACK += skilldata._demage;
-        StartCoroutine(Couroutine_BuffSkill(skilldata._demage, skilldata._coolTime));
+        else
+        {
+            _isBuffSkill = !_isBuffSkill;
+            _stat.MP -= skilldata._mp;
+            _statusbar.SetMP(this);
+            WeaponTrail.enabled = true;
+            _stat.SKILLATTACK += skilldata._demage;
+            var obj = Instantiate(skilldata._fxSkillPrefab, _pos);
+            ChangeAniFromType(AnyType.BUFFSKILL);
+            StartCoroutine(Couroutine_BuffSkill(skilldata._demage, skilldata._coolTime));
+        }
     }
 
     public void CrossSkill(SkillData skilldata)
     {
-        bool check = mpCheck(skilldata);
-        if (!check)
+        if (_stat.MP < skilldata._mp)
             return;
-
-        _stat.MP -= skilldata._mp;
-        _skillatt = skilldata._demage;
-        _stat.SKILLATTACK = _skillatt;
-        StartCoroutine(Couroutine_CrossSkill(skilldata._coolTime));
+        else
+        {
+            _isCrossSkill = !_isCrossSkill;
+            _stat.MP -= skilldata._mp;
+            _statusbar.SetMP(this);
+            WeaponTrail.enabled = true;
+            _fxHitPrefab[2].SetActive(true);
+            _skillatt = skilldata._demage;
+            _stat.SKILLATTACK += _skillatt;
+            ChangeAniFromType(AnyType.CROSSSKILL);
+            StartCoroutine(Couroutine_CrossSkill(skilldata._coolTime));
+        }
     }
 
     public void JumpSkill(SkillData skilldata)
     {
-        bool check = mpCheck(skilldata);
-        if (!check)
+        if (_stat.MP < skilldata._mp)
             return;
-
-        _stat.MP -= skilldata._mp;
-        _skillatt = skilldata._demage;
-        _stat.SKILLATTACK = _skillatt;
-        StartCoroutine(Couroutine_JumpSkill(skilldata._coolTime));
+        else
+        {
+            _isJumpSkill = !_isJumpSkill;
+            _stat.MP -= skilldata._mp;
+            _statusbar.SetMP(this);
+            WeaponTrail.enabled = true;
+            _fxHitPrefab[3].SetActive(true);
+            _skillatt = skilldata._demage;
+            _stat.SKILLATTACK += _skillatt;
+            ChangeAniFromType(AnyType.JUMPSKILL);
+            StartCoroutine(Couroutine_JumpSkill(skilldata._coolTime));
+        }
     }
 
     public void AnimEvent_AttackSkill(int _areaNum)
@@ -553,7 +546,6 @@ public class PlayerController : PlayerStat
             obj.transform.position = _ExploPos.transform.position;
             IngameManager.Instance.EffectParent(obj);
         }
-
 
         for (int i = 0; i < unitList.Count; i++)
         {
@@ -589,12 +581,35 @@ public class PlayerController : PlayerStat
         _stat.SKILLATTACK = 0;
         WeaponTrail.enabled = false;
         if (GetAnimState() == AnyType.CROSSSKILL)
+        {
             _fxHitPrefab[2].SetActive(false);
+            _stat.SKILLATTACK -= _crossSkill._demage;
+        }
         else if (GetAnimState() == AnyType.JUMPSKILL)
+        {
             _fxHitPrefab[3].SetActive(false);
+            _stat.SKILLATTACK -= _crossSkill._demage;
+        }
         ChangeAniFromType(AnyType.IDLE);
     } // AttackSkill 애니메이션 종료
 
+    public void AnimEvent_Sound(int _num)
+    {
+        if (_num == 0)
+            AudioManager.Instance.SfxPlay(AudioManager.Instance.Attack1);
+        else if(_num == 1)
+            AudioManager.Instance.SfxPlay(AudioManager.Instance.Attack2);
+    }
+
+    public void AnimEvent_SkillSound(int _num)
+    {
+        if(_num == 0)
+            AudioManager.Instance.SfxPlay(AudioManager.Instance.Qskill);
+        else if(_num == 1)
+            AudioManager.Instance.SfxPlay(AudioManager.Instance.Eskill);
+        else if(_num == 2)
+            AudioManager.Instance.SfxPlay(AudioManager.Instance.Rskill);
+    }
     #endregion
 
     #region Attack KeyBufferMethods
@@ -679,6 +694,25 @@ public class PlayerController : PlayerStat
     }
 
     #endregion [PotionItem Use Methods]
+
+    #region [EXP & LEVELUP Methods]
+    public void LevelUpEffect(GameObject fxPrefab, Transform _pos)
+    {
+        var obj = Instantiate(fxPrefab, _pos);
+    }
+
+    public void LevelUP()
+    {
+        if(_stat.EXP >= _stat.MAXEXP)
+        {
+            LevelUpEffect(_LevelUpPrefab, _buffPos);
+            _stat.LevelUP(DataManager.Instance._StatData[_stat.LEVEL]);
+            DataManager.Instance.PlayerDataSave(_stat, Inventory.Singleton, IngameManager.Instance.currentMapState(), transform.position);
+            IngameManager.Instance.SetGetInfoText("레벨업! 자동저장..");
+        }
+        _statusbar.SetExp(this);
+    }
+    #endregion [EXP & LEVELUP Methods]
 
     #region [Couroutine Methods]
     IEnumerator Couroutine_secondHP()

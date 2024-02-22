@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DefineHelper;
 
+
 public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
     public InventoryItem myItem { get; set; }
 
     public SlotTag myTag;
 
-    [SerializeField] HotbarSlot HotbarSlot;
+    public HotbarSlot hotbarSlot;
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -40,36 +41,40 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         if (myTag != SlotTag.None)
         {
             if (myTag == SlotTag.Potion)
-                HotbarSlot.SettingHotbar(item.myItem.sprite, item.CountStr);
+                hotbarSlot.SettingHotbar(item.myItem.sprite, item.CountStr);
             else
                 Inventory.Singleton.equipEquipMent(item, nullCheck); // 여기가 장착 장소임. 장비 슬롯에 아이템의 유무에 따라 다르게 작동함.
         }
     }
+    public void SellitemDestroy()
+    {
+        myItem.canvasGroup.blocksRaycasts = false;
+        Destroy(myItem.gameObject);
+        myItem = null;
+
+    }
+
+    #region [Hotbar & UserPotion Methods]
 
     public void UsePotionItem()
     {
         if (myItem != null)
         {
             Inventory.Singleton.UsePotionItemEffect(myItem);
-            HotbarSlot.SettingHotbar(myItem.myItem.sprite, myItem.CountStr);
+            hotbarSlot.SettingHotbar(myItem.myItem.sprite, myItem.CountStr);
         }
     }
 
     public void HotborSlotSettingHotbar()
     {
-        HotbarSlot.SettingHotbar(myItem.myItem.sprite, myItem.CountStr);
+        hotbarSlot.SettingHotbar(myItem.myItem.sprite, myItem.CountStr);
     }
 
     public void HotbarActiveFalse()
     {
-        HotbarSlot.SettingFalse();
+        hotbarSlot.SettingFalse();
     }
+    #endregion [Hotbar & UserPotion Methods]
 
-    public void SellitemDestroy()
-    {
-        myItem.canvasGroup.blocksRaycasts = false;
-        Destroy(myItem.gameObject);
-        myItem = null;
-        
-    }
+    
 }

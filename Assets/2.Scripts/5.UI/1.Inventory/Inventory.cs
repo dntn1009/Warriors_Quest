@@ -9,10 +9,10 @@ public class Inventory : MonoBehaviour
     public static InventoryItem carriedItem;
 
     [Header("Item Slots & Gold")]
-    [SerializeField] InventorySlot[] inventorySlots;
-    [SerializeField] InventorySlot[] hotbarSlots;
+    public InventorySlot[] inventorySlots;
+    public InventorySlot[] hotbarSlots;
     // 0=Head, 1=Chest, 2=Legs, 3=Feet
-    [SerializeField] InventorySlot[] equipmentSlots;
+    public InventorySlot[] equipmentSlots;
     [SerializeField] InventoryInfo inventoryInfo;
 
     [SerializeField] Transform draggablesTransform;
@@ -52,6 +52,7 @@ public class Inventory : MonoBehaviour
     #region [Item Carried Methods]
     public void SetCarriedItem(InventoryItem item) //아이템 옮기기
     {
+        AudioManager.Instance.UiPlay(AudioManager.Instance.invenClick);
         bool nullCheck = true; // 누른 장비 슬롯이 NULL인지 아닌지 확인하는 bool
 
         if (carriedItem != null)
@@ -129,7 +130,7 @@ public class Inventory : MonoBehaviour
     #region [Gold Methods]
     public void SetGoldInfo()
     {
-        goldText.text = _playerEquipemntInfo.GetComponent<PlayerController>()._stat.GOLD.ToString();
+       goldText.text = _playerEquipemntInfo.GetComponent<PlayerController>()._stat.GOLD.ToString();
     }
     #endregion [Gold Methods]
 
@@ -220,7 +221,7 @@ public class Inventory : MonoBehaviour
     {
         int random = Random.Range(0, 100);
 
-        if (random <= num)
+        if (random <= rand)
         {
             IngameManager.Instance.SetGetInfoText(items[num].itemname + "을(를) 획득하셨습니다.");
             SpawnInventoryItem(items[num]);
@@ -281,4 +282,51 @@ public class Inventory : MonoBehaviour
         return inventorySlots[number];
     }
     #endregion [Spawn Item Methods]
+
+    #region [Setting Inventory Data Methods]
+
+    public SaveItem[] SetsaveSlots(InventorySlot[] slots)
+    {
+        SaveItem[] save = new SaveItem[slots.Length];
+
+        for(int i = 0; i < slots.Length; i++)
+        {
+            if (!(slots[i].myItem == null || slots[i].myItem.myItem == null || slots[i].myItem.myItem.itemCode == 0))
+                save[i] = new SaveItem(slots[i]);
+            
+        }
+
+        return save;
+    }
+
+    public void LoadItemData(SaveItem[] Items, InventorySlot[] Slots)
+    {
+       for(int i = 0; i < Slots.Length; i++)
+       {
+            if (Items[i].itemCode == 0 || Items[i] == null)
+                continue;
+            else
+            {
+               for(int j = 0; j < items.Length; j++)
+               {
+                    if(items[j].itemCode == Items[i].itemCode)
+                    {
+                        Instantiate(itemPrefab, Slots[i].transform).Initialize(items[j], Slots[i], Items[i].Count);
+                        if (Slots[i].myTag != SlotTag.None)
+                        {
+                            if (Slots[i].myTag == SlotTag.Potion)
+                                Slots[i].hotbarSlot.SettingHotbar(Slots[i].myItem.myItem.sprite, Slots[i].myItem.CountStr);
+                            else
+                                equipEquipMent(Slots[i].myItem, true); // 여기가 장착 장소임. 장비 슬롯에 아이템의 유무에 따라 다르게 작동함.
+                        }
+                        break;
+                    }
+               }
+            }
+
+        }
+        
+    }
+
+    #endregion [Setting Inventory Data Methods]
 }

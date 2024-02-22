@@ -1,0 +1,209 @@
+{
+    "date": "2024-02-22",
+    "stat": {
+        "_name": "정수현",
+        "_level": 1,
+        "_maxhp": 300,
+        "_hp": 300,
+        "_maxmp": 50,
+        "_mp": 50,
+        "_attack": 50.0,
+        "_skillattack": 0.0,
+        "_criattack": 100.0,
+        "_crirate": 15.0,
+        "_defence": 25.0,
+        "_dodgerate": 10.0,
+        "_hitrate": 60.0,
+        "_maxexp": 100,
+        "_exp": 0,
+        "_gold": 500
+    },
+    "invenSlot": [
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        }
+    ],
+    "hotbarSlot": [
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        }
+    ],
+    "equipSlot": [
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        },
+        {
+            "itemCode": 0,
+            "Count": 0
+        }
+    ],
+    "map": 0,
+    "position": {
+        "x": -380.0,
+        "y": 10.0,
+        "z": -490.0
+    }
+}

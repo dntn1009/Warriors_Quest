@@ -12,6 +12,7 @@ public class NextPortal : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            DataManager.Instance._loadingmanager.SetLoading();
             IngameManager.Instance.ChangeMapFromMapType(_type);
             other.GetComponent<PlayerController>().NextMapPosition(_start);
         }
