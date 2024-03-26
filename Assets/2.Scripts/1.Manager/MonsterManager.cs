@@ -16,6 +16,11 @@ public class MonsterManager : SingletonMonobehaviour<MonsterManager>
 
     void Start()
     {
+        SetInitMonster();
+    }
+
+    public void SetInitMonster()
+    {
         _genPosition = _genPositionPrefab.GetComponentsInChildren<SpawnPos>();
         _genCheck = new bool[_genPosition.Length];
 

@@ -111,6 +111,13 @@ public class ShopWindow : MonoBehaviour
             myGold.text = _player._stat.GOLD.ToString();
             buyComplete();
             buyCostNotifys("구매 하였습니다.", Color.white);
+
+            for (int i = 0; i < sellInven_Slot.Length; i++)
+            {
+                if (Inventory.Singleton.SlotInvenItem(i) != null)
+                    sellInven_Slot[i].itemSetting(Inventory.Singleton.SlotInven(i), i);
+            }
+
         }
         else if (selectItem != null && _player._stat.GOLD <= int.Parse(allCost.text))
         {

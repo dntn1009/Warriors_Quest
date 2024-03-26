@@ -159,7 +159,6 @@ public class GnollController : MonsterController
 
     override public void AnimEvent_Attack(int _areaNum)
     {
-        AnimEvent_Attack(1);
         if (_areaNum == 0)
         {
             if (_AttackAreUnitFind.Length <= 1)

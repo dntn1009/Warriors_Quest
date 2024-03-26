@@ -10685,7 +10685,7 @@ MonoBehaviour:
     title: "\uBA38\uC26C\uB8F8\uC758 \uAC13 \uC218\uC9D1"
     description: "\uD638\uAE30\uC2EC\uC774 \uB9CE\uC740 \uC8FC\uBBFC\uC740 \uAC13\uC73C\uB85C
       \uBB3C\uC57D\uC744 \uB9CC\uB4E4\uACE0 \uC2F6\uC5B4\uD55C\uB2E4. \uBA38\uC26C\uB8F8\uC758
-      \uAC13\uC744 10\uAC1C \uC218\uC9D1\uD558\uC5EC \uAC00\uC838\uB2E4 \uC8FC\uB3C4\uB85D
+      \uAC13\uC744 3\uAC1C \uC218\uC9D1\uD558\uC5EC \uAC00\uC838\uB2E4 \uC8FC\uB3C4\uB85D
       \uD558\uC790."
     item:
     - {fileID: 11400000, guid: b2759c613d4414f418fde0ae894e7c92, type: 2}
@@ -10696,7 +10696,7 @@ MonoBehaviour:
       questType: 1
       progressName: "\uBA38\uC26C\uB8F8\uC758 \uAC13"
       monsterCode: 0
-      itemCode: 0
+      itemCode: 1
       requiredAmount: 3
       currentAmount: 0
   - isActive: 0

@@ -659,7 +659,7 @@ public class PlayerController : PlayerStat
 
     public void UsePotionItem(InventoryItem item)
     {
-        if (item = null)
+        if (item == null)
             return;
 
         if (item.myItem.hp > 0)

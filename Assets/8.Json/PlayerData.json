@@ -1,12 +1,12 @@
 {
-    "date": "2024-02-23",
+    "date": "2024-03-26",
     "stat": {
         "_name": "정수현",
         "_level": 3,
         "_maxhp": 400,
-        "_hp": 350,
+        "_hp": 400,
         "_maxmp": 150,
-        "_mp": 85,
+        "_mp": 150,
         "_attack": 24.0,
         "_skillattack": 0.0,
         "_criattack": 104.0,
@@ -21,19 +21,19 @@
     "invenSlot": [
         {
             "itemCode": 20000,
-            "Count": 10
+            "Count": 20
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10205,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10206,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10102,
+            "Count": 1
         },
         {
             "itemCode": 10202,
@@ -41,23 +41,23 @@
         },
         {
             "itemCode": 2,
-            "Count": 20
+            "Count": 30
         },
         {
             "itemCode": 1,
-            "Count": 10
-        },
-        {
-            "itemCode": 20001,
             "Count": 20
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 20001,
+            "Count": 40
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10103,
+            "Count": 1
+        },
+        {
+            "itemCode": 10203,
+            "Count": 1
         },
         {
             "itemCode": 10203,
@@ -68,24 +68,24 @@
             "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10203,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10202,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10300,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10201,
+            "Count": 1
         },
         {
-            "itemCode": 0,
-            "Count": 0
+            "itemCode": 10104,
+            "Count": 1
         },
         {
             "itemCode": 0,
@@ -202,8 +202,8 @@
     ],
     "map": 0,
     "position": {
-        "x": -126.49916076660156,
-        "y": 10.038168907165528,
-        "z": -317.13836669921877
+        "x": -13.736085891723633,
+        "y": 10.015846252441407,
+        "z": -347.35302734375
     }
 }
