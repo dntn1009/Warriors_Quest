@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DefineHelper;
 
-public class GnollController : MonsterController
+public class MushRoomController : MonsterController
 {
     [Header("Edit Param")]
     [SerializeField] float _limitWidth = 8;
@@ -36,7 +35,6 @@ public class GnollController : MonsterController
         }
     }// 공격 및 패트롤 범위
 
-    bool _overDrive;
     protected bool _isHit; // Chase - Patrol 기준이 되는 Bool
     protected int _isCombo; // 공격 패턴 구분
 
@@ -50,7 +48,6 @@ public class GnollController : MonsterController
     {
         base.Initialize();
         Init_HPSetting();
-        _overDrive = false;
         _isHit = false;
         _isCombo = 0;
         _idleTime = 0f;
@@ -86,18 +83,15 @@ public class GnollController : MonsterController
                 _attackForward.y = 0f;
                 transform.forward = _attackForward;
                 break;
+            case BehaviourState.HIT:
+                ChangeAniFromType(AnyType.HIT);
+                break;
             case BehaviourState.DEATH:
                 ChangeAniFromType(AnyType.DEATH);
                 AnimEvent_attackSounds();
                 _isHit = false;
                 _navAgent.isStopped = true;
                 Invoke("DeathMonster", 2.5f);
-                break;
-            case BehaviourState.HIT:
-                ChangeAniFromType(AnyType.HIT);
-                break;
-            case BehaviourState.OVERDRIVE:
-                ChangeAniFromType(AnyType.OVERDRIVE);
                 break;
         }
     }//State 시작
@@ -140,7 +134,7 @@ public class GnollController : MonsterController
                     SetIdleDuration(0.5f);
                     return;
                 }
-
+                
                 if (_navAgent.remainingDistance <= 0)
                     SetIdleDuration(1f);
                 break;
@@ -219,24 +213,15 @@ public class GnollController : MonsterController
 
     public override void SetDemage(AttackType attackType, float damage)
     {
-        if (_isDeath || _state == BehaviourState.OVERDRIVE) return;
+        if (_isDeath) return;
 
         _isHit = true; // 공격시 따라가게 하기위함 (CHASE)
-
         HP -= Mathf.CeilToInt(damage);
         if (HP <= 0f)
         {
             HP = 0;
-            _overDrive = false;
             ChangeState(BehaviourState.DEATH);
-            AnimEvent_deadSounds();
             monsterReward(_player);
-            return;
-        }
-        else if (HP <= HPMAX / 3 && !_overDrive)
-        {
-            _overDrive = true;
-            ChangeState(BehaviourState.OVERDRIVE);
             return;
         }
 
@@ -251,9 +236,11 @@ public class GnollController : MonsterController
         {
             IngameManager.Instance.CreateDamage(Util.FindChildObject(this.gameObject, "Monster_Hit").transform.position, damage.ToString(), Color.red); //데미지  UI 표시
             ChangeState(BehaviourState.HIT);
+            ChangeAniFromType(AnyType.HIT);
             _navAgent.isStopped = true;
         }
     }
+
     public void monsterReward(PlayerController _player)
     {
         _player._stat.EXP += EXP;
@@ -352,13 +339,6 @@ public class GnollController : MonsterController
     {
         AudioManager.Instance.monsterPlay(AudioManager.Instance.mush_slimedead);
     }
-    public void AnimEvent_OverDrive()
-    {
-        SetIdleDuration(0.5f);
-        ChangeAniFromType(AnyType.IDLE);
-        AudioManager.Instance.monsterPlay(AudioManager.Instance.Growling);
-    }
-
     public override void AnimEvent_growling()
     {
         AudioManager.Instance.monsterPlay(AudioManager.Instance.Growling);
@@ -381,9 +361,8 @@ public class GnollController : MonsterController
 
     public void DeathMonster()
     {
-        MonsterManager.Instance.RemoveMonster(this);
+        //MonsterManager.Instance.RemoveMonster(this);
     }
 
     #endregion [MonsterManager Script Methods]
-    
 }

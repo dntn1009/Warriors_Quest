@@ -1,21 +1,11 @@
-using DefineHelper;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using DefineHelper;
 
-public abstract class MonsterController : MonsterStat
+public abstract class MonsterFSM : MonsterStat
 {
     protected BehaviourState _state; // 현재 상태
-    protected int _monNum;
-    public int _monNumber { get { return _monNum; } set { _monNum = value; } } // 현재 본인의  Monster Number;
-    public bool _isDeath
-    {
-        get
-        {
-            if (_state == BehaviourState.DEATH)
-                return true;
-            return false;
-        }
-    } // Die 애니메이션
 
     public virtual void Initialize()
     {
@@ -48,7 +38,4 @@ public abstract class MonsterController : MonsterStat
     public abstract void StateFixedUpdate(BehaviourState state);
 
     public abstract void OnStateExit(BehaviourState state);
-
-    public abstract void SetDemage(AttackType attackType, float damage);
-    public abstract void InitMonster(SpawnPos _genTransform);
 }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonMonobehaviour<T> : MonoBehaviour where T : SingletonMonobehaviour<T>// 상속 받은애만 T로 만드려고 상속받은 클래스만 제한받게 where로 만듬.
+// 상속 받은애만 T로 만드려고 상속받은 클래스만 제한받게 where로 만듬.
+public class SingletonMonobehaviour<T> : MonoBehaviour where T : SingletonMonobehaviour<T>
 {
     public static T Instance { get; private set; }
 
@@ -14,7 +15,7 @@ public class SingletonMonobehaviour<T> : MonoBehaviour where T : SingletonMonobe
     {
 
     }
-    void Awake()
+    virtual protected void Awake()
     {
         if(Instance == null)
         {

@@ -3,7 +3,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MonsterAnimController : AnimationController
+public abstract class MonsterAnimController : AnimationController
 {
     [Header("Animation Edit Param")]
     [SerializeField] float _walkSpeed = 1;
@@ -14,9 +14,9 @@ public class MonsterAnimController : AnimationController
     StringBuilder m_sb = new StringBuilder();
     AnyType _currentAnyType;
 
-    public override void AnimatorResetting()
+    protected override void Awake()
     {
-        base.AnimatorResetting();
+        base.Awake();
         _navAgent = GetComponent<NavMeshAgent>();
     }
     public AnyType GetAnimState()
@@ -63,8 +63,10 @@ public class MonsterAnimController : AnimationController
         m_sb.Clear();
     } //2. 모션을 얻은걸 여기에 넣는다.
 
-    public void AnimationTypeOfRun(int _num)
-    {
-        
-    }
+    #region [Abstract Methods]
+    public abstract void AnimEvent_Hit();
+    public abstract void AnimEvent_attackSounds();
+    public abstract void AnimEvent_deadSounds();
+    public abstract void AnimEvent_growling();
+    #endregion [Abstract Methods]
 }

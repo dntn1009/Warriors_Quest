@@ -94,9 +94,10 @@ public class PlayerController : PlayerStat
     }
     //
 
-    void Awake()
+    protected override void Awake()
     {
-        AnimatorResetting();
+        base.Awake();
+
         _mainCamera = Camera.main.transform;
         _charController = GetComponent<CharacterController>();
         _navAgent = GetComponent<NavMeshAgent>();
@@ -417,7 +418,7 @@ public class PlayerController : PlayerStat
     //Attack Methods
 
     //AnimEvent Methods
-    public void AnimEvent_Attack(int _areaNum)
+    public override void AnimEvent_Attack(int _areaNum)
     {
         float damage = 0f;
         var unitList = _AttackAreUnitFind[_areaNum].UnitList;
@@ -449,8 +450,7 @@ public class PlayerController : PlayerStat
         for (int i = 0; i < _AttackAreUnitFind.Length; i++)
             _AttackAreUnitFind[i].UnitList.RemoveAll(obj => obj.GetComponent<MonsterController>()._isDeath);
     }
-
-    public void AnimEvent_AttackFinished()
+    public override void AnimEvent_AttackFinished()
     {
         bool _isCombo = false;
         if (_isPressAttack) // 누르고 있으면 _isPressAttack이 true이기 때문에 isCombo가 true가 됌.
@@ -592,7 +592,7 @@ public class PlayerController : PlayerStat
         else if (GetAnimState() == AnyType.JUMPSKILL)
         {
             _fxHitPrefab[3].SetActive(false);
-            _stat.SKILLATTACK -= _crossSkill._demage;
+            _stat.SKILLATTACK -= _jumpSkill._demage;
         }
         ChangeAniFromType(AnyType.IDLE);
     } // AttackSkill 애니메이션 종료

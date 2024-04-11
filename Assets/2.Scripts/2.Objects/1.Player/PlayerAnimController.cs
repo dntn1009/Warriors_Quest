@@ -4,27 +4,22 @@ using UnityEngine;
 using System.Text;
 using DefineHelper;
 
-public class PlayerAnimController : AnimationController
+public abstract class PlayerAnimController : AnimationController
 {
     StringBuilder m_sb = new StringBuilder();
     AnyType _currentAnyType;
 
-    public override void AnimatorResetting()
-    {
-        base.AnimatorResetting();
-        CalculateCombonputTime();
-    }
     public AnyType GetAnimState()
     {
         return _currentAnyType;
-    }// 1. 이걸로 Motion값을 얻은후에
+    }// Motion값을 확인하여 판단하기 위한 메서드
     public void ChangeAniFromType(AnyType motion, bool isBlend = true)
     {
         m_sb.Append(motion);
         _currentAnyType = motion;
         Play(m_sb.ToString(), isBlend);
         m_sb.Clear();
-    } //2. 모션을 얻은걸 여기에 넣는다.
+    } // 모션을 바꿔주기 위한 메서드
 
 
     public void playerSfx()

@@ -3122,11 +3122,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stat:
     _name: 
+    _level: 0
     _maxhp: 0
     _hp: 0
     _maxmp: 0
     _mp: 0
-    _level: 0
     _attack: 0
     _skillattack: 0
     _criattack: 0
@@ -3134,6 +3134,7 @@ MonoBehaviour:
     _defence: 0
     _dodgerate: 0
     _hitrate: 0
+    _maxexp: 0
     _exp: 0
     _gold: 0
   _camera: {fileID: 0}
@@ -3149,9 +3150,9 @@ MonoBehaviour:
   _fxHealPrefab:
   - {fileID: 2034380629378157175, guid: bf942a2d205977d4d8ac06b614d5f9f8, type: 3}
   - {fileID: 6466740978719639002, guid: d271df08f88afc142986d12e1d77f9f4, type: 3}
+  _LevelUpPrefab: {fileID: 1399491476850481373, guid: 7e691a0229efacd4cba2922df3888456, type: 3}
   _statusbar: {fileID: 0}
   _monstatusbar: {fileID: 0}
-  _navAgent: {fileID: 644246248814377300}
   _buffSkill: {fileID: 11400000, guid: 053b419c73720914e99c007ecb5bbc45, type: 2}
   _buffPos: {fileID: 1666357272}
   _crossSkill: {fileID: 11400000, guid: 3a58ede906a92534c86a4a405f1d0ab8, type: 2}

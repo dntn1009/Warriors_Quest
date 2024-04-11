@@ -3,25 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using DefineHelper;
 
-public class AnimationController : MonoBehaviour
+public abstract class AnimationController : MonoBehaviour
 {
-    //이거 다형성임 부모 자식간
+    //다형성 부모 자식간
     protected Animator _animController;
     Dictionary<string, float> m_dicComboInputTime = new Dictionary<string, float>();
     string m_prevMotion;
 
-    void Awake()
+    protected virtual void Awake()
     {
         _animController = GetComponent<Animator>();
         CalculateCombonputTime();
     }
-
-    #region [Initialize Setting Methods & Virtual Methods]
-    public virtual void AnimatorResetting()
-    {
-        _animController = GetComponent<Animator>();
-    }
-    #endregion [Initialize Setting Methods]
 
     #region [public Animation function Methods]
     public void Play(string animName, bool isBlend = true)
@@ -69,11 +62,11 @@ public class AnimationController : MonoBehaviour
     {
         _animController.SetFloat("IdleKind", num);
     }
-
     #endregion [Player Animation Methods]
 
-    #region [Monster Animation Methods]
-
-    #endregion [Monster Animation Methods]
+    #region [Animation Methods]
+    public abstract void AnimEvent_Attack(int _areNum);
+    public abstract void AnimEvent_AttackFinished();
+    #endregion [Animation Methods]
 
 }

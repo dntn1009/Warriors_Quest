@@ -1014,7 +1014,7 @@ GameObject:
   - component: {fileID: 6395800267908240434}
   - component: {fileID: 6395800267908240435}
   - component: {fileID: 2836992307735684142}
-  - component: {fileID: 2836992307735684143}
+  - component: {fileID: 1127329930778692605}
   m_Layer: 9
   m_Name: Slime
   m_TagString: Monster
@@ -1114,7 +1114,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2836992307735684143
+--- !u!114 &1127329930778692605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1123,7 +1123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6455783531509643304}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 756563354b6b20c47a464ecfff1acc9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b9f987c465a96d45add4add362645a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _walkSpeed: 4

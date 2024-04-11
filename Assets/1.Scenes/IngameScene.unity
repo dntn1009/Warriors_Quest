@@ -53936,10 +53936,6 @@ PrefabInstance:
       propertyPath: _monstatusbar
       value: 
       objectReference: {fileID: 1601270280}
-    - target: {fileID: 644246248814377301, guid: a53bee69a85694549ae3add6221d53b5, type: 3}
-      propertyPath: _LevelUpPrefab
-      value: 
-      objectReference: {fileID: 1399491476850481373, guid: 7e691a0229efacd4cba2922df3888456, type: 3}
     - target: {fileID: 3759645060261902385, guid: a53bee69a85694549ae3add6221d53b5, type: 3}
       propertyPath: m_Name
       value: Player

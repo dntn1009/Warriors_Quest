@@ -206,12 +206,12 @@ public class Inventory : MonoBehaviour
         return items[random];
     }
 
+    ////////////////////////////////
     public void GetRewardItem(Item item, int number = 1)
     {
         IngameManager.Instance.SetGetInfoText(item.itemname + "을(를) 획득");
         SpawnInventoryItem(item, number);
     }
-
     public void GetDropItem(int num, int number = 1)
     {
         IngameManager.Instance.SetGetInfoText(items[num].itemname + "을(를) 획득");
@@ -228,6 +228,7 @@ public class Inventory : MonoBehaviour
         }
 
     }
+    //// 몬스터를 사냥하거나 퀘스트 클리어 시, Inventory에 아이템 획득, 오른쪽 중간UI에 획득 알림
     public void InitQuestCheck(PlayerController _player)
     {
         if (_player._quest.questGoal.questType == QuestType.Gathering)
@@ -239,7 +240,7 @@ public class Inventory : MonoBehaviour
                     break;
                 }
             }
-    }
+    } // Quest 수집형 시, 처음 수집할 아이템이 있는지 체크하기 위한 메서드
     public void QuestCountSetting(InventorySlot slot)
     {
         PlayerController _player = _playerEquipemntInfo.GetComponent<PlayerController>();
@@ -252,7 +253,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-    }
+    } // Quest 수집형 시, 개수 카운팅
     public void QuestDeliver(QuestData quest)
     {
         for (int i = 0; i < inventorySlots.Length; i++)
@@ -270,7 +271,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-    }
+    } //Quest 클리어 시 Item 삭제 및 카운트 감소
 
     public InventoryItem SlotInvenItem(int number)
     {
