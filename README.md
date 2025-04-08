@@ -2,64 +2,104 @@
 
 Unity로 제작한 퀘스트 중심의 액션 RPG 게임 프로젝트입니다.  
 몬스터 처치, 아이템 수집, 장비 장착 등 RPG 핵심 시스템과  
-씬 전환, 미니맵, 퀘스트 진행 UI까지 포함한 **1인 개발 포트폴리오 프로젝트**입니다.
+씬 전환, 미니맵, 퀘스트 UI까지 포함한 **1인 개발 포트폴리오 프로젝트**입니다.
 
 ---
 
-## 📆 개발 기간  
+## 📆 개발 기간
+
 > **2023.11 ~ 2024.03 (약 5개월)**  
-> 개인 개발 (기획 + 개발 전부 담당)
+> 개인 개발 (기획 / 디자인 / 개발 전부 담당)
 
 ---
 
-## 🧩 주요 시스템
+## 📱 주요 기능
 
-- 퀘스트 수락 / 진행 / 완료 시스템 (킬 퀘스트, 수집 퀘스트 지원)
-- 몬스터 FSM (IDLE / PATROL / CHASE / ATTACK / DEATH)
-- 플레이어 스탯, 장비 시스템, 포션 사용 등 RPG 기본 요소 포함
-- **인벤토리 / 장비창 / 퀘스트창 / 스탯창** 등 전체 UI 구현
-- **미니맵 & 마커**, **맵 전환**, **Scene 이동 처리 시스템**
-- **Google Sheet → JSON → ScriptableObject**를 통한 데이터 연동 구조
+- 몬스터와 전투 시, **일반 공격 및 스킬을 이용**하여 경험치를 얻고 **레벨 업을 통하여 성장하도록 구현**
+- 다양한 조건을 가진 **퀘스트 시스템 (킬/수집/지정 NPC)** 구현
+- **몬스터 FSM** (IDLE / PATROL / CHASE / ATTACK / DEATH) 기반 AI 동작
+- **스탯, 장비, 아이템 사용**, **퀵슬롯**을 포함한 RPG 기본 시스템 구성
+- 인벤토리, 장비창, 퀘스트창, 스탯창 등 **전체 UI 구현**
+- **미니맵 & 마커**, **Additive 씬 전환**, 몬스터 재소환 코루틴 포함
+- **Google Spreadsheet → JSON → ScriptableObject**를 활용한 유연한 데이터 연동 구조
 
 ---
 
 ## 🛠 사용 기술 스택
 
 - Unity 2022.3.x
-- C# / ScriptableObject / PlayerPrefs
+- C#
+- ScriptableObject / PlayerPrefs
 - JSON 기반 데이터 관리
-- FSM 패턴 / 싱글턴 구조
-- 커스텀 인벤토리 & UI 시스템
 
 ---
 
-## 🔁 주요 기능 미리 보기
+## 🔍 시스템 구현
 
-- ✔ 퀘스트 시스템  
-  Kill / Gathering 타입 분기 처리, UI 연동, 완료 보상 지급까지 구성
-- ✔ 몬스터 AI  
-  상태 기반 FSM으로 구현된 몬스터 AI (Slime / Mush / Gnoll 등)
-- ✔ UI 통합 관리  
-  UIManager를 통한 창 전환 및 상태 제어 처리
-- ✔ 씬 전환 시스템  
-  Additive 방식 + SetActiveScene(), 몬스터 자동 재소환 코루틴 포함
-- ✔ 미니맵 / 마커  
-  마커 색상 구분, 카메라 Follow 방식으로 추적
+### ✅ 전투 시스템
+- 플레이어가 일반 공격시, 연계 공격이 나가도록 처리
+- 버프 및 공격 스킬을 사용하도록 구현
+- 몬스터 처치를 통하여 경험치를 얻어 레벨 업 기능 구현
+
+### ✅ NPC 시스템
+- 대화 가능한 NPC / 퀘스트 제공 NPC / 상점 NPC 등으로 타입을 구분
+- NPC는 TalkManager를 통해 대사 데이터를 로드해 출력
+- NPC ID에 따른 대사 출력 진행
+
+### ✅ 퀘스트 시스템
+- 퀘스트는 QuestData(ScriptableObject)에 저장된 정보를 기반으로 진행됨
+- 진행 상황 추적 및 완료 시 보상 지급
+- Quest UI와 자연스럽게 연동되도록 설계
+
+### ✅ 상점 시스템
+- 특정 NPC과 대화 시, 상점 창이 열리도록 구현
+- 아이템을 구매 / 판매하도록 구현
+
+### ✅ 몬스터 FSM 기반 AI
+- 상태 기반 FSM으로 몬스터의 순찰, 추적, 공격, 사망 처리
+- 다양한 몬스터 (슬라임, 머쉬룸, 놀 등) 개별 동작 구현
+
+### ✅ 장비 / 스탯 시스템
+- 장비 장착 시 캐릭터 스탯 실시간 반영
+- 장비별 능력치 설정 가능, 스탯창과 연동
+
+### ✅ 퀵슬롯 시스템
+- 포션/아이템을 **퀵슬롯에 드래그 & 드롭 등록**
+- 1~9번 단축키로 즉시 사용 가능
+
+### ✅ 씬 구성 및 전환
+- Stage 간 씬 이동 처리 (Additive + SetActiveScene)
+- 씬 전환 후 몬스터 자동 리스폰 코루틴 포함
+
+### ✅ UI 통합 관리
+- UIManager로 UI 상태 전환/제어 일괄 처리
+- 각 UI 간 충돌 없이 자연스럽게 활성화/비활성화
+
+### ✅ 미니맵 / 마커 시스템
+- 마커 색상 및 플레이어 위치 실시간 표시
+- 카메라 Follow 방식으로 이동 시 위치 동기화 유지
 
 ---
 
-## 📂 프로젝트 구조 예시
+## 📂 프로젝트 폴더 구조 예시
 
 ```plaintext
 Assets/
-├── Scripts/
-│   ├── Inventory/              # 인벤토리 및 아이템 로직
-│   ├── Quest/                  # 퀘스트 관련 데이터 및 목표 체크
-│   ├── Monster/                # 몬스터 FSM / 스탯 / 리워드 시스템
+├── 1.Scene/
+├── 2.Scripts/
+│   ├── 1.Manager/              # IngameManager / DataManager / AudioManager 등
+│   ├── 2.Objects/              # 플레이어 및 몬스터 관련 스크립트
+│   ├── 3.Camera/               # 카메라 움직임 관련 스크립트
+│   ├── 4.Map/                  # 미니맵 및 포탈, 벽 생성 관련 스크립트
+│   ├── 5.UI/                   # 인벤토리 및 게임에 필요한 UI 관련 스크립트
+│   ├── 6.Data/                 # Data 관련 스크립트
+│   ├── 999.Utils/              # Enum(열거형) 모음 및 디자인 패턴 관련 및 부가기능 스크립트
 │   ├── UI/                     # StatWindow / MapWindow / QuestWindow 등
-│   └── Managers/               # IngameManager / DataManager / AudioManager
+├── 3.Animator/
+├── 4.Prefabs/
+├── 5.Material/
+├── 6.Sprites/
+├── 7.RenderTexture/
+├── 8.Json/
+├── 9.Sound/
 ├── Resources/
-│   ├── ScriptableObjects/      # QuestData, ItemData, MonsterData 등
-│   └── JSON/                   # 시트 연동용 JSON
-├── Scenes/                     # Ingame / Stage1 / Stage2
- 
